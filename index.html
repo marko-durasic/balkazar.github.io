@@ -1,74 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Balkazar — Balkan & World Music Party Band</title>
-  <meta name="description" content="Balkazar is a Taipei-based Balkan/world music party band led by Serbian guitarist and vocalist Marko Djurasić. Balkan dance energy, odd rhythms, and global grooves for festivals, venues, weddings, and private events." />
-  <meta property="og:title" content="Balkazar — Balkan Dance Energy" />
-  <meta property="og:description" content="Odd rhythms, tempo shifts, Gypsy soul, ska-reggae bounce, rock, funk, Latin, Slavic, and world-music grooves." />
-  <meta property="og:type" content="website" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Balkazar — Balkan &amp; World Music Party Band in Taiwan</title>
+  <meta name="description" content="Book Balkazar, a Taipei-based Balkan and world music party band led by Serbian guitarist and vocalist Marko Djurasić. Festival-ready dance shows for venues, weddings, cultural events, company parties, and private celebrations.">
+  <meta property="og:title" content="Balkazar — Balkan Party Band in Taiwan">
+  <meta property="og:description" content="Eastern European fire, ska-reggae bounce, rock, funk, Latin, Slavic, and world-music grooves for dance-first live events.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/images/balkazar-ska-fest-live-still.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="hero" id="top">
-    <nav class="nav" aria-label="Primary navigation">
+  <nav class="nav" aria-label="Primary navigation">
+    <div class="nav-inner">
       <a class="logo" href="#top">Balkazar</a>
-      <div class="links">
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="nav-links"
+        aria-label="Open menu"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="links" id="nav-links">
         <a href="#sound">Sound</a>
+        <a href="#experience">Experience</a>
         <a href="#photos">Photos</a>
         <a href="#media">Media</a>
-        <a href="#shows">Shows</a>
         <a href="#booking">Booking</a>
         <a href="#contact">Contact</a>
       </div>
-    </nav>
+    </div>
+  </nav>
 
+  <header class="hero" id="top">
     <div class="hero-grid">
       <section class="hero-copy" aria-labelledby="hero-title">
-        <p class="eyebrow">Balkan / World Music / Party Band</p>
-        <h1 id="hero-title">Balkan Dance Energy. Odd Rhythms. Global Party Sound.</h1>
+        <p class="eyebrow">Taipei Balkan / World Music Party Band</p>
+        <h1 id="hero-title">Turn the room into a Balkan dance floor.</h1>
         <p class="lede">
-          Balkazar is a Taipei-based international Balkan/world music band built for dancing —
-          blending Eastern European melodies, Gypsy soul, ska-reggae bounce, rock, funk, Latin,
-          Slavic, and global grooves into high-energy live shows.
+          Balkazar brings Serbian-led Balkan fire to Taiwan stages: brass-flavored guitar lines,
+          odd-meter rhythms, ska-reggae bounce, rock drive, funk pocket, Latin heat, and Slavic
+          sing-along energy built for people who came to move.
         </p>
+        <ul class="hero-actions">
+          <li>Festivals</li>
+          <li>Venues</li>
+          <li>Weddings</li>
+          <li>Company parties</li>
+        </ul>
         <div class="cta-row">
-          <a class="btn" href="#booking">Book Balkazar</a>
-          <a class="btn ghost" href="#sound">Explore the sound</a>
+          <a class="btn" href="mailto:ddjura87@gmail.com?subject=Balkazar%20booking%20inquiry">Book the band</a>
+          <a class="btn ghost" href="#media">Watch &amp; listen</a>
         </div>
       </section>
 
       <aside class="hero-photo-card" aria-label="Balkazar live photo preview">
         <img
           src="assets/images/balkazar-ska-fest-live-still.jpg"
-          alt="Balkazar performing live at Taiwan Ska Fest"
-        />
+          alt="Balkazar performing live at Taiwan Ska Fest">
         <div class="photo-caption">
-          <span>Live band energy</span>
-          <strong>Full-band festival proof.</strong>
+          <span>Festival-ready live show</span>
+          <strong>High-energy Balkan party, proven on Taiwan stages.</strong>
         </div>
       </aside>
     </div>
   </header>
 
   <main>
-    <section id="sound" class="section split">
+    <section id="sound" class="section split intro-section">
       <div>
         <p class="eyebrow">The sound</p>
-        <h2>Eastern European fire, Taiwan dance-floor proof.</h2>
+        <h2>Balkan roots with a party-band engine.</h2>
       </div>
       <div class="section-copy">
         <p>
           Led by Serbian guitarist and vocalist <strong>Marko Djurasić</strong>, Balkazar turns
-          traditional Balkan songs and modern party arrangements into clapping, moving, dancing crowds.
-          The set can shift from a loping ska-reggae groove into an odd-meter Balkan sprint, then land in
-          rock, funk, Latin, or Slavic territory without losing the dance floor.
+          Balkan tradition into a sharp, dance-first show. The band can open with hypnotic Eastern
+          European melody, jump into ska and reggae, push into rock or funk, and finish with the kind
+          of chorus that gets a room clapping before it realizes it knows the rhythm.
         </p>
-        <ul class="tag-list" aria-label="Balkazar genres">
+        <p>
+          The result is easy for international crowds to feel immediately: fast changes, big accents,
+          familiar sing-along moments, and a cultural sound that feels both rootsy and festival-sized.
+        </p>
+        <ul class="tag-list">
           <li>Balkan</li>
           <li>Eastern European</li>
           <li>Gypsy soul</li>
@@ -82,25 +105,55 @@
       </div>
     </section>
 
-    <section class="section cards-section" aria-labelledby="credibility-title">
-      <p class="eyebrow">Live-tested in Taiwan</p>
-      <h2 id="credibility-title">Built for festivals, clubs, culture nights, and sweaty rooms.</h2>
+    <section id="experience" class="section cards-section" aria-labelledby="experience-title">
+      <p class="eyebrow">Why book Balkazar</p>
+      <h2 id="experience-title">Proof, personality, and a clear reason to bring the band on stage.</h2>
       <div class="cards">
         <article class="card">
-          <h3>Urban Nomad / Urban Freakout</h3>
-          <p>Balkazar has appeared in Urban Nomad and Urban Freakout-related listings, including festival lineups at Tiger Mountain.</p>
+          <h3>Instant identity</h3>
+          <p>Serbian-fronted Balkan/world music in Taipei gives promoters a clear story: rare, energetic, international, and memorable.</p>
         </article>
         <article class="card">
-          <h3>Taipei press mention</h3>
-          <p>Taipei Times described Balkazar as a “Balkan reggae-ska outfit” in coverage of Taipei Veggie Fest.</p>
+          <h3>Dance-first set flow</h3>
+          <p>Ska, reggae, funk, rock, Latin, and Slavic repertoire keep mixed crowds engaged even when the rhythms get wild.</p>
         </article>
         <article class="card">
-          <h3>Venue energy</h3>
-          <p>Public show snippets and band history connect Balkazar with dance-focused performances at venues including Triangle and Bad Mama Taipei.</p>
+          <h3>Festival credibility</h3>
+          <p>Live videos and event history show Balkazar working in public festival, venue, and cultural-event contexts.</p>
         </article>
         <article class="card">
-          <h3>Cultural roots</h3>
-          <p>Marko Djurasić has been active in Taiwan’s Balkan/world fusion scene, including workshop and performance contexts.</p>
+          <h3>Flexible event fit</h3>
+          <p>Use the full band for a peak-time party set, or ask about smaller lineups and workshop/performance combinations.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section alt event-fit" aria-labelledby="event-fit-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Event fit</p>
+          <h2 id="event-fit-title">A live set for celebrations that should not stay seated.</h2>
+        </div>
+        <p>
+          Balkazar works best when the brief is simple: wake up the room, give the event a cultural signature,
+          and make guests feel part of the rhythm instead of just watching the stage.
+        </p>
+      </div>
+      <div class="event-grid">
+        <article>
+          <span>01</span>
+          <h3>Festivals &amp; outdoor stages</h3>
+          <p>Big rhythms, strong visuals, and international repertoire help the band cut through busy festival lineups.</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h3>Weddings &amp; private parties</h3>
+          <p>Sing-along melodies and danceable grooves give mixed-age crowds an easy reason to gather and move.</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>Company &amp; cultural events</h3>
+          <p>A rare Balkan party sound adds personality to banquets, international nights, and cross-cultural celebrations.</p>
         </article>
       </div>
     </section>
@@ -109,11 +162,11 @@
       <div class="section-heading">
         <div>
           <p class="eyebrow">Photos</p>
-          <h2 id="photos-title">Real live shots, shown without awkward crop tricks.</h2>
+          <h2 id="photos-title">A visual press kit for stages, posters, and promoters.</h2>
         </div>
         <p>
-          Permission-cleared images from Balkazar, venue, festival, and profile sources are ready to use here.
-          The layout keeps square images square and landscape shots wide, with source links still available.
+          The gallery highlights live movement, crowd atmosphere, venue presence, and festival context so visitors quickly understand
+          what Balkazar looks like on a real stage.
         </p>
       </div>
 
@@ -122,11 +175,10 @@
           <figure>
             <img
               src="assets/images/balkazar-ska-fest-live-still.jpg"
-              alt="Balkazar performing live at Taiwan Ska Fest"
-            />
+              alt="Balkazar performing live at Taiwan Ska Fest">
             <figcaption>
-              <span class="source-label">Full-band live still</span>
-              <strong>Taiwan Ska Fest live set</strong>
+              <span class="source-label">Festival live set</span>
+              <strong>Taiwan Ska Fest</strong>
             </figcaption>
           </figure>
         </a>
@@ -134,8 +186,7 @@
           <figure>
             <img
               src="assets/images/balkazar-dance-party-live-still.jpg"
-              alt="Balkazar dance party performance in Taipei"
-            />
+              alt="Balkazar dance party performance in Taipei">
             <figcaption>
               <span class="source-label">Crowd energy</span>
               <strong>Dance party in Taipei</strong>
@@ -146,10 +197,9 @@
           <figure>
             <img
               src="assets/images/balkazar-bad-mama-event.jpg"
-              alt="Balkazar Bad Mama event artwork"
-            />
+              alt="Balkazar Bad Mama event artwork">
             <figcaption>
-              <span class="source-label">Venue energy</span>
+              <span class="source-label">Venue poster</span>
               <strong>Bad Mama event art</strong>
             </figcaption>
           </figure>
@@ -158,10 +208,9 @@
           <figure>
             <img
               src="assets/images/balkazar-kalinka-live-still.jpg"
-              alt="Balkazar performing Kalinka at Slavic Bazaar"
-            />
+              alt="Balkazar performing Kalinka at Slavic Bazaar">
             <figcaption>
-              <span class="source-label">Instrument close-up</span>
+              <span class="source-label">Repertoire proof</span>
               <strong>Kalinka at Slavic Bazaar</strong>
             </figcaption>
           </figure>
@@ -170,8 +219,7 @@
           <figure>
             <img
               src="assets/images/balkazar-niska-banja-live-still.jpg"
-              alt="Balkazar performing Niska Banja in Taipei"
-            />
+              alt="Balkazar performing Niska Banja in Taipei">
             <figcaption>
               <span class="source-label">Live-house intensity</span>
               <strong>Niška Banja in Taipei</strong>
@@ -182,8 +230,7 @@
           <figure>
             <img
               src="assets/images/balkazar-urban-nomad-2019.jpg"
-              alt="Balkazar Urban Nomad festival artist image"
-            />
+              alt="Balkazar Urban Nomad festival artist image">
             <figcaption>
               <span class="source-label">Festival profile</span>
               <strong>Urban Nomad 2019</strong>
@@ -195,18 +242,18 @@
 
     <section id="shows" class="section alt split">
       <div>
-        <p class="eyebrow">Shows & repertoire</p>
+        <p class="eyebrow">Shows &amp; repertoire</p>
         <h2>Traditional songs, modern party arrangements, and controlled stage chaos.</h2>
       </div>
       <div class="section-copy">
         <p>
-          A Balkazar night can pull from Balkan tradition, ska-reggae drive, world-fusion covers, and originals.
+          A Balkazar set can move through Balkan tradition, ska-reggae drive, world-fusion covers, and originals.
           Repertoire has included songs and influences such as <em>Bubamara</em>, <em>Misirlou</em>,
           <em>Niška Banja</em>, <em>Bella Ciao</em>, <em>Istanbul</em>, Dubioza Kolektiv-style party energy,
           Balkan Beat Box-style material, and more.
         </p>
         <p class="note">
-          Want public dates here? Add a Bandsintown, Songkick, Facebook Events, or Instagram link and this section can become a live show calendar.
+          For promoters: the strongest pitch is not “background world music.” It is a dance-forward Balkan party set for events that need a lift, a cultural edge, and a memorable live-band moment.
         </p>
       </div>
     </section>
@@ -214,12 +261,12 @@
     <section id="media" class="section media-section" aria-labelledby="media-title">
       <div class="section-heading">
         <div>
-          <p class="eyebrow">Video & audio</p>
-          <h2 id="media-title">Songs, audio, and full-set proof embedded on the page.</h2>
+          <p class="eyebrow">Video &amp; audio</p>
+          <h2 id="media-title">Watch the energy before you book it.</h2>
         </div>
         <p>
-          The main live set proves the band can carry a room, while the audio and short clips give visitors
-          quick ways to hear the repertoire before they click away.
+          Start with the festival set for stage presence, then use the audio and dance-floor clips to hear the repertoire,
+          crowd feel, and tempo changes that make Balkazar work for mixed international audiences.
         </p>
       </div>
 
@@ -237,7 +284,7 @@
           <div class="video-copy">
             <p class="eyebrow">Full live set</p>
             <h3>Balkazar Live Set at 2018 Taiwan Ska Fest</h3>
-            <p>A full-performance embed for bookers who need proof beyond a short clip.</p>
+            <p>Best first watch for promoters who want to see full-band dynamics, transitions, and stage confidence.</p>
           </div>
         </article>
 
@@ -255,6 +302,7 @@
             <div class="video-copy">
               <p class="eyebrow">Audio sample</p>
               <h3>Bella Ciao live cover</h3>
+              <p>A recognizable melody that helps new listeners enter the Balkazar sound fast.</p>
             </div>
           </article>
 
@@ -271,12 +319,13 @@
             <div class="video-copy">
               <p class="eyebrow">Dance-floor clip</p>
               <h3>Balkazar dance party in Taipei</h3>
+              <p>A quick look at the band in its natural setting: close, loud, rhythmic, and moving.</p>
             </div>
           </article>
         </div>
       </div>
 
-      <div class="song-grid" aria-label="More Balkazar songs and live clips">
+      <div class="song-grid">
         <a href="https://www.youtube.com/watch?v=hFU2z1O2S04" target="_blank" rel="noopener">Kalinka at Slavic Bazaar</a>
         <a href="https://www.youtube.com/watch?v=O7L8l8PwB4k" target="_blank" rel="noopener">Niška Banja in Taipei</a>
         <a href="https://www.youtube.com/channel/UCVjIs4RvBlSH6NbnDAoqJTQ" target="_blank" rel="noopener">More on YouTube</a>
@@ -287,16 +336,19 @@
     <section id="booking" class="section booking-grid">
       <div>
         <p class="eyebrow">Booking</p>
-        <h2>Book Balkazar for movement-first events.</h2>
+        <h2>Book Balkazar for events that need movement, color, and momentum.</h2>
         <p>
           Best fit: festivals, bars, cultural events, weddings, private parties, international events,
           company parties, 尾牙 / wěiyá year-end banquets, 春酒 / chūnjiǔ spring banquets, and
           dance-focused nights.
         </p>
-        <a class="btn" href="mailto:ddjura87@gmail.com?subject=Balkazar%20booking%20inquiry">Start a booking inquiry</a>
+        <div class="booking-actions">
+          <a class="btn" href="#contact">Start a booking inquiry</a>
+          <a class="btn ghost" href="https://www.facebook.com/Balkazarband/" target="_blank" rel="noopener">Message on Facebook</a>
+        </div>
       </div>
       <div class="rider-card">
-        <h3>Quick booking details</h3>
+        <h3>Send these details</h3>
         <ul>
           <li>Event type, date, venue, city, and budget</li>
           <li>Expected set length and schedule</li>
@@ -313,13 +365,13 @@
       </div>
       <div class="section-copy">
         <p>
-          Balkazar evolved from earlier Balkan-fusion projects in Taiwan into a dance-floor-first band with
-          international members and a sound that treats rhythm as the main invitation. It is not a quiet
-          background act — it is music for moving, shouting, clapping, and turning a room into a celebration.
+          Balkazar grew from Taiwan’s Balkan-fusion scene into a dance-floor-first band with international members
+          and a sound that treats rhythm as the invitation. This is not quiet background entertainment; it is music
+          for moving, shouting, clapping, and turning a room into a celebration.
         </p>
         <p>
-          The clean short version: <strong>Balkazar is a Balkan party band blending Eastern European, Gypsy,
-          ska, reggae, rock, funk, Latin, Slavic, and world-music grooves into dance-driven live shows.</strong>
+          Short version for posters and event pages: <strong>Balkazar is a Taipei-based Balkan party band blending
+          Eastern European, Gypsy, ska, reggae, rock, funk, Latin, Slavic, and world-music grooves into dance-driven live shows.</strong>
         </p>
       </div>
     </section>
@@ -328,8 +380,10 @@
       <p class="eyebrow">Contact</p>
       <h2>Bring the Balkan party to your stage.</h2>
       <p>Booking, press, collaborations, workshops, and private events:</p>
-      <p class="big-link"><a href="mailto:ddjura87@gmail.com">ddjura87@gmail.com</a></p>
-      <div class="socials" aria-label="Social links">
+      <div class="contact-cta">
+        <a class="btn" href="mailto:ddjura87@gmail.com?subject=Balkazar%20inquiry">Send us an email</a>
+      </div>
+      <div class="socials">
         <a href="https://www.instagram.com/balkazarband/" target="_blank" rel="noopener">Instagram</a>
         <a href="https://www.facebook.com/Balkazarband/" target="_blank" rel="noopener">Facebook</a>
         <a href="https://www.youtube.com/channel/UCVjIs4RvBlSH6NbnDAoqJTQ" target="_blank" rel="noopener">YouTube</a>
