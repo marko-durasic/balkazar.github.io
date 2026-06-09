@@ -215,9 +215,10 @@ h3 { font-size: 1.25rem; margin-bottom: 0.8rem; }
 .rider-card li { color: var(--muted); }
 
 .photo-gallery {
+  align-items: start;
   display: grid;
   gap: 1.25rem;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   margin-top: 2rem;
 }
 
@@ -237,13 +238,15 @@ h3 { font-size: 1.25rem; margin-bottom: 0.8rem; }
 
 .photo-card.featured {
   grid-column: span 2;
-  grid-row: span 2;
+}
+
+.photo-card.landscape {
+  grid-column: span 2;
 }
 
 .photo-card figure {
   display: flex;
   flex-direction: column;
-  height: 100%;
   margin: 0;
 }
 
