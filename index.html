@@ -14,10 +14,21 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="hero" id="top">
-    <nav class="nav" aria-label="Primary navigation">
+  <nav class="nav" aria-label="Primary navigation">
+    <div class="nav-inner">
       <a class="logo" href="#top">Balkazar</a>
-      <div class="links">
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="nav-links"
+        aria-label="Open menu"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="links" id="nav-links">
         <a href="#sound">Sound</a>
         <a href="#photos">Photos</a>
         <a href="#media">Media</a>
@@ -25,8 +36,10 @@
         <a href="#booking">Booking</a>
         <a href="#contact">Contact</a>
       </div>
-    </nav>
+    </div>
+  </nav>
 
+  <header class="hero" id="top">
     <div class="hero-grid">
       <section class="hero-copy" aria-labelledby="hero-title">
         <p class="eyebrow">Balkan / World Music / Party Band</p>
@@ -293,7 +306,7 @@
           company parties, 尾牙 / wěiyá year-end banquets, 春酒 / chūnjiǔ spring banquets, and
           dance-focused nights.
         </p>
-        <a class="btn" href="mailto:ddjura87@gmail.com?subject=Balkazar%20booking%20inquiry">Start a booking inquiry</a>
+        <a class="btn" href="#contact">Start a booking inquiry</a>
       </div>
       <div class="rider-card">
         <h3>Quick booking details</h3>
@@ -328,7 +341,9 @@
       <p class="eyebrow">Contact</p>
       <h2>Bring the Balkan party to your stage.</h2>
       <p>Booking, press, collaborations, workshops, and private events:</p>
-      <p class="big-link"><a href="mailto:ddjura87@gmail.com">ddjura87@gmail.com</a></p>
+      <div class="contact-cta">
+        <a class="btn" href="mailto:ddjura87@gmail.com?subject=Balkazar%20inquiry">Send us an email</a>
+      </div>
       <div class="socials" aria-label="Social links">
         <a href="https://www.instagram.com/balkazarband/" target="_blank" rel="noopener">Instagram</a>
         <a href="https://www.facebook.com/Balkazarband/" target="_blank" rel="noopener">Facebook</a>
