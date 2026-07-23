@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Balkazar 電子媒體包｜簡介、影片、照片與技術需求</title>
+  <meta name="description" content="Balkazar 官方電子媒體包：中英文簡介、現場演出影片、核准新聞照片、音樂連結、舞台技術需求與邀約聯絡方式。">
+  <link rel="canonical" href="https://balkazar.org/zh/epk/">
+  <link rel="alternate" hreflang="en" href="https://balkazar.org/epk/">
+  <link rel="alternate" hreflang="zh-Hant-TW" href="https://balkazar.org/zh/epk/">
+  <link rel="alternate" hreflang="x-default" href="https://balkazar.org/epk/">
+  <meta property="og:title" content="Balkazar 電子媒體包">
+  <meta property="og:description" content="官方簡介、現場演出實績、新聞照片、音樂連結與邀約資訊。">
+  <meta property="og:image" content="https://balkazar.org/assets/images/balkazar-ska-fest-live-still.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+TC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+  <style>
+    body { font-family: "Noto Sans TC", system-ui, sans-serif; }
+    .epk-hero h1, .epk-grid h2, .watch h2, #music h2, #photos h2, #tech h2, #share h2 { font-family: "Noto Sans TC", sans-serif; font-weight: 900; letter-spacing: -.03em; text-transform: none; }
+    html { scroll-padding-top: 8rem; }
+    .epk-hero { background: var(--ink); color: var(--white); padding: 10rem max(1.25rem, calc((100vw - var(--max))/2)) 5rem; }
+    .epk-hero h1 { max-width: 12ch; font-size: clamp(2.6rem,6vw,4.5rem); line-height: 1.08; margin: 0 0 1rem; }
+    .epk-hero .lede { max-width: 44em; }
+    .epk-nav { background: var(--yellow); border-bottom: 1px solid var(--line); position: sticky; top: 4.5rem; z-index: 20; }
+    .epk-nav div { display: flex; gap: 1.25rem; margin: auto; max-width: var(--max); overflow-x: auto; padding: .9rem 1.25rem; }
+    .epk-nav a { font-size: .78rem; font-weight: 700; white-space: nowrap; }
+    .epk-grid { display: grid; gap: 4rem; grid-template-columns: .75fr 1.25fr; }
+    .epk-grid h2 { font-size: clamp(2.2rem,5vw,3.6rem); }
+    .epk-content > p { color: var(--muted); font-size: 1.06rem; }
+    .copy-box { background: var(--white); border-left: 5px solid var(--orange); margin: 1.5rem 0; padding: 1.25rem; }
+    .copy-box p { margin-top: 0; }
+    .copy-box .cite-line { color: var(--muted); font-size: .82rem; }
+    .press-list { color: var(--muted); margin: 0; padding-left: 1.1rem; }
+    .press-list li { margin-bottom: .6rem; }
+    .press-list strong { color: var(--ink); }
+    .platform-grid { display: grid; gap: .8rem; grid-template-columns: repeat(auto-fit,minmax(170px,1fr)); }
+    .platform-grid a { background: var(--ink); color: var(--white); display: flex; flex-direction: column; min-height: 150px; padding: 1.25rem; }
+    .platform-grid a span { color: var(--orange); font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    .platform-grid a strong { font-size: 1.2rem; margin-top: auto; }
+    .download-grid { display: grid; gap: 1rem; grid-template-columns: repeat(3,1fr); }
+    .download-card { background: var(--white); border: 1px solid var(--line); }
+    .download-card img { aspect-ratio: 4/3; object-fit: cover; width: 100%; }
+    .download-card div { align-items: center; display: flex; gap: 1rem; justify-content: space-between; padding: 1rem; }
+    .download-card a { color: var(--orange); font-size: .75rem; font-weight: 700; }
+    .tech-list { background: var(--blue); display: grid; gap: 1px; grid-template-columns: repeat(3,1fr); margin-top: 2rem; }
+    .tech-list div { border-right: 1px solid var(--line); padding: 1.25rem; }
+    .tech-list strong { display: block; margin-bottom: .4rem; }
+    .tech-list p { color: rgba(23,17,13,.7); margin: 0; }
+    .share-strip { background: var(--paper-deep); }
+    @media (max-width: 800px) {
+      .epk-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .platform-grid { grid-template-columns: 1fr 1fr; }
+      .download-grid, .tech-list { grid-template-columns: 1fr; }
+    }
+    @media print {
+      .nav, .epk-nav, .tool-row, footer, iframe { display: none !important; }
+      .epk-hero { padding-top: 2rem; }
+      .section { padding-block: 2rem; }
+      .epk-grid { grid-template-columns: 1fr 2fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav compact-nav" aria-label="主要選單">
+    <div class="nav-inner">
+      <a class="logo" href="../">Balkazar<span>.</span></a>
+      <div class="links" style="display:flex"><a href="../">樂團首頁</a><a href="../gallery/">照片</a><a class="nav-cta" href="../#inquiry">邀請演出</a></div>
+    </div>
+  </nav>
+
+  <header class="epk-hero">
+    <p class="eyebrow">官方電子媒體包</p>
+    <h1>Balkazar：來自台灣的巴爾幹熱力。</h1>
+    <p class="lede">提供給主辦方、媒體與活動夥伴的簡介、現場演出影片、核准照片、音樂連結與技術需求。</p>
+    <div class="cta-row">
+      <a class="btn" href="../#inquiry">邀請演出 <span>→</span></a>
+      <button class="text-link" style="background:none;border:0;color:inherit" onclick="window.print()">另存為 PDF</button>
+    </div>
+  </header>
+  <div class="epk-nav"><div><a href="#bio">簡介</a><a href="#press">媒體報導</a><a href="#video">影片</a><a href="#music">音樂與社群</a><a href="#photos">新聞照片</a><a href="#tech">技術需求</a><a href="#share">分享</a></div></div>
+
+  <main>
+    <section class="section epk-grid" id="bio">
+      <div><p class="eyebrow">可直接引用</p><h2>樂團簡介</h2></div>
+      <div class="epk-content">
+        <h3>短版簡介</h3>
+        <div class="copy-box">
+          <p id="short-bio">Balkazar 是以台北為基地的國際派對樂團，融合巴爾幹與東歐音樂、Ska、Reggae、Rock、Funk、Latin 與世界音樂律動。由塞爾維亞吉他手兼主唱 Marko Djurasić 領軍，每一場演出都是一次邀請全場一起舞動的邀約。</p>
+          <button class="tool-button" data-copy="short-bio" data-copied-label="已複製簡介">複製短版簡介</button>
+        </div>
+        <h3>長版簡介</h3>
+        <div class="copy-box">
+          <p id="full-bio">Balkazar 從台灣的巴爾幹與世界音樂融合社群成長茁壯，成為一支以舞池為核心的國際現場樂團。由塞爾維亞吉他手兼主唱 Marko Djurasić 領軍，樂團游走於東歐旋律、傳統歌謠、奇數拍節奏、Ska-Reggae 律動、搖滾、放克與拉丁音樂之間，卻從不失去觀眾的注意力。Balkazar 曾參與 Urban Nomad／Urban Freakout 相關陣容、Taiwan Ska Fest、台北各大展演空間，並多次受邀於 Celebration Canada 演出——由加拿大駐台北貿易辦事處與加拿大商會主辦的官方年度活動，也曾被《Taipei Times》形容為「Balkan reggae-ska outfit」。這是一支跨越國界、充滿慶典氣氛的現場樂團，適合音樂祭、俱樂部、文化之夜，以及任何希望觀眾成為表演一部分的活動。</p>
+          <button class="tool-button" data-copy="full-bio" data-copied-label="已複製簡介">複製長版簡介</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section epk-grid" id="press">
+      <div><p class="eyebrow">已查證</p><h2>媒體報導與精選演出</h2></div>
+      <div class="epk-content">
+        <h3>媒體報導</h3>
+        <div class="copy-box">
+          <p id="quote-1">“Balkan reggae-ska outfit Balkazar.”</p>
+          <p class="cite-line">— Han Cheung，《Taipei Times》，2021年4月23日 · <a href="https://www.taipeitimes.com/News/feat/archives/2021/04/23/2003756195" target="_blank" rel="noopener">閱讀全文 ↗</a></p>
+          <button class="tool-button" data-copy="quote-1" data-copied-label="已複製引言">複製引言</button>
+        </div>
+        <div class="copy-box">
+          <p id="quote-2">“Taste it, and you won’t stop dancing. More than a concert, listening to Balkazar is a journey.”</p>
+          <p class="cite-line">— Urban Nomad 城市遊牧影展，官方樂團介紹 · <a href="https://urbannomad.tw/project/balkazar/?lang=en" target="_blank" rel="noopener">閱讀全文 ↗</a></p>
+          <button class="tool-button" data-copy="quote-2" data-copied-label="已複製引言">複製引言</button>
+        </div>
+        <h3>精選演出經歷</h3>
+        <ul class="press-list">
+          <li><strong>Celebration Canada</strong> — 加拿大駐台北貿易辦事處與加拿大商會主辦，台北（2019、2022、2026年；現場約 5,000–10,000 人）</li>
+          <li><strong>Urban Nomad／Urban Freakout</strong> — 台北（2017–2019年陣容）</li>
+          <li><strong>Daniel Pearl Music Festival</strong> — 台北</li>
+          <li><strong>Taiwan Ska Fest</strong> — 台北</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section watch" id="video">
+      <div class="section-heading"><div><p class="eyebrow">現場實力</p><h2>完整音樂祭演出</h2></div><p>Taiwan Ska Fest 完整演出：給需要的不只是精華片段的買家。</p></div>
+      <div class="video-grid" style="grid-template-columns:1fr">
+        <article class="video-feature"><div class="embed-frame"><iframe src="https://www.youtube-nocookie.com/embed/KWW3flMt8dY" title="Balkazar Taiwan Ska Fest 完整現場" loading="lazy" allowfullscreen></iframe></div></article>
+      </div>
+    </section>
+
+    <section class="section" id="music">
+      <p class="eyebrow">官方頻道</p>
+      <h2>收聽、觀看、追蹤。</h2>
+      <div class="platform-grid" style="margin-top:2.5rem">
+        <a href="https://www.youtube.com/channel/UCVjIs4RvBlSH6NbnDAoqJTQ" target="_blank" rel="noopener"><span>影片</span><strong>YouTube ↗</strong></a>
+        <a href="https://streetvoice.com/Balkazar/" target="_blank" rel="noopener"><span>音樂</span><strong>StreetVoice ↗</strong></a>
+        <a href="https://soundcloud.com/user-424179644" target="_blank" rel="noopener"><span>音樂</span><strong>SoundCloud ↗</strong></a>
+        <a href="https://www.instagram.com/balkazarband/" target="_blank" rel="noopener"><span>社群</span><strong>Instagram ↗</strong></a>
+        <a href="https://www.facebook.com/Balkazarband/" target="_blank" rel="noopener"><span>社群</span><strong>Facebook ↗</strong></a>
+      </div>
+      <div class="soundcloud-player" style="margin-top:1.5rem">
+        <iframe title="Balkazar on SoundCloud" width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" loading="lazy" src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/user-424179644&amp;color=%23ff5a1f&amp;auto_play=false&amp;hide_related=true&amp;show_comments=false&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>
+      </div>
+    </section>
+
+    <section class="section" id="photos">
+      <p class="eyebrow">核准照片</p>
+      <h2>新聞照片</h2>
+      <p>點擊「下載」取得現有的原始檔案。若無另行提供攝影credit，請標註 Balkazar。</p>
+      <div class="download-grid" style="margin-top:2.5rem">
+        <article class="download-card"><img src="../../assets/images/balkazar-ska-fest-live-still.jpg" alt="Balkazar 在戶外大型觀眾前演出"><div><strong>音樂祭現場</strong><a href="../../assets/images/balkazar-ska-fest-live-still.jpg" download>下載 ↓</a></div></article>
+        <article class="download-card"><img src="../../assets/images/balkazar-urban-nomad-live.jpg" alt="Balkazar 在 Urban Nomad Freakout 演出"><div><strong>Urban Nomad 城市遊牧</strong><a href="../../assets/images/balkazar-urban-nomad-live.jpg" download>下載 ↓</a></div></article>
+        <article class="download-card"><img src="../../assets/images/balkazar-facebook-profile.jpg" alt="Balkazar 樂團形象照"><div><strong>樂團形象照</strong><a href="../../assets/images/balkazar-facebook-profile.jpg" download>下載 ↓</a></div></article>
+        <article class="download-card"><img src="../../assets/images/balkazar-band-candid-group.jpg" alt="Balkazar 團員演出後合照"><div><strong>樂團合照</strong><a href="../../assets/images/balkazar-band-candid-group.jpg" download>下載 ↓</a></div></article>
+      </div>
+    </section>
+
+    <section class="formats-wrap" id="tech">
+      <div class="section">
+        <p class="eyebrow">技術起點</p>
+        <h2>基本舞台需求</h2>
+        <p>最終的輸入清單與舞台配置需視確認的陣容與場地而定。以下是討論製作需求的起點：</p>
+        <div class="tech-list">
+          <div><strong>Backline</strong><p>標準爵士鼓組、吉他音箱與貝斯音箱。</p></div>
+          <div><strong>音響</strong><p>符合場地規模的擴音系統與舞台監聽。</p></div>
+          <div><strong>麥克風</strong><p>至少 3 支麥克風與 3 支麥克風架。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="share-strip" id="share">
+      <div class="section">
+        <p class="eyebrow">分享出去</p>
+        <h2>分享這份媒體包。</h2>
+        <div class="tool-row" style="margin-top:2rem">
+          <a class="tool-button" data-share="line" target="_blank" rel="noopener">分享到 LINE</a>
+          <a class="tool-button" data-share="facebook" target="_blank" rel="noopener">分享到 Facebook</a>
+          <a class="tool-button" data-share="email">用 Email 分享</a>
+          <button class="tool-button" onclick="navigator.clipboard.writeText(window.location.href);this.textContent='連結已複製'">複製連結</button>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <a class="logo" href="../">Balkazar<span>.</span></a>
+    <p>演出邀約與媒體：<a href="../#inquiry">聯絡表單 ↗</a></p>
+    <div><a href="https://www.instagram.com/balkazarband/" target="_blank" rel="noopener">Instagram</a><a href="https://www.youtube.com/channel/UCVjIs4RvBlSH6NbnDAoqJTQ" target="_blank" rel="noopener">YouTube</a></div>
+    <small>© <span id="year"></span> Balkazar</small>
+  </footer>
+  <script src="../../script.js"></script>
+</body>
+</html>

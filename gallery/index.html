@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Balkazar | Photo Gallery</title>
+  <meta name="description" content="Photos of Balkazar live: Celebration Canada, Urban Nomad Freakout, New Year's Eve shows and behind-the-scenes moments from Taiwan's Balkan party band.">
+  <link rel="canonical" href="https://balkazar.org/gallery/">
+  <link rel="alternate" hreflang="en" href="https://balkazar.org/gallery/">
+  <link rel="alternate" hreflang="zh-Hant-TW" href="https://balkazar.org/zh/gallery/">
+  <link rel="alternate" hreflang="x-default" href="https://balkazar.org/gallery/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Balkazar | Photo Gallery">
+  <meta property="og:description" content="Live photos from festivals, official events and shows across Taiwan.">
+  <meta property="og:url" content="https://balkazar.org/gallery/">
+  <meta property="og:image" content="https://balkazar.org/assets/images/gallery/g-celebration-canada.jpg">
+  <meta name="theme-color" content="#17110d">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    .gallery-hero { background: var(--ink); color: var(--white); padding: 10rem max(1.25rem, calc((100vw - var(--max))/2)) 4rem; }
+    .gallery-hero .lede { max-width: 44em; }
+    .photo-section { margin: auto; max-width: var(--max); padding: clamp(3rem, 7vw, 5rem) 1.25rem; }
+    .photo-section h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 2rem; }
+    .photo-masonry { column-count: 3; column-gap: 1rem; }
+    .photo-masonry img { border-radius: 2px; cursor: zoom-in; display: block; margin-bottom: 1rem; transition: opacity .2s; width: 100%; }
+    .photo-masonry img:hover { opacity: .88; }
+    @media (max-width: 880px) { .photo-masonry { column-count: 2; } }
+    @media (max-width: 560px) { .photo-masonry { column-count: 1; } .gallery-hero { padding-top: 8rem; } }
+  </style>
+</head>
+<body>
+  <nav class="nav compact-nav" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a class="logo" href="../">Balkazar<span>.</span></a>
+      <div class="links" style="display:flex"><a href="../">Main site</a><a href="../epk/">EPK</a><a class="nav-cta" href="../#inquiry">Book us</a></div>
+    </div>
+  </nav>
+
+  <header class="gallery-hero">
+    <p class="eyebrow">Photos</p>
+    <h1 style="font:clamp(3rem,6vw,5.5rem)/.95 &quot;Bebas Neue&quot;,sans-serif;text-transform:uppercase;margin:0 0 1rem;">Live, on tour, off-stage.</h1>
+    <p class="lede">Celebration Canada, Urban Nomad, New Year's Eve under fireworks, and the band between sets. Click any photo to see it full-size.</p>
+  </header>
+
+  <main>
+    <section class="photo-section">
+      <h2>Live & festivals</h2>
+      <div class="photo-masonry">
+        <img src="../assets/images/gallery/g-veggiefest-band.jpg" alt="Full band performing outdoors with warm stage lighting" loading="lazy">
+        <img src="../assets/images/gallery/g-urban-nomad.jpg" alt="Balkazar performing on stage at the Urban Nomad Freakout festival" loading="lazy">
+        <img src="../assets/images/gallery/g-bw-full-band.jpg" alt="Black and white photo of the full band performing live" loading="lazy">
+        <img src="../assets/images/gallery/g-crowd-nye.jpg" alt="Balkazar performing for a large outdoor crowd at night" loading="lazy">
+        <img src="../assets/images/gallery/g-nye-fireworks.jpg" alt="Trombonist performing under fireworks on New Year's Eve" loading="lazy">
+        <img src="../assets/images/gallery/g-bw-guitar-solo.jpg" alt="Black and white photo of guitarist mid-solo" loading="lazy">
+        <img src="../assets/images/gallery/g-dance-floor.jpg" alt="People dancing during a Balkazar show in Taipei" loading="lazy">
+        <img src="../assets/images/gallery/g-kalinka.jpg" alt="Balkazar performing live" loading="lazy">
+        <img src="../assets/images/gallery/g-niska-banja.jpg" alt="Balkazar performing Niska Banja live" loading="lazy">
+      </div>
+    </section>
+
+    <section class="photo-section">
+      <h2>Celebration Canada</h2>
+      <div class="photo-masonry">
+        <img src="../assets/images/gallery/g-celebration-canada.jpg" alt="Drummer performing on stage at Celebration Canada with maple leaf backdrop" loading="lazy">
+        <img src="../assets/images/gallery/g-canadaday-trombone.jpg" alt="Trombonist performing at Celebration Canada" loading="lazy">
+      </div>
+    </section>
+
+    <section class="photo-section">
+      <h2>Off-stage</h2>
+      <div class="photo-masonry">
+        <img src="../assets/images/gallery/g-forest-portrait.jpg" alt="Band members in costume, outdoor portrait" loading="lazy">
+        <img src="../assets/images/gallery/g-marko-singing.jpg" alt="Close-up of Balkazar's singer and guitarist" loading="lazy">
+        <img src="../assets/images/gallery/g-candid-group.jpg" alt="Balkazar band members posing together after a show" loading="lazy">
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a class="logo" href="../">Balkazar<span>.</span></a>
+    <p>Booking & press: <a href="../#inquiry">Contact form ↗</a></p>
+    <div><a href="https://www.instagram.com/balkazarband/" target="_blank" rel="noopener">Instagram</a><a href="../epk/">Press kit</a></div>
+    <small>© <span id="year"></span> Balkazar</small>
+  </footer>
+  <script src="../script.js"></script>
+</body>
+</html>
