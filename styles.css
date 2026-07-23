@@ -145,6 +145,7 @@ h3 { font-size: 1.3rem; line-height: 1.15; margin: 0; }
 .press-note { border-top: 1px solid var(--line); margin-top: 2rem; padding-top: 1.25rem; }
 .press-note span { color: var(--orange); font-size: .72rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
 .press-note p { font-weight: 700; }
+.press-note a { text-decoration: underline; text-underline-offset: .2rem; }
 
 .inquiry-wrap { background: var(--yellow); }
 .inquiry { display: grid; gap: clamp(3rem, 8vw, 7rem); grid-template-columns: .8fr 1.2fr; }
@@ -152,6 +153,8 @@ h3 { font-size: 1.3rem; line-height: 1.15; margin: 0; }
 .inquiry-copy > p:not(.eyebrow) { max-width: 34em; }
 .direct-links { display: flex; flex-direction: column; gap: .4rem; margin-top: 2rem; }
 .direct-links a { font-weight: 700; text-decoration: underline; text-underline-offset: .25rem; }
+.trust-note { margin: 1rem 0 0; }
+.trust-note a { border-bottom: 1px solid rgba(23,17,13,.35); font-size: .82rem; font-weight: 700; padding-bottom: .2rem; }
 .booking-form { background: var(--white); box-shadow: 12px 12px 0 var(--ink); padding: clamp(1.25rem, 4vw, 2.5rem); }
 .field-row { display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; }
 .booking-form label { display: flex; flex-direction: column; font-size: .75rem; font-weight: 700; gap: .4rem; margin-bottom: 1rem; text-transform: uppercase; }
@@ -159,6 +162,11 @@ h3 { font-size: 1.3rem; line-height: 1.15; margin: 0; }
 .booking-form textarea { resize: vertical; }
 .booking-form .btn { margin-top: .5rem; }
 .form-note { color: var(--muted); font-size: .72rem; margin: 1rem 0 0; }
+
+.booking-confirm { background: var(--white); box-shadow: 12px 12px 0 var(--ink); padding: clamp(1.25rem, 4vw, 2.5rem); }
+.booking-confirm h3 { font: 1.8rem/1 "Bebas Neue", sans-serif; margin: .25rem 0 .75rem; text-transform: uppercase; }
+.confirm-note { color: var(--muted); margin: 0 0 1.5rem; }
+.confirm-back { display: inline-block; margin-top: 1.25rem; }
 
 .tool-row { display: flex; flex-wrap: wrap; gap: .65rem; }
 .tool-button {
@@ -213,6 +221,6 @@ footer > div a { font-size: .78rem; font-weight: 700; }
   .video-side, .format-grid, .field-row { grid-template-columns: 1fr; }
   .format-grid article { min-height: 250px; }
   .story-collage { padding-right: 1.25rem; }
-  .booking-form { box-shadow: 7px 7px 0 var(--ink); }
+  .booking-form, .booking-confirm { box-shadow: 7px 7px 0 var(--ink); }
   .cta-row { align-items: flex-start; flex-direction: column; }
 }

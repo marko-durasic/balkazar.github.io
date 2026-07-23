@@ -14,6 +14,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../styles.css">
   <style>
+    html { scroll-padding-top: 8rem; }
     .epk-hero { background: var(--ink); color: var(--white); padding: 10rem max(1.25rem, calc((100vw - var(--max))/2)) 5rem; }
     .epk-hero h1 { max-width: 12ch; }
     .epk-hero .lede { max-width: 44em; }
@@ -25,6 +26,10 @@
     .epk-content > p { color: var(--muted); font-size: 1.06rem; }
     .copy-box { background: var(--white); border-left: 5px solid var(--orange); margin: 1.5rem 0; padding: 1.25rem; }
     .copy-box p { margin-top: 0; }
+    .copy-box .cite-line { color: var(--muted); font-size: .82rem; }
+    .press-list { color: var(--muted); margin: 0; padding-left: 1.1rem; }
+    .press-list li { margin-bottom: .6rem; }
+    .press-list strong { color: var(--ink); }
     .platform-grid { display: grid; gap: .8rem; grid-template-columns: repeat(auto-fit,minmax(170px,1fr)); }
     .platform-grid a { background: var(--ink); color: var(--white); display: flex; flex-direction: column; min-height: 150px; padding: 1.25rem; }
     .platform-grid a span { color: var(--orange); font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
@@ -69,7 +74,7 @@
       <button class="text-link" style="background:none;color:inherit" onclick="window.print()">Save EPK as PDF</button>
     </div>
   </header>
-  <div class="epk-nav"><div><a href="#bio">Bio</a><a href="#video">Video</a><a href="#music">Music & social</a><a href="#photos">Press photos</a><a href="#tech">Tech</a><a href="#share">Share</a></div></div>
+  <div class="epk-nav"><div><a href="#bio">Bio</a><a href="#press">Press</a><a href="#video">Video</a><a href="#music">Music & social</a><a href="#photos">Press photos</a><a href="#tech">Tech</a><a href="#share">Share</a></div></div>
 
   <main>
     <section class="section epk-grid" id="bio">
@@ -82,9 +87,32 @@
         </div>
         <h3>Full bio</h3>
         <div class="copy-box">
-          <p id="full-bio">Balkazar grew from Taiwan’s Balkan and world-fusion community into a dance-floor-first international live band. Led by Serbian guitarist and vocalist Marko Djurasić, the group moves between Eastern European melodies, traditional songs, odd rhythms, ska-reggae drive, rock, funk and Latin influences without losing the crowd. Balkazar has appeared in Urban Nomad / Urban Freakout-related lineups, Taiwan Ska Fest and Taipei venue stages, and has been described by the Taipei Times as a “Balkan reggae-ska outfit.” The result is celebratory, border-crossing live music made for festivals, clubs, culture nights and events where the audience should become part of the show.</p>
+          <p id="full-bio">Balkazar grew from Taiwan’s Balkan and world-fusion community into a dance-floor-first international live band. Led by Serbian guitarist and vocalist Marko Djurasić, the group moves between Eastern European melodies, traditional songs, odd rhythms, ska-reggae drive, rock, funk and Latin influences without losing the crowd. Balkazar has appeared in Urban Nomad / Urban Freakout-related lineups, Taiwan Ska Fest, Taipei venue stages and repeat bookings at Celebration Canada—the Canadian Trade Office and Canadian Chamber of Commerce’s official Taipei festival—and has been described by the Taipei Times as a “Balkan reggae-ska outfit.” The result is celebratory, border-crossing live music made for festivals, clubs, culture nights and events where the audience should become part of the show.</p>
           <button class="tool-button" data-copy="full-bio" data-copied-label="Bio copied">Copy full bio</button>
         </div>
+      </div>
+    </section>
+
+    <section class="section epk-grid" id="press">
+      <div><p class="eyebrow">Verified</p><h2>Press & selected bookings</h2></div>
+      <div class="epk-content">
+        <h3>In the press</h3>
+        <div class="copy-box">
+          <p id="quote-1">“Balkan reggae-ska outfit Balkazar.”</p>
+          <p class="cite-line">— Han Cheung, <em>Taipei Times</em>, Apr 23, 2021 · <a href="https://www.taipeitimes.com/News/feat/archives/2021/04/23/2003756195" target="_blank" rel="noopener">Read ↗</a></p>
+          <button class="tool-button" data-copy="quote-1" data-copied-label="Quote copied">Copy quote</button>
+        </div>
+        <div class="copy-box">
+          <p id="quote-2">“Taste it, and you won’t stop dancing. More than a concert, listening to Balkazar is a journey.”</p>
+          <p class="cite-line">— Urban Nomad Film Festival, official artist bio · <a href="https://urbannomad.tw/project/balkazar/?lang=en" target="_blank" rel="noopener">Read ↗</a></p>
+          <button class="tool-button" data-copy="quote-2" data-copied-label="Quote copied">Copy quote</button>
+        </div>
+        <h3>Selected bookings</h3>
+        <ul class="press-list">
+          <li><strong>Celebration Canada</strong> — Canadian Trade Office &amp; Canadian Chamber of Commerce in Taiwan, Taipei (2022, 2026; 5,000–10,000 attendees)</li>
+          <li><strong>Urban Nomad / Urban Freakout</strong> — Taipei (2017–2019 lineups)</li>
+          <li><strong>Taiwan Ska Fest</strong> — Taipei</li>
+        </ul>
       </div>
     </section>
 
