@@ -137,3 +137,37 @@ document.querySelectorAll(".booking-form").forEach((form) => {
     confirmPanel.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 });
+
+const masonryImages = Array.from(document.querySelectorAll(".photo-masonry img"));
+if (masonryImages.length) {
+  const lightbox = document.createElement("div");
+  lightbox.className = "lightbox";
+  lightbox.innerHTML = `
+    <button class="lightbox-close" aria-label="Close">&times;</button>
+    <button class="lightbox-prev" aria-label="Previous photo">&larr;</button>
+    <img alt="">
+    <button class="lightbox-next" aria-label="Next photo">&rarr;</button>`;
+  document.body.appendChild(lightbox);
+  const lightboxImg = lightbox.querySelector("img");
+  let currentIndex = 0;
+
+  function showPhoto(index) {
+    currentIndex = (index + masonryImages.length) % masonryImages.length;
+    lightboxImg.src = masonryImages[currentIndex].src;
+    lightboxImg.alt = masonryImages[currentIndex].alt;
+    lightbox.classList.add("open");
+  }
+  function closeLightbox() { lightbox.classList.remove("open"); }
+
+  masonryImages.forEach((img, index) => img.addEventListener("click", () => showPhoto(index)));
+  lightbox.querySelector(".lightbox-close").addEventListener("click", closeLightbox);
+  lightbox.querySelector(".lightbox-prev").addEventListener("click", () => showPhoto(currentIndex - 1));
+  lightbox.querySelector(".lightbox-next").addEventListener("click", () => showPhoto(currentIndex + 1));
+  lightbox.addEventListener("click", (event) => { if (event.target === lightbox) closeLightbox(); });
+  document.addEventListener("keydown", (event) => {
+    if (!lightbox.classList.contains("open")) return;
+    if (event.key === "Escape") closeLightbox();
+    if (event.key === "ArrowLeft") showPhoto(currentIndex - 1);
+    if (event.key === "ArrowRight") showPhoto(currentIndex + 1);
+  });
+}
