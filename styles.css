@@ -216,7 +216,7 @@ footer > div a { font-size: .78rem; font-weight: 700; }
   .nav.open .nav-toggle span:nth-child(2) { opacity: 0; }
   .nav.open .nav-toggle span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
   .hero { min-height: 800px; }
-  .hero-image { object-position: 78% center; }
+  .hero-image { object-position: 85% center; }
   .hero-shade { background: linear-gradient(0deg, rgba(15,10,7,.94), rgba(15,10,7,.15) 80%); }
   .hero-content { padding-top: 26rem; }
   .intro, .section-heading, .story, .inquiry { grid-template-columns: 1fr; }
