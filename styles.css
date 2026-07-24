@@ -149,7 +149,7 @@ h3 { font-size: 1.3rem; line-height: 1.15; margin: 0; }
 
 .gallery .section-heading > p { color: var(--muted); }
 .gallery-grid { display: grid; gap: 1rem; grid-template-columns: repeat(3, 1fr); margin-top: 3rem; }
-.gallery-grid img { aspect-ratio: 4/5; object-fit: cover; width: 100%; }
+.gallery-grid img { aspect-ratio: 4/3; object-fit: cover; width: 100%; }
 .gallery-more { border-bottom-color: var(--line); color: var(--ink); display: inline-block; margin-top: 2rem; }
 
 .lightbox { align-items: center; background: rgba(10,7,5,.94); display: none; inset: 0; justify-content: center; position: fixed; z-index: 200; }
