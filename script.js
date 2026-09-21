@@ -74,7 +74,7 @@ document.querySelectorAll(".booking-form").forEach((form) => {
   confirmPanel.innerHTML = isChinese
     ? `<p class="eyebrow">內容已備妥</p>
        <h3>選擇送出方式</h3>
-       <p class="confirm-note">如果沒有預設的郵件軟體，用 Gmail 開啟或直接複製內容都可以。</p>
+       <p class="confirm-note">選擇 Email、Gmail，或直接複製內容。</p>
        <div class="tool-row">
          <a class="btn" data-role="mailto">開啟郵件軟體 <span>→</span></a>
          <a class="tool-button" data-role="gmail" target="_blank" rel="noopener">用 Gmail 開啟 ↗</a>
@@ -83,7 +83,7 @@ document.querySelectorAll(".booking-form").forEach((form) => {
        <button class="text-link confirm-back" data-role="back" type="button">← 返回修改</button>`
     : `<p class="eyebrow">Ready to send</p>
        <h3>Choose how to send it</h3>
-       <p class="confirm-note">No default mail app? Open it in Gmail instead, or just copy the details.</p>
+       <p class="confirm-note">Choose email, Gmail, or copy the message.</p>
        <div class="tool-row">
          <a class="btn" data-role="mailto">Open email app <span>→</span></a>
          <a class="tool-button" data-role="gmail" target="_blank" rel="noopener">Open in Gmail ↗</a>
