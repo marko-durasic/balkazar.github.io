@@ -22,6 +22,7 @@
 .event-video-grid { display: grid; gap: 1.25rem; grid-template-columns: repeat(2,minmax(0,1fr)); }
 .event-video { background: #090705; color: var(--white); padding: .8rem; }
 .event-video video { aspect-ratio: 9/16; background: #000; display: block; max-height: 680px; object-fit: contain; width: 100%; }
+.event-video img { aspect-ratio: 4/3; background: #000; display: block; object-fit: cover; width: 100%; }
 .event-video p { margin: .8rem .25rem .2rem; }
 .share-row { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.5rem; }
 .share-row a { border: 1px solid var(--line); border-radius: 999px; font-size: .8rem; font-weight: 700; padding: .65rem .9rem; }
