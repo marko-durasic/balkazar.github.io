@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Balkazar//European Christmas Market 2026//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:20261203T200000-european-christmas-market@balkazar.org
+DTSTAMP:20261006T153500Z
+DTSTART:20261203T120000Z
+DTEND:20261203T133000Z
+SUMMARY:Balkazar at European Christmas Market
+LOCATION:European Christmas Market, Taipei
+DESCRIPTION:Balkazar live — Thursday, December 3, 2026 · 8:00–9:30 pm.\nhttps://balkazar.org/events/2026-12-03-european-christmas-market/
+URL:https://balkazar.org/events/2026-12-03-european-christmas-market/
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR
