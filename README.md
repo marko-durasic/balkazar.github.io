@@ -12,6 +12,7 @@ Official bilingual booking website for Balkazar, published with GitHub Pages at
 - `/gallery/` and `/zh/gallery/` — photo galleries
 - `/band/` and `/zh/band/` — current five-person lineup, short member introductions, and former member credits
 - `/band/{slawek,mike,andy,mac}/` and `/zh/band/{...}/` — individual musician profiles
+- `/band/alumni/{member}/` and `/zh/band/alumni/{member}/` — profiles for verified former musicians
 - `/marko/` and `/zh/marko/` — Marko Djurasic’s individual musician biography (accessible from Band)
 
 ## Growth backlog
