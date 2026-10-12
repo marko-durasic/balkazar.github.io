@@ -1,0 +1,120 @@
+/* Band / musician pages: consistent with Balkazar's black, orange and paper palette. */
+.band-hero {
+  min-height: min(760px, 85svh);
+  color: var(--white);
+  background: linear-gradient(90deg, rgba(15,10,7,.94) 0%, rgba(15,10,7,.72) 42%, rgba(15,10,7,.19) 100%), url("assets/images/balkazar-dance-party-live-still.jpg") center 40% / cover no-repeat, var(--ink);
+  display: flex;
+  align-items: flex-end;
+}
+.band-hero-inner { max-width: var(--max); width: 100%; margin: 0 auto; padding: 11rem 1.25rem 5rem; }
+.band-hero h1 { max-width: 14ch; font-size: clamp(4.25rem, 10vw, 9rem); line-height: .92; }
+.band-hero h1 em, .person-hero h1 em { color: var(--yellow); font-style: normal; }
+.band-hero .lede { max-width: 49ch; }
+.band-hero .hero-note { margin-top: 2rem; font-size: .84rem; letter-spacing: .08em; font-weight: 700; color: rgba(255,250,240,.72); }
+.band-intro { max-width: var(--max); margin: auto; padding: clamp(4rem,7vw,6rem) 1.25rem 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: end; }
+.band-intro h2 { font-size: clamp(3.2rem, 7vw, 6.2rem); max-width: 15ch; }
+.band-intro p { color: var(--muted); font-size: 1.1rem; line-height: 1.85; max-width: 53ch; }
+.band-lineup { max-width: var(--max); margin: 0 auto; padding: 1.5rem 1.25rem clamp(5rem,9vw,8rem); }
+.member-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 1.15rem; }
+.member-card {
+  display: flex; flex-direction: column; min-width: 0; border: 1px solid var(--line); background: var(--white);
+  color: var(--ink); position: relative; box-shadow: 7px 7px 0 var(--ink);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.member-card:hover, .member-card:focus-visible { transform: translate(-3px,-3px); box-shadow: 10px 10px 0 var(--ink); }
+.member-portrait {
+  aspect-ratio: 1.14; display: flex; align-items: flex-end; justify-content: space-between; position: relative; overflow: hidden;
+  background: linear-gradient(135deg, rgba(255,255,255,.03),rgba(0,0,0,.15)), var(--member-fill, #9dc9d1);
+  padding: 1.4rem;
+}
+.member-portrait::before {
+  content: ""; position: absolute; border: 3px solid rgba(23,17,13,.13);
+  border-radius: 50%; width: 90%; aspect-ratio: 1; top: -38%; right: -28%; transform: rotate(-14deg);
+}
+.member-portrait::after {
+  content: ""; position: absolute; width: 85%; height: 3px; top: 50%; left: -14%;
+  background: rgba(23,17,13,.13); transform: rotate(-25deg);
+}
+.member-initials { font: clamp(5.5rem, 13vw, 10rem)/.69 "Bebas Neue", sans-serif; letter-spacing: -.045em; position: relative; z-index: 1; }
+.member-portrait small { font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 900; writing-mode: vertical-rl; transform: rotate(180deg); position: relative; z-index: 1; }
+.member-card:nth-child(2) { --member-fill: #f5c842; }
+.member-card:nth-child(3) { --member-fill: #c1b09a; }
+.member-card:nth-child(4) { --member-fill: #ff8052; }
+.member-card:nth-child(5) { --member-fill: #b3cbba; }
+.member-card-info { padding: 1.45rem; display: flex; flex-direction: column; flex: 1; }
+.member-card-info .member-role { color: #9c431e; font-weight: 800; text-transform: uppercase; font-size: .7rem; letter-spacing: .16em; margin: 0 0 .6rem; }
+.member-card-info h3 { font: clamp(2.2rem,3.7vw,3.45rem)/1 "Bebas Neue", sans-serif; margin: 0 0 .8rem; }
+.member-card-info p { color: var(--muted); font-size: .97rem; line-height: 1.7; margin: 0 0 1.4rem; }
+.member-card-info .member-read { margin-top: auto; border-top: 1px solid var(--line); padding-top: 1rem; font-weight: 800; font-size: .85rem; }
+.member-card-info .member-read span { color: var(--orange); padding-left: .35rem; }
+.band-alumni-wrap { background: var(--ink); color: var(--white); }
+.band-alumni { max-width: var(--max); margin: auto; padding: clamp(4rem,7vw,6.5rem) 1.25rem; }
+.band-alumni h2 { font-size: clamp(2.8rem,6.5vw,5.7rem); max-width: 16ch; }
+.band-alumni > p { color: rgba(255,250,240,.72); max-width: 65ch; font-size: 1.08rem; line-height: 1.85; }
+.alumni-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1px; margin: 2.25rem 0 0; background: rgba(255,255,255,.18); }
+.alumni-entry { background: var(--ink); padding: 1.7rem 1rem 1.7rem 0; }
+.alumni-entry strong { font: 2.2rem/1 "Bebas Neue",sans-serif; display: block; }
+.alumni-entry span { display:block; color: var(--yellow); font-size: .74rem; letter-spacing: .12em; font-weight: 800; margin-top: .55rem; text-transform: uppercase; }
+.alumni-entry p { color: rgba(255,250,240,.72); font-size: .92rem; margin: .65rem 0 0; max-width: 43ch; line-height: 1.7; }
+.band-alumni-note { border-top: 1px solid rgba(255,255,255,.24); padding-top: 1.3rem; margin-top: 2rem; font-size: .92rem; color: rgba(255,250,240,.7); }
+.band-cta { background: var(--yellow); }
+.band-cta-content { max-width: var(--max); margin: auto; padding: 3.4rem 1.25rem; display: flex; gap: 2rem; align-items: center; justify-content: space-between; }
+.band-cta h2 { font-size: clamp(2.7rem,5.2vw,4.7rem); max-width: none; }
+.band-cta p { margin-bottom: 0; }
+.band-cta .btn { background: var(--ink); color: var(--white); flex: 0 0 auto; }
+.band-cta .btn:hover { background: var(--orange); color: var(--ink); }
+.person-hero { background: var(--ink); color: var(--white); }
+.person-hero-inner { max-width: var(--max); margin: auto; display: grid; gap: clamp(2rem,6vw,6rem); grid-template-columns: 1fr minmax(240px,.65fr); align-items: center; padding: 10rem 1.25rem 5rem; }
+.person-hero h1 { max-width: 15ch; font-size: clamp(4rem,10vw,9rem); }
+.person-hero .lede { max-width: 45ch; }
+.person-trail { margin: 0 0 2.4rem; color: rgba(255,250,240,.65); font-size: .78rem; font-weight: 800; text-transform: uppercase; letter-spacing: .13em; }
+.person-trail a { border-bottom: 1px solid var(--orange); padding-bottom: 2px; }
+.person-tile {
+  aspect-ratio: 4/5; background: var(--person-color, var(--blue)); color: var(--ink);
+  box-shadow: 14px 14px 0 var(--orange); display: flex; align-items: flex-end; justify-content: space-between;
+  padding: 1.5rem; position: relative; overflow:hidden;
+}
+.person-tile::before { content: ""; position: absolute; width: 115%; aspect-ratio: 1; border: 3px solid rgba(23,17,13,.1); border-radius: 50%; top: -36%; right: -50%; }
+.person-tile strong { font: clamp(8rem,20vw,18rem)/.7 "Bebas Neue", sans-serif; position: relative; z-index: 1; letter-spacing: -.08em; }
+.person-tile small { font-size: .8rem; text-transform: uppercase; writing-mode: vertical-rl; font-weight: 900; position: relative; letter-spacing: .15em; z-index: 1; }
+.person-story { max-width: var(--max); margin: auto; padding: clamp(4rem,8vw,8rem) 1.25rem; display: grid; grid-template-columns: .64fr 1fr; gap: clamp(2rem,7vw,8rem); }
+.person-story h2 { font-size: clamp(3rem,5vw,5rem); max-width: none; }
+.person-prose p { font-size: 1.16rem; line-height: 1.95; color: #473b31; margin: 0 0 1.5rem; }
+.person-other { background: var(--paper-deep); }
+.person-other-inner { max-width: var(--max); margin: auto; padding: clamp(3rem,6vw,5rem) 1.25rem; }
+.person-other h2 { font-size: clamp(2.7rem,4vw,4rem); max-width: none; }
+.person-pills { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 2rem; }
+.person-pills a { background: var(--white); border: 1px solid var(--ink); padding: .8rem 1.1rem; font-weight: 800; font-size: .87rem; }
+.person-pills a:hover, .person-pills a:focus-visible { background: var(--yellow); }
+html[lang="zh-Hant-TW"] .band-hero h1, html[lang="zh-Hant-TW"] .band-intro h2,
+html[lang="zh-Hant-TW"] .band-alumni h2, html[lang="zh-Hant-TW"] .band-cta h2,
+html[lang="zh-Hant-TW"] .person-hero h1, html[lang="zh-Hant-TW"] .person-story h2,
+html[lang="zh-Hant-TW"] .person-other h2, html[lang="zh-Hant-TW"] .member-card-info h3,
+html[lang="zh-Hant-TW"] .alumni-entry strong {
+  font-family: "Noto Sans TC",sans-serif; letter-spacing: -.05em; font-weight: 900; line-height: 1.22; text-transform: none;
+}
+html[lang="zh-Hant-TW"] .member-card-info h3 { font-size: clamp(1.6rem,2.9vw,2.2rem); }
+html[lang="zh-Hant-TW"] .alumni-entry strong { font-size: 1.45rem; }
+html[lang="zh-Hant-TW"] .member-initials,html[lang="zh-Hant-TW"] .person-tile strong { font-family: "Bebas Neue", sans-serif; }
+@media (max-width: 880px) {
+  .band-intro { grid-template-columns: 1fr; gap: .7rem; }
+  .member-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .person-hero-inner { grid-template-columns: 1fr minmax(170px,.55fr); }
+  .person-story { grid-template-columns: 1fr; gap: 1.1rem; }
+  .band-cta-content { flex-direction: column; align-items: flex-start; }
+  .nav.compact-nav .links a.band-lang { display: inline-flex; }
+}
+@media (max-width: 590px) {
+  .band-hero { min-height: 670px; background-position: 58% center; }
+  .band-hero-inner { padding-top: 8rem; padding-bottom: 3rem; }
+  .band-hero h1 { font-size: clamp(3.8rem,13vw,5.4rem); }
+  .member-grid, .alumni-grid { grid-template-columns: 1fr; }
+  .member-portrait { aspect-ratio: 1.6; }
+  .member-initials { font-size: 8rem; }
+  .person-hero-inner { grid-template-columns: 1fr; padding-top: 9rem; }
+  .person-tile { aspect-ratio: 2.4; box-shadow: 8px 8px 0 var(--orange); }
+  .person-tile strong { font-size: 10rem; }
+  .person-tile small { writing-mode: horizontal-tb; transform:none; }
+  .band-cta .btn { flex: initial; }
+  html[lang="zh-Hant-TW"] .band-hero h1 { font-size: 3.45rem; }
+}
