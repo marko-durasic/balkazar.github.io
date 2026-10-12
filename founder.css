@@ -1,0 +1,81 @@
+/* Founder biography pages — shares the main Balkazar visual language. */
+.founder-hero {
+  background: var(--ink);
+  color: var(--white);
+  padding: clamp(9rem, 15vw, 12rem) max(1.25rem, calc((100vw - var(--max)) / 2)) clamp(4rem, 7vw, 6rem);
+  position: relative;
+  overflow: hidden;
+}
+.founder-hero::after {
+  content: "";
+  position: absolute;
+  width: min(58vw, 680px);
+  height: min(58vw, 680px);
+  border: 1px solid rgba(245,200,66,.13);
+  border-radius: 50%;
+  right: -12%;
+  top: -40%;
+  pointer-events: none;
+}
+.founder-hero h1 { max-width: 16ch; font-size: clamp(3.4rem, 8.2vw, 8rem); line-height: .96; }
+.founder-hero h1 em { color: var(--yellow); font-style: normal; }
+.founder-hero .lede { max-width: 54ch; }
+.founder-credit { margin-top: 1.6rem; color: rgba(255,250,240,.68); font-weight: 700; letter-spacing: .02em; }
+.founder-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1.1rem; margin-top: 2.3rem; }
+.founder-actions a:not(.btn) { border-bottom: 1px solid var(--orange); padding: .4rem 0; }
+.founder-content { max-width: var(--max); margin: auto; padding: clamp(3.4rem, 7vw, 6rem) 1.25rem; }
+.founder-lead { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(260px, .88fr); gap: clamp(2rem, 6vw, 6rem); align-items: start; }
+.founder-lead .founder-prose > p:first-of-type { font-size: clamp(1.25rem,2.1vw,1.55rem); color: var(--ink); line-height: 1.6; }
+.founder-prose p { font-size: 1.07rem; line-height: 1.85; margin: 0 0 1.35rem; color: #473b31; }
+.founder-prose h2 { font-size: clamp(2.35rem,4vw,4rem); margin: 2.4rem 0 1rem; max-width: none; line-height: 1.04; }
+.founder-prose strong { color: var(--ink); }
+.founder-visual { position: sticky; top: 6rem; }
+.founder-visual img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: center; }
+.founder-visual figcaption { color: var(--muted); font-size: .83rem; padding: .65rem 0 0; }
+.founder-callout { border-left: 5px solid var(--orange); margin: 2rem 0; padding: 1rem 1.35rem; background: var(--white); font-size: 1.05rem; }
+.founder-callout p { margin: .4rem 0 0; }
+.founder-note { font-size: .9rem; color: var(--muted); }
+.founder-media-band { background: var(--ink); color: var(--white); }
+.founder-media { max-width: var(--max); margin: auto; padding: clamp(4rem, 8vw, 7rem) 1.25rem; }
+.founder-media h2 { max-width: none; font-size: clamp(2.6rem, 5.8vw, 5rem); }
+.founder-media > p { max-width: 62ch; color: rgba(255,250,240,.75); }
+.founder-media-grid { display: grid; grid-template-columns: minmax(0,1.6fr) minmax(230px, .85fr); gap: 2rem; align-items: start; margin-top: 2rem; }
+.founder-media-grid .embed-frame { aspect-ratio: 16/9; }
+.founder-media-grid iframe { width: 100%; height: 100%; border: none; }
+.founder-media-grid h3 { color: var(--yellow); font-size: 1.5rem; margin-bottom: 1rem; line-height: 1.3; }
+.founder-media-grid a { color: var(--white); display: inline-block; border-bottom: 1px solid var(--orange); padding: .6rem 0; }
+.founder-media-grid a:hover, .founder-archive a:hover { color: var(--orange); }
+.founder-archive { max-width: var(--max); margin: auto; padding: clamp(4rem,8vw,6rem) 1.25rem; }
+.founder-archive h2 { max-width: none; }
+.founder-archive p { max-width: 65ch; color: var(--muted); }
+.founder-archive-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .6rem 2.5rem; margin-top: 2.3rem; }
+.founder-archive a { display: flex; justify-content: space-between; align-items: center; gap: 1rem; border-top: 1px solid var(--line); padding: 1rem 0; font-size: .94rem; font-weight: 700; line-height: 1.45; }
+.founder-archive a span { color: var(--muted); font-weight: 500; font-size: .84rem; display:block; margin-top:.15rem; }
+.founder-archive a::after { content:"↗"; flex: 0 0 auto; color: var(--orange); }
+.founder-contact { background: var(--yellow); }
+.founder-contact-inner { max-width: var(--max); margin: auto; padding: 4rem 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
+.founder-contact h2 { max-width: none; font-size: clamp(2.7rem,5vw,4.5rem); }
+.founder-contact p { margin-bottom: 0; max-width: 57ch; }
+.founder-contact .btn { flex: 0 0 auto; background: var(--ink); color: var(--white); }
+.founder-contact .btn:hover { background: var(--orange); color: var(--ink); }
+.founder-lang { font-weight: 800; }
+[lang="zh-Hant-TW"] .founder-hero h1,
+[lang="zh-Hant-TW"] .founder-content h2,
+[lang="zh-Hant-TW"] .founder-media h2,
+[lang="zh-Hant-TW"] .founder-archive h2,
+[lang="zh-Hant-TW"] .founder-contact h2 { font-family: "Noto Sans TC", sans-serif; font-weight: 900; line-height: 1.13; letter-spacing: -.055em; text-transform: none; }
+[lang="zh-Hant-TW"] .founder-hero h1 { max-width: 12em; }
+[lang="zh-Hant-TW"] .founder-prose p { line-height: 1.94; }
+@media (max-width: 880px) {
+  .nav.compact-nav .links a.founder-lang { display: inline-flex; }
+  .founder-lead, .founder-media-grid { grid-template-columns: 1fr; }
+  .founder-visual { position: static; max-width: 680px; }
+  .founder-visual img { aspect-ratio: 16 / 10; }
+  .founder-contact-inner { flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 560px) {
+  .founder-hero h1 { font-size: clamp(3rem, 12vw, 4.3rem); }
+  .founder-archive-grid { grid-template-columns: 1fr; }
+  .founder-hero { padding-top: 9.5rem; }
+  .founder-media-grid { gap: 1.2rem; }
+}
