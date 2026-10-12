@@ -10,6 +10,7 @@ Official bilingual booking website for Balkazar, published with GitHub Pages at
 - `/zh/weiya/` — 尾牙／春酒 advertising landing page
 - `/epk/` and `/zh/epk/` — electronic press kits
 - `/gallery/` and `/zh/gallery/` — photo galleries
+- `/marko/` and `/zh/marko/` — bilingual biography of founder Marko Djurasic
 
 ## Growth backlog
 
