@@ -13,6 +13,8 @@ Official bilingual booking website for Balkazar, published with GitHub Pages at
 - `/band/` and `/zh/band/` — current five-person lineup, short member introductions, and former member credits
 - `/band/{slawek,mike,andy,mac}/` and `/zh/band/{...}/` — individual musician profiles
 - `/band/alumni/{member}/` and `/zh/band/alumni/{member}/` — profiles for verified former musicians
+- Founding members documented in current archive: Marko Djurasic (guitar/vocals), Pierre Hirsch (drums), Mark Spasić (bass/clarinet). They are **not** the current five-piece lineup (which remains Marko, Slawek, Mike, Andy, Mac).
+- Nicholas Chenuet (trumpet) played in both La Cumbia Balkanska and Balkazar; his alumni biography appears in EN and zh-Hant. The archive remains an ongoing work in progress.
 - `/marko/` and `/zh/marko/` — Marko Djurasic’s individual musician biography (accessible from Band)
 
 ## Growth backlog
