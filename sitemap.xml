@@ -4,6 +4,14 @@
   <url><loc>https://balkazar.org/zh/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
   <url><loc>https://balkazar.org/band/</loc><changefreq>yearly</changefreq><priority>0.85</priority></url>
   <url><loc>https://balkazar.org/zh/band/</loc><changefreq>yearly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://balkazar.org/band/alumni/cristina-cox/</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://balkazar.org/zh/band/alumni/cristina-cox/</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://balkazar.org/band/alumni/mark-spasic/</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://balkazar.org/zh/band/alumni/mark-spasic/</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://balkazar.org/band/alumni/justin-darcy/</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://balkazar.org/zh/band/alumni/justin-darcy/</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://balkazar.org/band/alumni/damien-stone/</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://balkazar.org/zh/band/alumni/damien-stone/</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
   <url><loc>https://balkazar.org/band/slawek/</loc><changefreq>yearly</changefreq><priority>0.65</priority></url>
   <url><loc>https://balkazar.org/zh/band/slawek/</loc><changefreq>yearly</changefreq><priority>0.65</priority></url>
   <url><loc>https://balkazar.org/band/mike/</loc><changefreq>yearly</changefreq><priority>0.65</priority></url>
