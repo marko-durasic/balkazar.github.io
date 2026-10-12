@@ -2,7 +2,7 @@
 .band-hero {
   min-height: min(760px, 85svh);
   color: var(--white);
-  background: linear-gradient(90deg, rgba(15,10,7,.94) 0%, rgba(15,10,7,.72) 42%, rgba(15,10,7,.19) 100%), url("assets/images/balkazar-band-candid-group.jpg") center 40% / cover no-repeat, var(--ink);
+  background: linear-gradient(90deg, rgba(15,10,7,.94) 0%, rgba(15,10,7,.72) 42%, rgba(15,10,7,.19) 100%), url("assets/images/balkazar-dance-party-live-still.jpg") center 40% / cover no-repeat, var(--ink);
   display: flex;
   align-items: flex-end;
 }
