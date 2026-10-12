@@ -59,6 +59,16 @@
 .alumni-entry span { display:block; color: var(--yellow); font-size: .74rem; letter-spacing: .12em; font-weight: 800; margin-top: .55rem; text-transform: uppercase; }
 .alumni-entry p { color: rgba(255,250,240,.72); font-size: .92rem; margin: .65rem 0 0; max-width: 43ch; line-height: 1.7; }
 .band-alumni-note { border-top: 1px solid rgba(255,255,255,.24); padding-top: 1.3rem; margin-top: 2rem; font-size: .92rem; color: rgba(255,250,240,.7); }
+
+.band-collab-wrap { background: var(--paper-deep); color: var(--ink); border-top: 1px solid var(--line); }
+.band-collab-wrap .band-alumni > p { color: var(--muted); }
+.band-collab-wrap .collab-grid { background: var(--line); }
+.band-collab-wrap .alumni-entry { background: var(--white); color: var(--ink); padding: 1.5rem; }
+.band-collab-wrap .alumni-entry:hover, .band-collab-wrap .alumni-entry:focus-visible { background: var(--yellow); }
+.band-collab-wrap .alumni-entry span { color: #9c431e; }
+.band-collab-wrap .alumni-entry p { color: #473b31; }
+.band-collab-wrap .alumni-entry .alumni-read { border-color: var(--orange); }
+
 .band-cta { background: var(--yellow); }
 .band-cta-content { max-width: var(--max); margin: auto; padding: 3.4rem 1.25rem; display: flex; gap: 2rem; align-items: center; justify-content: space-between; }
 .band-cta h2 { font-size: clamp(2.7rem,5.2vw,4.7rem); max-width: none; }
