@@ -141,5 +141,4 @@ html[lang="zh-Hant-TW"] .member-initials,html[lang="zh-Hant-TW"] .person-tile st
 .member-portrait.member-portrait-photo { padding: 0; aspect-ratio: 1.2; display: block; }
 .member-portrait.member-portrait-photo::before, .member-portrait.member-portrait-photo::after { display: none; }
 .member-portrait.member-portrait-photo img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 34%; }
-.band-member-consent-note { color: var(--muted); font-size: .9rem; max-width: 64ch; line-height: 1.75; margin: 2.5rem 0 0; }
 @media (max-width: 590px) { .member-grid.member-grid-solo { grid-template-columns: minmax(0, 1fr); } }
