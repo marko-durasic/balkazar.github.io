@@ -102,10 +102,8 @@ h3 { font-size: 1.3rem; line-height: 1.15; margin: 0; }
 .intro-copy > p { margin: 0 0 2rem; }
 .pullquote { border-left: 5px solid var(--orange); font-weight: 700; padding-left: 1.25rem; }
 
-.full-bleed-photo { height: min(72vw, 760px); min-height: 430px; overflow: hidden; position: relative; }
-.full-bleed-photo::after { background: linear-gradient(0deg, rgba(0,0,0,.72), transparent 60%); content: ""; inset: 0; position: absolute; }
+.full-bleed-photo { height: min(64vw, 680px); min-height: 320px; overflow: hidden; position: relative; }
 .full-bleed-photo img { height: 100%; object-fit: cover; width: 100%; }
-.full-bleed-photo p { bottom: 6%; color: var(--white); font: clamp(2.3rem, 6vw, 6rem)/.95 "Bebas Neue", sans-serif; left: max(1.25rem, calc((100vw - var(--max))/2)); margin: 0; position: absolute; text-transform: uppercase; z-index: 1; }
 
 .watch { background: var(--ink); color: var(--white); max-width: none; padding-left: max(1.25rem, calc((100vw - var(--max))/2)); padding-right: max(1.25rem, calc((100vw - var(--max))/2)); }
 .section-heading { align-items: end; display: grid; gap: 2rem; grid-template-columns: 1.4fr .6fr; }
@@ -130,7 +128,7 @@ h3 { font-size: 1.3rem; line-height: 1.15; margin: 0; }
 .formats-wrap { background: var(--blue); }
 .formats .section-heading > p { color: rgba(23,17,13,.7); }
 .format-grid { border-left: 1px solid var(--line); display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 3.5rem; }
-.format-grid article { border-right: 1px solid var(--line); display: flex; flex-direction: column; min-height: 340px; padding: 1.5rem; }
+.format-grid article { border-right: 1px solid var(--line); display: flex; flex-direction: column; min-height: 260px; padding: 1.5rem; }
 .format-grid article > span { color: rgba(23,17,13,.45); font-family: "Bebas Neue"; }
 .format-grid h3 { font: 2rem/1 "Bebas Neue"; margin-top: 2rem; text-transform: uppercase; }
 .format-grid p { color: rgba(23,17,13,.7); }
