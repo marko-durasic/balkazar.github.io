@@ -21,8 +21,7 @@ Official bilingual booking website for Balkazar, published with GitHub Pages at
 
 ## Growth backlog
 
-The agreed next-stage promotion work is documented in
-[docs/marketing-growth-roadmap.md](docs/marketing-growth-roadmap.md).
+Internal growth plans and execution details are maintained in the **private Balkazar management task** in ClickUp, not this public website source repository.
 
 Do not commit account passwords, advertising payment information, API secrets,
 recovery codes, or private contact details to this repository.
