@@ -32,6 +32,7 @@
 .event-video video { aspect-ratio: 9/16; background: #000; display: block; max-height: 680px; object-fit: contain; width: 100%; }
 .event-video img { aspect-ratio: 4/3; background: #000; display: block; object-fit: cover; width: 100%; }
 .event-video p { margin: .8rem .25rem .2rem; }
+.event-video--wide { grid-column: 1 / -1; }
 .share-row { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.5rem; }
 .share-row a { border: 1px solid var(--line); border-radius: 999px; font-size: .8rem; font-weight: 700; padding: .65rem .9rem; }
 @media (max-width: 760px) { .event-card,.event-detail-hero,.event-content { grid-template-columns: 1fr; } .event-detail-hero img { max-height: 620px; } .event-detail-copy { padding: 3rem 1.25rem 4rem; } .event-video-grid { grid-template-columns: 1fr; } .event-card img { max-height: 560px; } }
