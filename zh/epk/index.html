@@ -49,6 +49,8 @@
     .tech-list strong { display: block; margin-bottom: .4rem; }
     .tech-list p { color: rgba(23,17,13,.7); margin: 0; }
     .share-strip { background: var(--paper-deep); }
+    /* Narrow phones: stack link cards instead of forcing two overflowing columns. */
+    @media (max-width: 480px) { .platform-grid { grid-template-columns: 1fr; } }
     @media (max-width: 800px) {
       .epk-grid { grid-template-columns: 1fr; gap: 2rem; }
       .platform-grid { grid-template-columns: 1fr 1fr; }
