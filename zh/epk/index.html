@@ -54,7 +54,9 @@
       .platform-grid { grid-template-columns: 1fr 1fr; }
       .download-grid, .tech-list { grid-template-columns: 1fr; }
     }
-    @media print {
+    /* Narrow phones: one link card per row, after the tablet rule. */
+    @media (max-width: 480px) { .platform-grid { grid-template-columns: 1fr; } }
+        @media print {
       .nav, .epk-nav, .tool-row, footer, iframe { display: none !important; }
       .epk-hero { padding-top: 2rem; }
       .section { padding-block: 2rem; }
