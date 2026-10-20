@@ -1,2 +1,4 @@
 .gstack/
 assets/images/candidates-review/
+qa-artifacts/
+__pycache__/
