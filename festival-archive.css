@@ -58,3 +58,6 @@
 [lang="zh-Hant-TW"] .archive-section h2,[lang="zh-Hant-TW"] .archive-media h2{font-size:clamp(2rem,4vw,3.2rem)}
 [lang="zh-Hant-TW"] .archive-card h3,[lang="zh-Hant-TW"] .archive-year h3{font-family:"Noto Sans TC",sans-serif;font-weight:800;line-height:1.45}
 @media(max-width:650px){[lang="zh-Hant-TW"] .archive-hero h1{font-size:clamp(2.1rem,10vw,3.25rem)}}
+
+.archive-hero h1{overflow-wrap:anywhere;hyphens:auto}
+.archive-card h3,.archive-year h3{overflow-wrap:anywhere}
