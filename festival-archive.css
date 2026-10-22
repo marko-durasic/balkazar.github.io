@@ -1,0 +1,63 @@
+
+/* Archive pages use the same brand tokens as Balkazar.org, with event-specific mobile-first layouts. */
+.archive-shell{padding-top:4.5rem}
+.archive-hero{background:var(--ink);color:var(--white);padding:clamp(4rem,8vw,7rem) max(1.25rem,calc((100vw - var(--max))/2));}
+.archive-hero h1{max-width:16ch;font-size:clamp(3.4rem,8vw,7rem)}
+.archive-hero .lede{margin-top:1.3rem}
+.archive-hero .archive-meta{color:rgba(255,250,240,.72);font-size:.95rem;margin:1.5rem 0 0}
+.archive-navtrail{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;margin-bottom:2rem;font-size:.83rem}
+.archive-navtrail a{text-decoration:underline;text-underline-offset:.18rem}
+.archive-intro{color:var(--muted);max-width:68ch;line-height:1.75}
+.archive-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.2rem;margin:2rem 0 0}
+.archive-card{display:flex;flex-direction:column;background:var(--white);border:1px solid var(--line);min-width:0;color:var(--ink);overflow:hidden;transition:transform .2s,box-shadow .2s}
+.archive-card:hover,.archive-card:focus-visible{transform:translateY(-3px);box-shadow:0 12px 24px rgba(23,17,13,.12)}
+.archive-card img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover}
+.archive-card__body{padding:1.45rem;display:flex;flex:1;flex-direction:column}
+.archive-card__years{display:block;color:var(--burgundy);font-size:.76rem;font-weight:800;letter-spacing:.1em;margin-bottom:1rem}
+.archive-card h3{font-size:1.45rem;line-height:1.3}
+.archive-card p{color:var(--muted);line-height:1.65;font-size:.94rem;margin:.8rem 0 1.2rem}
+.archive-card__action{font-size:.85rem;font-weight:800;margin-top:auto;border-bottom:1px solid var(--copper);align-self:start}
+.archive-detail-intro{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.5rem,4vw,4rem);align-items:center}
+.archive-cover{margin:0;overflow:hidden;background:var(--ink)}
+.archive-cover img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
+.archive-cover figcaption{color:var(--muted);font-size:.78rem;padding:.6rem 0}
+.archive-years{display:grid;gap:1.1rem;margin-top:2rem}
+.archive-year{display:grid;grid-template-columns:110px minmax(0,1fr);gap:1.6rem;padding:1.6rem;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--burgundy)}
+.archive-year__number{color:var(--burgundy);font:normal 2.8rem/1 'Bebas Neue',sans-serif}
+.archive-year h3{font-size:1.25rem;line-height:1.35}
+.archive-year p{color:var(--muted);line-height:1.75;font-size:1rem;max-width:72ch;margin:.7rem 0}
+.archive-source-links{display:flex;gap:.65rem;flex-wrap:wrap;margin-top:1.1rem}
+.archive-source-links a{border:1px solid var(--line);padding:.6rem .8rem;color:var(--ink);font-size:.79rem;font-weight:700;border-radius:2px}
+.archive-source-links a:hover{border-color:var(--copper);background:var(--paper)}
+.archive-year img{max-width:560px;width:100%;height:auto;margin-top:1.3rem;display:block;border-radius:2px}
+.archive-media{background:var(--ink);color:var(--white)}
+.archive-media h2{max-width:none}
+.archive-media .embed-frame{margin-top:2rem;width:100%;max-width:1000px}
+.archive-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin-top:2rem}
+.archive-gallery figure{margin:0}
+.archive-gallery img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
+.archive-gallery figcaption{font-size:.77rem;color:var(--muted);margin:.5rem 0 0}
+.archive-backlink{display:inline-block;text-decoration:underline;text-underline-offset:.2rem;font-weight:700;margin-top:1.5rem}
+.archive-section h2{max-width:none}
+.archive-section .lede{color:var(--muted)}
+.archive-feature{padding:1.4rem;background:var(--white);border-left:5px solid var(--copper);max-width:85ch}
+.archive-feature p{line-height:1.8;color:var(--muted)}
+.archive-feature strong{color:var(--ink)}
+.archive-feature a{text-decoration:underline}
+.archive-collabs{display:grid;gap:1.3rem;margin-top:2rem}
+.archive-collabs article{background:var(--white);padding:1.5rem;border-left:4px solid var(--burgundy)}
+.archive-collabs article p{max-width:75ch;line-height:1.75}
+@media(max-width:900px){.archive-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.archive-grid{grid-template-columns:minmax(0,1fr)}.archive-detail-intro{grid-template-columns:1fr}.archive-year{grid-template-columns:1fr;gap:.75rem}.archive-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}.archive-hero{padding-top:3.5rem}.archive-hero h1{font-size:clamp(3rem,13vw,4.5rem)}}
+@media(max-width:420px){.archive-gallery{grid-template-columns:1fr}.archive-year{padding:1.1rem}.archive-source-links a{width:100%}}
+@media(prefers-reduced-motion:reduce){.archive-card{transition:none}}
+
+/* Traditional Chinese headings remain legible at narrow widths. */
+[lang="zh-Hant-TW"] .archive-hero h1,[lang="zh-Hant-TW"] .archive-section h2,[lang="zh-Hant-TW"] .archive-media h2{font-family:"Noto Sans TC",sans-serif;font-weight:900;line-height:1.22;letter-spacing:-.045em;text-transform:none;overflow-wrap:anywhere}
+[lang="zh-Hant-TW"] .archive-hero h1{font-size:clamp(2.6rem,7vw,5rem)}
+[lang="zh-Hant-TW"] .archive-section h2,[lang="zh-Hant-TW"] .archive-media h2{font-size:clamp(2rem,4vw,3.2rem)}
+[lang="zh-Hant-TW"] .archive-card h3,[lang="zh-Hant-TW"] .archive-year h3{font-family:"Noto Sans TC",sans-serif;font-weight:800;line-height:1.45}
+@media(max-width:650px){[lang="zh-Hant-TW"] .archive-hero h1{font-size:clamp(2.1rem,10vw,3.25rem)}}
+
+.archive-hero h1{overflow-wrap:anywhere;hyphens:auto}
+.archive-card h3,.archive-year h3{overflow-wrap:anywhere}
