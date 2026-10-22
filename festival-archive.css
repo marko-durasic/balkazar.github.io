@@ -51,3 +51,10 @@
 @media(max-width:650px){.archive-grid{grid-template-columns:minmax(0,1fr)}.archive-detail-intro{grid-template-columns:1fr}.archive-year{grid-template-columns:1fr;gap:.75rem}.archive-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}.archive-hero{padding-top:3.5rem}.archive-hero h1{font-size:clamp(3rem,13vw,4.5rem)}}
 @media(max-width:420px){.archive-gallery{grid-template-columns:1fr}.archive-year{padding:1.1rem}.archive-source-links a{width:100%}}
 @media(prefers-reduced-motion:reduce){.archive-card{transition:none}}
+
+/* Traditional Chinese headings remain legible at narrow widths. */
+[lang="zh-Hant-TW"] .archive-hero h1,[lang="zh-Hant-TW"] .archive-section h2,[lang="zh-Hant-TW"] .archive-media h2{font-family:"Noto Sans TC",sans-serif;font-weight:900;line-height:1.22;letter-spacing:-.045em;text-transform:none;overflow-wrap:anywhere}
+[lang="zh-Hant-TW"] .archive-hero h1{font-size:clamp(2.6rem,7vw,5rem)}
+[lang="zh-Hant-TW"] .archive-section h2,[lang="zh-Hant-TW"] .archive-media h2{font-size:clamp(2rem,4vw,3.2rem)}
+[lang="zh-Hant-TW"] .archive-card h3,[lang="zh-Hant-TW"] .archive-year h3{font-family:"Noto Sans TC",sans-serif;font-weight:800;line-height:1.45}
+@media(max-width:650px){[lang="zh-Hant-TW"] .archive-hero h1{font-size:clamp(2.1rem,10vw,3.25rem)}}
