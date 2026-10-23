@@ -39,6 +39,16 @@
 .event-video img { aspect-ratio: 4/3; background: #000; display: block; object-fit: cover; width: 100%; }
 .event-video p { margin: .8rem .25rem .2rem; }
 .event-video--wide { grid-column: 1 / -1; }
-.share-row { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.5rem; }
-.share-row a { border: 1px solid var(--line); border-radius: 999px; font-size: .8rem; font-weight: 700; padding: .65rem .9rem; }
+/* Share controls: native mobile share, a dependable copy-link fallback, and platform links. */
+.share-tools { border-top: 1px solid var(--line); margin-top: 2rem; padding-top: 1.3rem; }
+.share-title { color: var(--ink) !important; font-size: .9rem !important; font-weight: 800; margin: 0 0 .8rem; }
+.share-row { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 0; }
+.share-row a, .share-row button { align-items: center; background: transparent; border: 1px solid var(--line); border-radius: 999px; color: var(--ink); display: inline-flex; font: inherit; font-size: .86rem; font-weight: 700; justify-content: center; min-height: 44px; padding: .65rem 1rem; text-decoration: none; transition: background .15s ease, border-color .15s ease; }
+.share-row [hidden] { display: none !important; }
+.share-row a:hover, .share-row button:hover { background: var(--orange); border-color: var(--orange); }
+.share-row a:focus-visible, .share-row button:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+.share-row .share-native { background: var(--orange); border-color: var(--orange); }
+.share-feedback, .share-note { color: var(--muted); font-size: .79rem !important; line-height: 1.5; margin: .7rem 0 0; }
+.share-feedback:empty { display: none; }
+@media (max-width: 420px) { .share-row { gap: .45rem; } .share-row a, .share-row button { font-size: .83rem; padding: .65rem .83rem; } }
 @media (max-width: 760px) { .event-card,.event-detail-hero,.event-content { grid-template-columns: 1fr; } .event-detail-hero img { max-height: 620px; } .event-detail-copy { padding: 3rem 1.25rem 4rem; } .event-video-grid { grid-template-columns: 1fr; } .event-card img { max-height: 560px; } }

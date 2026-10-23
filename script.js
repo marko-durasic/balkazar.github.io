@@ -53,12 +53,69 @@ document.querySelectorAll("[data-copy]").forEach((button) => {
   });
 });
 
-document.querySelectorAll("[data-share]").forEach((link) => {
-  const pageUrl = encodeURIComponent(window.location.href);
-  const title = encodeURIComponent(document.title);
-  if (link.dataset.share === "facebook") link.href = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`;
-  if (link.dataset.share === "line") link.href = `https://social-plugins.line.me/lineit/share?url=${pageUrl}`;
-  if (link.dataset.share === "email") link.href = `mailto:?subject=${title}&body=${pageUrl}`;
+// Use the canonical URL: tracking parameters and anchors do not belong in shared links.
+const shareUrl = document.querySelector('link[rel="canonical"]')?.href
+  || window.location.href.split("#")[0].split("?")[0];
+const shareTitle = document.querySelector('meta[property="og:title"]')?.content || document.title;
+const shareIsChinese = document.documentElement.lang.toLowerCase().startsWith("zh");
+
+async function copyEventLink() {
+  if (navigator.clipboard?.writeText) {
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      return true;
+    } catch {
+      // Continue to the older-browser copy fallback below.
+    }
+  }
+  const field = document.createElement("textarea");
+  field.value = shareUrl;
+  field.setAttribute("readonly", "");
+  field.style.position = "fixed";
+  field.style.opacity = "0";
+  document.body.appendChild(field);
+  field.select();
+  let copied = false;
+  try { copied = document.execCommand("copy"); } catch { /* no clipboard support */ }
+  field.remove();
+  return copied;
+}
+
+document.querySelectorAll(".share-tools").forEach((tools) => {
+  const status = tools.querySelector(".share-feedback");
+  const copy = tools.querySelector('[data-share="copy"]');
+  const native = tools.querySelector('[data-share="native"]');
+  const message = (success) => {
+    status.textContent = success
+      ? (shareIsChinese ? "連結已複製，可以貼到訊息或 Instagram 限動。" : "Link copied. Paste it into a message or Instagram Story.")
+      : (shareIsChinese ? "無法自動複製，請從瀏覽器網址列複製連結。" : "Couldn't copy automatically. Please copy the URL from your browser.");
+  };
+
+  copy?.addEventListener("click", async () => message(await copyEventLink()));
+
+  if (native && typeof navigator.share === "function") {
+    native.hidden = false;
+    native.addEventListener("click", async () => {
+      try {
+        await navigator.share({ title: shareTitle, url: shareUrl });
+        status.textContent = "";
+      } catch (error) {
+        if (error.name !== "AbortError") message(await copyEventLink());
+      }
+    });
+  }
+
+  const encodedUrl = encodeURIComponent(shareUrl);
+  const encodedTitle = encodeURIComponent(shareTitle);
+  const targets = {
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+    line: `https://social-plugins.line.me/lineit/share?url=${encodedUrl}`,
+    x: `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`,
+    email: `mailto:?subject=${encodedTitle}&body=${encodeURIComponent(shareTitle + "\n" + shareUrl)}`,
+  };
+  tools.querySelectorAll("a[data-share]").forEach((link) => {
+    if (targets[link.dataset.share]) link.href = targets[link.dataset.share];
+  });
 });
 navLinks?.querySelectorAll("a").forEach((link) => link.addEventListener("click", closeNav));
 document.addEventListener("keydown", (event) => {

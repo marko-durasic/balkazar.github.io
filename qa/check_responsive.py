@@ -112,6 +112,32 @@ def main():
                                 after = toggle.get_attribute("aria-expanded")
                                 if before != "false" or after != "true":
                                     errors.append(f"{file} @390: mobile navigation toggle doesn't open accessibly")
+                        if viewport == 390 and "/2026-" in file and "events/" in file:
+                            # The bilingual event share bar must offer real, canonical URLs.
+                            canonical = page.locator('link[rel="canonical"]').get_attribute("href")
+                            if page.locator(".share-tools").count() != 1:
+                                errors.append(f"{file} @390: event share panel missing")
+                            else:
+                                if page.locator('button[data-share="copy"]').count() != 1:
+                                    errors.append(f"{file} @390: copy-link button missing")
+                                for provider in ("facebook", "line", "x", "email"):
+                                    links = page.locator(f'.share-tools a[data-share="{provider}"]')
+                                    if links.count() != 1:
+                                        errors.append(f"{file} @390: {provider} sharing option missing")
+                                    else:
+                                        link = links.get_attribute("href") or ""
+                                        from urllib.parse import unquote
+                                        if not canonical or canonical not in unquote(link):
+                                            errors.append(f"{file} @390: {provider} has no canonical event URL")
+                                copy = page.locator('button[data-share="copy"]')
+                                if copy.count() == 1:
+                                    copy.click()
+                                    try:
+                                        page.locator(".share-feedback").wait_for(state="visible", timeout=2500)
+                                        if not page.locator(".share-feedback").inner_text().strip():
+                                            errors.append(f"{file} @390: no copy feedback")
+                                    except Exception:
+                                        errors.append(f"{file} @390: copy feedback timed out")
                         page.close()
             finally:
                 browser.close()
