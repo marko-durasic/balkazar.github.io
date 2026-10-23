@@ -10,19 +10,22 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import re
 from datetime import datetime
 from html.parser import HTMLParser
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-REQUIRED_HEADERS = {"Venue", "Country", "City", "Start Date", "Start Time", "Timezone"}
+REQUIRED_HEADERS = {"Venue", "Country", "City", "Region", "Start Date", "Start Time", "Timezone"}
 SUPPORTED_HEADERS = {
     "Venue", "Country", "Address", "City", "Region", "Postal Code", "Start Date",
     "End Date", "Start Time", "End Time", "Streaming Link", "Ticket Link",
     "Ticket Type", "Ticket Link 2", "Ticket Type 2", "On-Sale Date",
-    "On-Sale Time", "Lineup", "Event Name", "Description", "Scheduled date",
-    "Scheduled time", "Timezone", "Artist Name", "Event Image",
+    "On-Sale Time", "Lineup", "Event Name", "Event Display Format",
+    "Description", "Schedule Date", "Schedule Time", "Scheduled date",
+    "Scheduled time", "Do Not Announce", "Setlist", "Timezone",
+    "Artist Name", "Event Image",
 }
 
 
@@ -126,16 +129,21 @@ def bandsintown_values(config: dict, event: dict) -> dict[str, str]:
         "City": config["city"], "Region": config["region"],
         "Postal Code": address.get("postalCode", ""),
         "Start Date": start.strftime("%Y-%m-%d"),
-        "Start Time": start.strftime("%H:%M"), "End Time": end.strftime("%H:%M"),
+        "Start Time": start.strftime("%H:%M"),
+        "End Date": end.strftime("%Y-%m-%d"), "End Time": end.strftime("%H:%M"),
         "Timezone": config["timezone"], "Artist Name": artist,
         "Event Name": config["listing_title_en"], "Description": description,
+        "Do Not Announce": "Y",
         # Intentionally absent: all ticket/RSVP/sales fields, event photo, and auto-publish schedule.
         # A free market appearance is NOT a sale/ticket inventory or organizer-owned event.
     }
 
 
 def normalized_header(header: str) -> str:
-    return header.strip().rstrip("*").strip()
+    """Normalize actual Bandsintown headers, e.g. Start Date* (yyyy-mm-dd)."""
+    header = header.lstrip("\ufeff").strip()
+    header = re.sub(r"\s*\([^)]*\)\s*$", "", header)
+    return header.replace("*", "").strip()
 
 
 def export_csv(template: Path, output: Path, values: dict[str, str]) -> None:
@@ -148,7 +156,7 @@ def export_csv(template: Path, output: Path, values: dict[str, str]) -> None:
     if len(normalized) != len(set(normalized)):
         raise ListingError("Duplicate field names in current upload template")
     missing = REQUIRED_HEADERS - set(normalized)
-    unexpected_required = {normalized_header(h) for h in headers if h.strip().endswith("*")} - SUPPORTED_HEADERS
+    unexpected_required = {normalized_header(h) for h in headers if "*" in h} - SUPPORTED_HEADERS
     if missing or unexpected_required:
         raise ListingError(f"Template changed; missing required {sorted(missing)}; unsupported required {sorted(unexpected_required)}")
     # Template remains authoritative. Preserve headers/order and leave all unknown optional fields blank.
