@@ -55,7 +55,7 @@ document.querySelectorAll("[data-copy]").forEach((button) => {
 
 // Use the canonical URL: tracking parameters and anchors do not belong in shared links.
 const shareUrl = document.querySelector('link[rel="canonical"]')?.href
-  || new URL(window.location.pathname, window.location.origin).href;
+  || window.location.href.split("#")[0].split("?")[0];
 const shareTitle = document.querySelector('meta[property="og:title"]')?.content || document.title;
 const shareIsChinese = document.documentElement.lang.toLowerCase().startsWith("zh");
 
