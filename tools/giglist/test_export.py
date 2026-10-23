@@ -42,6 +42,8 @@ class GiglistTests(unittest.TestCase):
         self.assertEqual(values["Start Date"], "2026-12-03")
         self.assertEqual(values["Start Time"], "20:00")
         self.assertEqual(values["End Time"], "21:30")
+        self.assertEqual(values["End Date"], "2026-12-03")
+        self.assertEqual(values["Do Not Announce"], "Y")
         self.assertEqual(values["Timezone"], "Asia/Taipei")
         self.assertEqual(values["Venue"], "Xiangti Avenue Plaza")
         self.assertNotIn("Ticket Link", values)
@@ -57,7 +59,7 @@ class GiglistTests(unittest.TestCase):
 
     def test_template_is_authoritative_and_extra_optional_fields_blank(self):
         values = bandsintown_values(CFG, EVENT)
-        headers = ["Venue*", "Country*", "City*", "Start Date*", "Start Time*", "Timezone*",
+        headers = ["Venue*", "Country*", "City*", "Region*", "Start Date*", "Start Time*", "Timezone*",
                    "Artist Name", "Event Name", "Description", "Ticket Link", "Ticket Type", "Unknown Optional"]
         with tempfile.TemporaryDirectory() as tmp:
             template, output = Path(tmp) / "template.csv", Path(tmp) / "exports" / "upload.csv"
@@ -69,6 +71,33 @@ class GiglistTests(unittest.TestCase):
             self.assertEqual(rows[0]["Venue*"], "Xiangti Avenue Plaza")
             self.assertEqual(rows[0]["Ticket Link"], "")
             self.assertEqual(rows[0]["Unknown Optional"], "")
+
+    def test_actual_2026_artist_template_headers(self):
+        # Exact 28-column header labels from the user's authenticated
+        # Bandsintown for Artists download, October 23, 2026.
+        headers = (
+            "Artist Name,Venue*,Country*,Address,City*,Region*,Postal Code,Timezone*,"
+            "Start Date* (yyyy-mm-dd),Start Time* (HH:MM),End Date,End Time,"
+            "Streaming Link,Ticket Link,Ticket Type,Ticket Link 2,Ticket Type 2,"
+            "On-Sale Date,On-Sale Time,Lineup,Event Name,Event Display Format,"
+            "Description,Schedule Date,Schedule Time,Do Not Announce,Setlist,Event Image"
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            template = Path(tmp) / "official_headers.csv"
+            output = Path(tmp) / "review.csv"
+            template.write_text(headers + "\n", encoding="utf-8")
+            export_csv(template, output, bandsintown_values(CFG, EVENT))
+            with output.open(encoding="utf-8-sig", newline="") as stream:
+                rows = list(csv.DictReader(stream))
+            self.assertEqual(len(rows), 1)
+            row = rows[0]
+            self.assertEqual(len(row), 28)
+            self.assertEqual(row["Start Date* (yyyy-mm-dd)"], "2026-12-03")
+            self.assertEqual(row["Start Time* (HH:MM)"], "20:00")
+            self.assertEqual(row["Region*"], "Taipei City")
+            self.assertEqual(row["End Date"], "2026-12-03")
+            self.assertEqual(row["Do Not Announce"], "Y")
+            self.assertEqual(row["Ticket Link"], "")
 
     def test_rejects_changed_required_template(self):
         with tempfile.TemporaryDirectory() as tmp:
