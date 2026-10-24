@@ -36,7 +36,7 @@ Tests: python3 -m unittest discover -s tools/giglist -p 'test_*.py'
 
 ## Songkick / Tourbox (October 24, 2026)
 
-**Account discovered:** Existing Songkick login is evidenced in owner's email, with old Tourbox messages for La Cumbia Balkanska (2018/2024). This DOES NOT establish that Balkazar is a managed artist in Tourbox. Search/manage Balkazar within that existing account before creating a new artist or login.
+**Artist access not yet verified:** Check the owner's existing Songkick/Tourbox account before registering another login or creating a Balkazar artist page. A previously managed artist does not establish that Balkazar is managed. Search Tourbox for Balkazar, then follow its official artist-management verification flow.
 
 **Official import format:** Songkick's own downloadable 19-column template is committed as `songkick-official-template.csv`, from https://support.songkick.com/hc/en-us/article_attachments/360004841917 (verified 2026-10-24). Bulk instructions: https://support.songkick.com/hc/en-us/articles/360012427214-Adding-your-artist-tour-to-Songkick-with-the-Bulk-Upload-Tool . Direct event entry and approval: https://support.songkick.com/hc/en-us/articles/360012785193-How-to-add-events-to-Songkick-with-Tourbox-for-artists .
 
