@@ -33,3 +33,25 @@ Official instructions: https://artists.bandsintown.com/support/event-upload
 - Future phases: Songkick Tourbox adapter after its current CSV template is obtained; persistent dedupe ledger; optional authenticated Playwright **draft** entry; only then evaluate existing AWS/GitHub Actions capacity. No always-on EC2 or new AWS spending for this pilot.
 
 Tests: python3 -m unittest discover -s tools/giglist -p 'test_*.py'
+
+## Songkick / Tourbox (October 24, 2026)
+
+**Account discovered:** Existing Songkick login is evidenced in owner's email, with old Tourbox messages for La Cumbia Balkanska (2018/2024). This DOES NOT establish that Balkazar is a managed artist in Tourbox. Search/manage Balkazar within that existing account before creating a new artist or login.
+
+**Official import format:** Songkick's own downloadable 19-column template is committed as `songkick-official-template.csv`, from https://support.songkick.com/hc/en-us/article_attachments/360004841917 (verified 2026-10-24). Bulk instructions: https://support.songkick.com/hc/en-us/articles/360012427214-Adding-your-artist-tour-to-Songkick-with-the-Bulk-Upload-Tool . Direct event entry and approval: https://support.songkick.com/hc/en-us/articles/360012785193-How-to-add-events-to-Songkick-with-Tourbox-for-artists .
+
+**One-time pilot (local preview is READY now):**
+
+    python3 tools/giglist/songkick.py
+
+The preview uses the same authoritative MusicEvent JSON-LD and bilingual wording as Bandsintown. Publication-blocking fields are deliberately `null` in `2026-12-03.songkick.json` until verified through Tourbox: Songkick artist ID + URL, **exact** Songkick database venue name + URL, and whether this event already exists. Search-engine non-results are not proof of absence; the event may be aggregated from another source.
+
+**To reach an upload-ready file:** use the existing Tourbox login to add Balkazar to managed artists (artist verification may be requested), match/create the correct Xiangti Avenue Plaza Songkick venue, and check for a Dec 3 existing event. Record validated IDs/URLs in the per-platform settings JSON. Use a FRESH Tourbox-downloaded CSV and the exporter. It refuses to write unless every relevant command-line confirmation is explicitly supplied:
+
+    python3 tools/giglist/songkick.py --template /path/to/current-tourbox-template.csv --output-dir /tmp/balkazar-songkick-review --confirmed-artist-access --confirmed-venue-match --confirmed-no-duplicate --acknowledge-import-may-publish
+
+**CRITICAL:** Songkick's upload page may publish an event immediately if `Publish Date/Time/Timezone` are empty. Unlike Bandsintown, the Tourbox bulk import is NOT a safe draft-only action; do not upload the generated CSV until the actual UI and the title/date/venue are checked and the bandleader has authorized that public event. Approved ticket vendors only; leave ALL ticket-related columns blank since we cannot invent market tickets or imply Balkazar runs the entire market. The script never visits Songkick or presses Upload/Publish.
+
+**For future gigs:** reuse source event JSON-LD + approved text and make one config per event/artist. Before each submission check Tourbox management access, existing calendar/artist events, exact venue match, and explicit user permission; track returned public event URL in ClickUp. Real authenticated publishing automation is still a separate milestone in GitHub issue #41. Build it through a dedicated consented signed-in browser/Work profile and verify live page/duplicate handling. Do NOT automate by assuming a public write API, copying browser cookies into GitHub, defeating MFA/CAPTCHA, or running an always-on paid EC2 instance.
+
+**No website/marketing deployment is part of this PR.** Existing December 3 Bandsintown is already published, and must not be reuploaded. Tests include the Songkick official template, preview, release gates, duplicate protection and CSV hygiene.
