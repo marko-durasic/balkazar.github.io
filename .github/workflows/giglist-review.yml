@@ -1,19 +1,20 @@
 name: Prepare music gig listing previews
 
-# Runs only on gig-page or listing-tool changes, plus deliberate manual trigger.
-# This job never publishes external events or requires an AWS server or API keys.
+# Only safe read-only data transformations and unit tests. No account access.
 on:
   push:
     branches: [main]
     paths:
       - "events/**"
       - "tools/giglist/**"
+      - "tools/gigops/**"
       - ".github/workflows/giglist-review.yml"
   pull_request:
     branches: [main]
     paths:
       - "events/**"
       - "tools/giglist/**"
+      - "tools/gigops/**"
       - ".github/workflows/giglist-review.yml"
   workflow_dispatch:
 
@@ -28,10 +29,27 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Offline listing tests
+      - name: Offline gig listing exporter tests
         run: python -m unittest discover -s tools/giglist -p 'test_*.py'
       - name: Prepare read-only gig review bundle
         run: python tools/giglist/review_bundle.py --out giglist-review/review-bundle.json
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: "1.25.x"
+          cache: false
+      - name: Test local Go MusicOps planner and ledger
+        working-directory: tools/gigops
+        run: go test ./...
+      - name: Test read-only MCP Go plugin
+        working-directory: tools/gigops/mcp
+        run: |
+          go mod tidy
+          go test ./...
+      - name: Validate local-browser source without signing in
+        run: |
+          node --test tools/gigops/browser/profile.test.mjs
+          node --check tools/gigops/browser/login-songkick.mjs
       - uses: actions/upload-artifact@v4
         with:
           name: giglist-review
