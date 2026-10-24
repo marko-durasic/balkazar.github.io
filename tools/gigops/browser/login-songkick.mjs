@@ -1,27 +1,53 @@
 #!/usr/bin/env node
-/** Visible human login bootstrap only; no site scraping, click automation,
- * event upload, publishing, or exports of cookies and passwords. */
-import {createInterface} from 'node:readline/promises';
-import {stdin,stdout} from 'node:process';
-import {defaultProfilePath,preparePrivateProfile,PROJECT_ROOT,SONGKICK_TOURBOX_URL} from './profile.mjs';
-async function main(){
- if(process.env.CI)throw new Error('Authenticated browser disabled in CI');
- if(process.platform==='linux'&&!process.env.DISPLAY&&!process.env.WAYLAND_DISPLAY){
-   throw new Error('Graphical session required: use the laptop, not a headless cloud worker');
- }
- const dir=await preparePrivateProfile(process.env.MUSICOPS_BROWSER_PROFILE||defaultProfilePath(),PROJECT_ROOT);
- const {chromium}=await import('playwright');
- const browser=await chromium.launchPersistentContext(dir,{headless:false,viewport:{width:1280,height:850}});
- try{
-   const page=browser.pages()[0]||await browser.newPage();
-   await page.goto(SONGKICK_TOURBOX_URL,{waitUntil:'domcontentloaded',timeout:45000});
-   stdout.write(`Tourbox opened in an isolated local profile: ${dir}\n`);
-   stdout.write('Sign in and handle MFA yourself. Check whether Balkazar is already a managed artist.\n');
-   stdout.write('This program does not inspect, upload or publish anything.\n');
-   const io=createInterface({input:stdin,output:stdout});
-   try{await io.question('Press Enter after manual checks to preserve session and close.\\n');}
-   finally{io.close();}
- } finally {await browser.close();}
- stdout.write('Browser closed. The local session remains until Songkick expires it.\n');
+/**
+ * Supervised Songkick login opens a regular installed Chrome or Brave browser.
+ * Google's OAuth can refuse browser automation, so we NEVER drive sign-in
+ * through Playwright or enable remote debugging/stealth or scrape credentials.
+ * No site automation, event upload, publishing, or browser-profile export.
+ */
+import path from 'node:path';
+import {accessSync,constants} from 'node:fs';
+import {spawn} from 'node:child_process';
+import {defaultNativeProfilePath,preparePrivateProfile,PROJECT_ROOT,SONGKICK_TOURBOX_URL,nativeBrowserCandidates} from './profile.mjs';
+
+function findExecutable(name) {
+  const candidatePaths = path.isAbsolute(name)
+    ? [name]
+    : (process.env.PATH || '').split(path.delimiter).filter(Boolean).map(dir => path.join(dir,name));
+  for (const file of candidatePaths) {
+    try { accessSync(file,constants.X_OK); return file; }
+    catch { /* not found: keep searching */ }
+  }
+  return null;
 }
-main().catch(err=>{console.error('Songkick bootstrap: '+err.message);process.exitCode=1;});
+async function main() {
+  if (process.env.CI) throw new Error('Interactive login is disabled in CI.');
+  if (process.platform === 'linux' && !process.env.DISPLAY && !process.env.WAYLAND_DISPLAY)
+    throw new Error('Open this from the graphical remote desktop, not plain SSH.');
+
+  const candidates = process.env.MUSICOPS_NATIVE_BROWSER
+    ? [process.env.MUSICOPS_NATIVE_BROWSER]
+    : nativeBrowserCandidates();
+  const browser = candidates.map(findExecutable).find(Boolean);
+  if (!browser) throw new Error('No normal Google Chrome or Brave executable found. Use the Brave desktop shortcut instead.');
+
+  const directory = await preparePrivateProfile(
+    process.env.MUSICOPS_NATIVE_BROWSER_PROFILE || defaultNativeProfilePath(), PROJECT_ROOT
+  );
+  const args = [`--user-data-dir=${directory}`, '--new-window', SONGKICK_TOURBOX_URL];
+  const child = spawn(browser,args,{stdio:'ignore',detached:true});
+  await new Promise((resolve,reject)=>{
+    child.once('spawn',resolve);
+    child.once('error',reject);
+  });
+  child.unref();
+  console.log(`Opened native browser: ${path.basename(browser)}`);
+  console.log(`Separate private profile: ${directory}`);
+  console.log('Sign in manually; complete Google/MFA normally and check whether Balkazar is a managed artist.');
+  console.log('Do not create duplicate artists or events. Close the browser normally to retain the profile.');
+  console.log('Nothing has been scraped, uploaded, published, or sent to an AI assistant.');
+}
+main().catch(error=>{
+  console.error(`Songkick native browser launcher: ${error.message}`);
+  process.exitCode=1;
+});

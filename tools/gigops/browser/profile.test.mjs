@@ -17,3 +17,22 @@ test('refuse browser cookies under public git repo',()=>{
  assert.throws(()=>validateProfilePath(path.parse(repo).root,repo),/root/);
  assert.equal(validateProfilePath(path.join(os.tmpdir(),'private-profile'),repo),path.join(os.tmpdir(),'private-profile'));
 });
+
+import {defaultNativeProfilePath,nativeBrowserCandidates} from './profile.mjs';
+test('native browser profile separate from automated Playwright profile',()=>{
+ for(const platform of ['linux','darwin','win32']) {
+  const home=path.join(os.tmpdir(),'test-owner');
+  const native=defaultNativeProfilePath(platform,home);
+  const automation=defaultProfilePath(platform,home);
+  assert.notEqual(native,automation);
+  assert.ok(native.endsWith('songkick-native'));
+  assert.ok(path.isAbsolute(native));
+  assert.equal(validateProfilePath(native,path.join(os.tmpdir(),'public-balkazar-repo')),native);
+ }
+});
+test('native login prefers regular installed browsers, never Playwright',()=>{
+ const browsers=nativeBrowserCandidates('linux');
+ assert.ok(browsers.includes('google-chrome-stable'));
+ assert.ok(browsers.includes('brave-browser'));
+ assert.ok(!browsers.includes('playwright'));
+});

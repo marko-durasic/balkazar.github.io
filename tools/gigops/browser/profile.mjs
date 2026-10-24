@@ -25,3 +25,13 @@ export async function preparePrivateProfile(profile,repoRoot){
  return p;
 }
 export const PROJECT_ROOT=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..','..','..');
+
+/** Native login uses a different browser profile from any Playwright instance. */
+export function defaultNativeProfilePath(platform=process.platform,home=os.homedir()) {
+ return path.join(path.dirname(defaultProfilePath(platform,home)),'songkick-native');
+}
+export function nativeBrowserCandidates(platform=process.platform) {
+ if (platform==='linux') return ['google-chrome-stable','google-chrome','brave-browser','brave-browser-stable','brave'];
+ if (platform==='darwin') return ['/Applications/Google Chrome.app/Contents/MacOS/Google Chrome','/Applications/Brave Browser.app/Contents/MacOS/Brave Browser'];
+ return [];
+}
