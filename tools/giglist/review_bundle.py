@@ -59,9 +59,15 @@ def build_review_bundle(root: Path = REPO_ROOT) -> dict:
             raise ListingError(f"Duplicate canonical event URL: {event['url']}")
         seen.add(event["url"])
         item = {"source_page": source_html, "url": event["url"], "fingerprint": event_key(event),
-                "start": event["startDate"], "end": event["endDate"],
+                "start": event.get("startDate"), "end": event.get("endDate"),
                 "venue": event.get("location", {}).get("name"),
                 "status": "needs-approved-bilingual-config"}
+        if not event.get("startDate") or not event.get("endDate"):
+            item["status"] = "missing-source-start-or-end-date"
+            if source_html in configs:
+                raise ListingError(f"Configured event has missing start/end date: {event['url']}")
+            events.append(item)
+            continue
         if source_html in configs:
             base, checked_event = load_config(configs[source_html])
             fields = bandsintown_values(base, checked_event)
