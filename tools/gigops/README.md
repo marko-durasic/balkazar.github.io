@@ -11,16 +11,51 @@
 - `tools/gigops/mcp/`: official Go MCP SDK-based **stdio-only** plugin with TWO read-only tools, `musicops_list_gig_plans` and `musicops_get_gig_plan`. It cannot access arbitrary paths through tool inputs or browse on its own. Local MCP client must support running the server.
 - `tools/gigops/browser/`: Playwright boots a separate visible Chromium profile, opens Tourbox, then allows YOU to log in and check the artist; doesn't inspect page data or click/upload/publish. The persistent profile is stored outside the public repo.
 
-## One-time login on your laptop
+## Start here — complete Linux laptop checkout and Songkick login
 
-Requires Node 22+, a graphical session and an existing Songkick account. **Run on your own desktop, not on an AWS headless instance.**
+**The following commands include cloning GitHub and checking out draft PR #53.** They work for a fresh checkout and do not run any Songkick publishing actions. Run them in a normal graphical Linux desktop terminal (not AWS/SSH/CI).
 
-```sh
+If you do **not** already have this Git repository on your laptop, run **all** of:
+
+```bash
+mkdir -p "$HOME/src"
+cd "$HOME/src"
+git clone https://github.com/marko-durasic/balkazar.github.io.git
+cd balkazar.github.io
+
+# Download the precise HEAD of GitHub pull request #53.
+git fetch origin pull/53/head
+# Create and switch to a local branch tracking that fetched PR snapshot.
+git switch -c musicops-pr53 FETCH_HEAD
+git status --short
+
+# Requires Node.js 22+ and npm.
+node --version
+npm --version
+
 cd tools/gigops/browser
 npm install
 npx playwright install chromium
 npm run login:songkick
 ```
+
+If this repository is **already cloned elsewhere**, do **not** clone it again. Instead:
+
+```bash
+cd /path/to/YOUR/existing/balkazar.github.io
+git status --short
+# If that prints modified/untracked work, save it safely first. Do not discard it.
+git fetch origin pull/53/head
+git switch -c musicops-pr53 FETCH_HEAD
+cd tools/gigops/browser
+npm install
+npx playwright install chromium
+npm run login:songkick
+```
+
+If you have already created the `musicops-pr53` branch and want the newest PR changes, use `git switch musicops-pr53 && git fetch origin pull/53/head && git merge --ff-only FETCH_HEAD` (only when you have no uncommitted changes).
+
+If `node --version` is below v22 or `npm` is missing, install Node 22+ using your existing version manager or a trusted Node distribution before proceeding. If the Playwright browser reports missing Linux system libraries, consult the Playwright installation instructions and run `npx playwright install --with-deps chromium` only after reviewing the packages it proposes. This may require `sudo`; don't run arbitrary scripts with elevated permissions.
 
 A fresh visible browser opens `https://tourbox.songkick.com/`. You manually sign in and handle MFA. In `Your artists`, check whether **Balkazar** already exists; if absent, use official `Add artist` and Songkick's requested relationship verification. Do not assume access because the personal Songkick login exists. Verify the Songkick artist page and the actual venue record for Xiangti Avenue Plaza; inspect December 3 drafts/live listings before considering an event submission.
 
