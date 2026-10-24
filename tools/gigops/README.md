@@ -11,9 +11,27 @@
 - `tools/gigops/mcp/`: official Go MCP SDK-based **stdio-only** plugin with TWO read-only tools, `musicops_list_gig_plans` and `musicops_get_gig_plan`. It cannot access arbitrary paths through tool inputs or browse on its own. Local MCP client must support running the server.
 - `tools/gigops/browser/`: Playwright boots a separate visible Chromium profile, opens Tourbox, then allows YOU to log in and check the artist; doesn't inspect page data or click/upload/publish. The persistent profile is stored outside the public repo.
 
+## Easiest Linux SSH setup — ONE line to paste
+
+If you are on your phone connected by SSH to your **Linux laptop**, copy this single command line into the laptop's SSH terminal. It downloads the [reviewable, pinned setup script](https://github.com/marko-durasic/balkazar.github.io/blob/ef00ec1d488d80f75d5456c8ae22580f372fa6cb/tools/gigops/setup-linux-ssh.sh) to `~/musicops-setup.sh` and runs it **only after** a successful download:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/marko-durasic/balkazar.github.io/ef00ec1d488d80f75d5456c8ae22580f372fa6cb/tools/gigops/setup-linux-ssh.sh -o "$HOME/musicops-setup.sh" && bash "$HOME/musicops-setup.sh"
+```
+
+The setup script checks Linux/Node.js 22+/Git/npm, clones Balkazar to `~/src/balkazar.github.io` if missing, safely fetches and checks out PR #53 into `musicops-pr53`, installs the local Playwright Chromium dependency, and runs **offline** safety tests. It refuses to overwrite an existing dirty checkout or merge diverged history. It **does not launch a graphical browser, log in to Songkick, publish events or change AWS resources**. You can inspect `~/musicops-setup.sh` before running if preferred.
+
+If you already have the repository in **another directory**, set its absolute path for the second command instead:
+
+```bash
+MUSICOPS_REPO_DIR="$HOME/path/to/existing/balkazar.github.io" bash "$HOME/musicops-setup.sh"
+```
+
+When you later have access to the laptop's graphical desktop, run `cd ~/src/balkazar.github.io/tools/gigops/browser && npm run login:songkick` (replace the path if you chose another checkout). The normal Songkick password/MFA stays within that browser.
+
 ## Start here — complete Linux laptop checkout and Songkick login
 
-**The following commands include cloning GitHub and checking out draft PR #53.** They work for a fresh checkout and do not run any Songkick publishing actions. Run them in a normal graphical Linux desktop terminal (not AWS/SSH/CI).
+**The following commands include cloning GitHub and checking out draft PR #53.** They work for a fresh checkout and do not run any Songkick publishing actions. These longer checkout commands can run in an SSH terminal too, but the final `npm run login:songkick` needs a visible graphical desktop session (not an SSH-only terminal or CI).
 
 If you do **not** already have this Git repository on your laptop, run **all** of:
 
