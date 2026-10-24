@@ -1,0 +1,40 @@
+name: Prepare music gig listing previews
+
+# Runs only on gig-page or listing-tool changes, plus deliberate manual trigger.
+# This job never publishes external events or requires an AWS server or API keys.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "events/**"
+      - "tools/giglist/**"
+      - ".github/workflows/giglist-review.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "events/**"
+      - "tools/giglist/**"
+      - ".github/workflows/giglist-review.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Offline listing tests
+        run: python -m unittest discover -s tools/giglist -p 'test_*.py'
+      - name: Prepare read-only gig review bundle
+        run: python tools/giglist/review_bundle.py --out giglist-review/review-bundle.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: giglist-review
+          path: giglist-review/review-bundle.json
+          retention-days: 7
+          if-no-files-found: error
