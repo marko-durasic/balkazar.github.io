@@ -51,6 +51,8 @@ jobs:
         run: |
           go mod tidy
           go test ./...
+      - name: Validate SSH setup script syntax (never execute installer in CI)
+        run: bash -n tools/gigops/setup-linux-ssh.sh
       - name: Validate local-browser source without signing in
         run: |
           node --test tools/gigops/browser/profile.test.mjs
