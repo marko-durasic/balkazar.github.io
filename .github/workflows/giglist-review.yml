@@ -41,6 +41,11 @@ jobs:
       - name: Test local Go MusicOps planner and ledger
         working-directory: tools/gigops
         run: go test ./...
+      - name: Smoke test Go controller against actual generated gig review bundle
+        working-directory: tools/gigops
+        run: |
+          go run ./cmd/musicops plan --bundle ../../giglist-review/review-bundle.json > ../../giglist-review/controller-plan.json
+          python3 -c "import json; p=json.load(open('../../giglist-review/controller-plan.json')); assert isinstance(p,list) and any(e['source_url'].endswith('2026-12-03-european-christmas-market/') for e in p)"
       - name: Test read-only MCP Go plugin
         working-directory: tools/gigops/mcp
         run: |
