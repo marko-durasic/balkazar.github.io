@@ -15,7 +15,7 @@ class BundleTests(unittest.TestCase):
         self.assertTrue(bundle["read_only"])
         self.assertEqual(bundle["external_publications"], 0)
         item = next(x for x in bundle["events"] if x.get("url", "").endswith("2026-12-03-european-christmas-market/"))
-        self.assertEqual(item["status"], "review-required-not-published")
+        self.assertEqual(item["status"], "listing-previews-only")
         self.assertEqual(item["start"], "2026-12-03T20:00:00+08:00")
         self.assertEqual(item["venue"], "Xiangti Avenue Plaza")
         self.assertEqual(item["bandsintown_fields"]["Artist Name"], "Balkazar")

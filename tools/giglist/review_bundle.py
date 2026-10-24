@@ -72,7 +72,7 @@ def build_review_bundle(root: Path = REPO_ROOT) -> dict:
                 json.loads(songkick_settings_path.read_text(encoding="utf-8"))
                 if songkick_settings_path.exists() else {}
             )
-            item["status"] = "review-required-not-published"
+            item["status"] = "listing-previews-only"
             item["bandsintown_fields"] = fields
             item["songkick_fields"] = build_songkick_fields(base, checked_event, settings)
             item["songkick_blockers"] = blockers(settings)
