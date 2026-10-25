@@ -80,6 +80,9 @@ def main():
                     url = f"http://127.0.0.1:{service.server_port}/{quote(route)}"
                     for viewport in VIEWPORTS:
                         page = browser.new_page(viewport={"width": viewport, "height": 850},device_scale_factor=1)
+                        if viewport == 390 and "/2026-" in file and "events/" in file:
+                            # Browser smoke simulation only; real phone testing remains separate.
+                            page.add_init_script("Object.defineProperty(navigator, 'share', {configurable:true, value:async (payload) => { window.__balkazarTestShare = payload; }});")
                         response = page.goto(url,wait_until="domcontentloaded",timeout=20000)
                         if not response or response.status != 200:
                             errors.append(f"{file} @{viewport}: HTTP {response.status if response else 'unknown'}")
@@ -112,6 +115,63 @@ def main():
                                 after = toggle.get_attribute("aria-expanded")
                                 if before != "false" or after != "true":
                                     errors.append(f"{file} @390: mobile navigation toggle doesn't open accessibly")
+                                expected_open_label = "關閉選單" if file.startswith("zh/") else "Close menu"
+                                expected_closed_label = "開啟選單" if file.startswith("zh/") else "Open menu"
+                                if toggle.get_attribute("aria-label") != expected_open_label:
+                                    errors.append(f"{file} @390: mobile menu open label is not localized")
+                                toggle.click()
+                                if toggle.get_attribute("aria-expanded") != "false" or toggle.get_attribute("aria-label") != expected_closed_label:
+                                    errors.append(f"{file} @390: mobile menu does not close with a localized label")
+                        if viewport == 390 and "/2026-" in file and "events/" in file:
+                            # Assert mobile native sharing and canonical social links in both languages.
+                            canonical = page.locator('link[rel="canonical"]').get_attribute("href")
+                            if page.locator('meta[property="og:url"]').get_attribute("content") != canonical:
+                                errors.append(f"{file} @390: OG URL mismatch")
+                            if page.locator('meta[name="twitter:card"]').get_attribute("content") != "summary_large_image":
+                                errors.append(f"{file} @390: missing social-card metadata")
+                            if page.locator(".share-tools").count() != 1:
+                                errors.append(f"{file} @390: share panel missing")
+                            else:
+                                primary = page.locator(".share-primary")
+                                secondary = page.locator(".share-secondary")
+                                if primary.count() != 1 or secondary.count() != 1:
+                                    errors.append(f"{file} @390: primary/secondary share groups missing")
+                                else:
+                                    native = primary.locator('button[data-share="native"]')
+                                    copy = primary.locator('button[data-share="copy"]')
+                                    if native.count() != 1 or copy.count() != 1:
+                                        errors.append(f"{file} @390: native/copy share buttons missing")
+                                    else:
+                                        for button in (native, copy):
+                                            bounds = button.bounding_box()
+                                            if not bounds or bounds["height"] < 44:
+                                                errors.append(f"{file} @390: primary share button missing/too small")
+                                        if native.is_visible():
+                                            native.click()
+                                            shared = page.evaluate("window.__balkazarTestShare")
+                                            if not shared or shared.get("url") != canonical:
+                                                errors.append(f"{file} @390: native share missing canonical URL")
+                                        else:
+                                            errors.append(f"{file} @390: native share API did not reveal Share button")
+                                        copy.click()
+                                        try:
+                                            page.locator(".share-feedback").wait_for(state="visible", timeout=2500)
+                                            if not page.locator(".share-feedback").inner_text().strip():
+                                                errors.append(f"{file} @390: missing copy status")
+                                        except Exception:
+                                            errors.append(f"{file} @390: copy feedback timed out")
+                                    for provider in ("facebook", "line", "x", "email"):
+                                        links = secondary.locator(f'a[data-share="{provider}"]')
+                                        if links.count() != 1:
+                                            errors.append(f"{file} @390: missing {provider} link")
+                                        else:
+                                            from urllib.parse import unquote
+                                            link = links.get_attribute("href") or ""
+                                            if not canonical or canonical not in unquote(link):
+                                                errors.append(f"{file} @390: {provider} share URL not canonical")
+                                            bounds = links.bounding_box()
+                                            if not bounds or bounds["height"] < 44:
+                                                errors.append(f"{file} @390: {provider} tap target too small")
                         page.close()
             finally:
                 browser.close()
