@@ -25,17 +25,20 @@ if (year) year.textContent = new Date().getFullYear();
 const nav = document.querySelector(".nav");
 const navToggle = document.querySelector(".nav-toggle");
 const navLinks = document.getElementById("nav-links");
+const menuIsChinese = document.documentElement.lang.toLowerCase().startsWith("zh");
+const menuOpenLabel = menuIsChinese ? "開啟選單" : "Open menu";
+const menuCloseLabel = menuIsChinese ? "關閉選單" : "Close menu";
 
 function closeNav() {
   nav?.classList.remove("open");
   navToggle?.setAttribute("aria-expanded", "false");
-  navToggle?.setAttribute("aria-label", "Open menu");
+  navToggle?.setAttribute("aria-label", menuOpenLabel);
 }
 
 navToggle?.addEventListener("click", () => {
   const isOpen = nav.classList.toggle("open");
   navToggle.setAttribute("aria-expanded", String(isOpen));
-  navToggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
+  navToggle.setAttribute("aria-label", isOpen ? menuCloseLabel : menuOpenLabel);
 });
 
 document.querySelectorAll("[data-copy]").forEach((button) => {

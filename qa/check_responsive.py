@@ -112,6 +112,13 @@ def main():
                                 after = toggle.get_attribute("aria-expanded")
                                 if before != "false" or after != "true":
                                     errors.append(f"{file} @390: mobile navigation toggle doesn't open accessibly")
+                                expected_open_label = "關閉選單" if file.startswith("zh/") else "Close menu"
+                                expected_closed_label = "開啟選單" if file.startswith("zh/") else "Open menu"
+                                if toggle.get_attribute("aria-label") != expected_open_label:
+                                    errors.append(f"{file} @390: mobile menu open label is not localized")
+                                toggle.click()
+                                if toggle.get_attribute("aria-expanded") != "false" or toggle.get_attribute("aria-label") != expected_closed_label:
+                                    errors.append(f"{file} @390: mobile menu does not close with a localized label")
                         if viewport == 390 and "/2026-" in file and "events/" in file:
                             # The bilingual event share bar must offer real, canonical URLs.
                             canonical = page.locator('link[rel="canonical"]').get_attribute("href")
