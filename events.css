@@ -56,3 +56,8 @@
 .share-feedback:empty { display: none; }
 @media (max-width:420px) { .share-primary { gap: .5rem; } .share-primary button { font-size: .89rem; padding: .65rem .45rem; } .share-secondary a { flex-basis: calc(50% - .25rem); } }
 @media (max-width: 760px) { .event-card,.event-detail-hero,.event-content { grid-template-columns: 1fr; } .event-detail-hero img { max-height: 620px; } .event-detail-copy { padding: 3rem 1.25rem 4rem; } .event-video-grid { grid-template-columns: 1fr; } .event-card img { max-height: 560px; } }
+
+/* Bandsintown loads only on the bilingual Shows pages, never globally. */
+.bandsintown-embed { background: var(--white); border: 1px solid var(--line); min-height: 5rem; overflow-x: auto; padding: clamp(1rem,3vw,2rem); }
+.bandsintown-fallback { color: var(--muted); font-size: .92rem; margin: 1.25rem 0 0; }
+.bandsintown-fallback a { border-bottom: 2px solid var(--orange); font-weight: 700; padding-bottom: .1rem; }
