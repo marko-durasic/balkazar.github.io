@@ -1,0 +1,65 @@
+name: Prepare music gig listing previews
+
+# Only safe read-only data transformations and unit tests. No account access.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "events/**"
+      - "tools/giglist/**"
+      - "tools/gigops/**"
+      - ".github/workflows/giglist-review.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "events/**"
+      - "tools/giglist/**"
+      - "tools/gigops/**"
+      - ".github/workflows/giglist-review.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Offline gig listing exporter tests
+        run: python -m unittest discover -s tools/giglist -p 'test_*.py'
+      - name: Prepare read-only gig review bundle
+        run: python tools/giglist/review_bundle.py --out giglist-review/review-bundle.json
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: "1.25.x"
+          cache: false
+      - name: Test local Go MusicOps planner and ledger
+        working-directory: tools/gigops
+        run: go test ./...
+      - name: Smoke test Go controller against actual generated gig review bundle
+        working-directory: tools/gigops
+        run: |
+          go run ./cmd/musicops plan --bundle ../../giglist-review/review-bundle.json > ../../giglist-review/controller-plan.json
+          python3 -c "import json; p=json.load(open('../../giglist-review/controller-plan.json')); assert isinstance(p,list) and any(e['source_url'].endswith('2026-12-03-european-christmas-market/') for e in p)"
+      - name: Test read-only MCP Go plugin
+        working-directory: tools/gigops/mcp
+        run: |
+          go mod tidy
+          go test ./...
+      - name: Validate SSH setup script syntax (never execute installer in CI)
+        run: bash -n tools/gigops/setup-linux-ssh.sh
+      - name: Validate local-browser source without signing in
+        run: |
+          node --test tools/gigops/browser/profile.test.mjs
+          node --check tools/gigops/browser/login-songkick.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: giglist-review
+          path: giglist-review/review-bundle.json
+          retention-days: 7
+          if-no-files-found: error
