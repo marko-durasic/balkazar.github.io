@@ -1,0 +1,28 @@
+/* Bilingual evergreen follow hub; only verified public destinations. */
+.follow-wrap { max-width: var(--max); margin: 0 auto; padding-inline: 1.25rem; }
+.follow-hero { background: var(--ink); color: var(--white); padding: clamp(9rem,16vw,12rem) 0 clamp(4rem,8vw,6rem); }
+.follow-hero h1 { max-width: 16ch; font-size: clamp(3.7rem,8vw,7rem); overflow-wrap: break-word; }
+.follow-hero .lede { max-width: 45rem; line-height: 1.7; }
+.follow-actions { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; margin-top: 2rem; }
+.follow-outline { border: 1px solid rgba(255,250,240,.65); border-radius: 999px; color: var(--white); padding: .85rem 1.25rem; font-weight: 700; }
+.follow-outline:hover { border-color: var(--yellow); color: var(--yellow); }
+.follow-section { padding: clamp(3.5rem,8vw,6rem) 0; }
+.follow-section h2,.follow-last h2 { max-width: none; font-size: clamp(2.6rem,6vw,5rem); }
+.follow-intro { color: var(--muted); font-size: 1.08rem; margin: 1rem 0 2rem; }
+.follow-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 1rem; }
+.follow-card { display: block; background: var(--white); border: 1px solid var(--line); border-top: 5px solid var(--burgundy,#632f2a); min-width: 0; padding: clamp(1.2rem,2.5vw,2rem); transition: transform .15s,border-color .15s; }
+.follow-card:hover,.follow-card:focus-visible { transform: translateY(-3px); border-color: var(--orange); }
+.follow-card-index { color: var(--muted); font-size: .72rem; font-weight: 800; }
+.follow-card h3 { display: flex; justify-content: space-between; align-items: baseline; gap: .5rem; font-size: clamp(1.25rem,2vw,1.8rem); margin: 1.25rem 0 .75rem; overflow-wrap: anywhere; }
+.follow-card h3 span { color: var(--orange); }
+.follow-card p { color: var(--muted); line-height: 1.65; margin: 0; }
+.follow-last { background: var(--yellow); padding: clamp(3rem,7vw,5rem) 0; }
+.follow-last-inner { display: flex; justify-content: space-between; align-items: center; gap: 2rem; }
+.follow-last-inner p:not(.eyebrow) { max-width: 44ch; margin: 1rem 0 0; }
+.follow-last .btn { flex-shrink: 0; }
+.follow-booking { background: var(--paper-deep); padding: 1.6rem 1.25rem; text-align: center; }
+.follow-booking p { margin: 0; }
+.follow-booking a { font-weight: 800; text-decoration: underline; text-underline-offset: .2rem; }
+[lang="zh-Hant-TW"] .follow-hero h1,[lang="zh-Hant-TW"] .follow-section h2,[lang="zh-Hant-TW"] .follow-last h2 { font-family: "Noto Sans TC",sans-serif; font-weight: 900; text-transform: none; letter-spacing: -.04em; line-height: 1.18; }
+@media(max-width:880px) { .follow-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } .follow-last-inner { flex-direction: column; align-items: start; } .follow-hero { padding-top: 9rem; } }
+@media(max-width:560px) { .follow-grid { grid-template-columns: 1fr; } .follow-hero h1 { font-size: clamp(3.2rem,14vw,4.5rem); } .follow-actions a,.follow-last .btn { width: 100%; justify-content: center; text-align: center; } }
