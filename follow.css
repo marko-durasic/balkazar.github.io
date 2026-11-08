@@ -6,6 +6,8 @@
 .follow-actions { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; margin-top: 2rem; }
 .follow-outline { border: 1px solid rgba(255,250,240,.65); border-radius: 999px; color: var(--white); padding: .85rem 1.25rem; font-weight: 700; }
 .follow-outline:hover { border-color: var(--yellow); color: var(--yellow); }
+.follow-text-link { border-bottom: 1px solid currentColor; color: var(--white); font-weight: 700; margin: .3rem 0; text-underline-offset: .2rem; }
+.follow-text-link:hover { color: var(--yellow); }
 .follow-section { padding: clamp(3.5rem,8vw,6rem) 0; }
 .follow-section h2,.follow-last h2 { max-width: none; font-size: clamp(2.6rem,6vw,5rem); }
 .follow-intro { color: var(--muted); font-size: 1.08rem; margin: 1rem 0 2rem; }
@@ -24,5 +26,13 @@
 .follow-booking p { margin: 0; }
 .follow-booking a { font-weight: 800; text-decoration: underline; text-underline-offset: .2rem; }
 [lang="zh-Hant-TW"] .follow-hero h1,[lang="zh-Hant-TW"] .follow-section h2,[lang="zh-Hant-TW"] .follow-last h2 { font-family: "Noto Sans TC",sans-serif; font-weight: 900; text-transform: none; letter-spacing: -.04em; line-height: 1.18; }
-@media(max-width:880px) { .follow-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } .follow-last-inner { flex-direction: column; align-items: start; } .follow-hero { padding-top: 9rem; } }
-@media(max-width:560px) { .follow-grid { grid-template-columns: 1fr; } .follow-hero h1 { font-size: clamp(3.2rem,14vw,4.5rem); } .follow-actions a,.follow-last .btn { width: 100%; justify-content: center; text-align: center; } }
+@media(max-width:880px) {
+  /* Shared compact-nav CSS hides every non-booking link. On a fan page, keep the gig list and language switcher, not booking. */
+  .nav.compact-nav .links a.follow-nav-shows,
+  .nav.compact-nav .links a.language { display: inline-flex; }
+  .nav.compact-nav .links a.nav-cta { display: none; }
+  .follow-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .follow-last-inner { flex-direction: column; align-items: start; }
+  .follow-hero { padding-top: 7rem; }
+}
+@media(max-width:560px) { .follow-grid { grid-template-columns: 1fr; } .follow-hero h1 { font-size: clamp(3.2rem,14vw,4.5rem); } .follow-actions { margin-top: 1.5rem; } .follow-actions a,.follow-last .btn { width: 100%; justify-content: center; text-align: center; } }
