@@ -14,10 +14,11 @@ func main(){
   switch os.Args[1]{
     case "plan":plan(os.Args[2:])
     case "record-live":record(os.Args[2:])
+    case "media-plan":mediaPlan(os.Args[2:])
     default:usage()
   }
 }
-func usage(){fmt.Fprintln(os.Stderr,"musicops plan --bundle FILE [--ledger FILE] | musicops record-live --bundle FILE --source URL --platform songkick|bandsintown --listing-url URL --confirmed-human-verification");os.Exit(2)}
+func usage(){fmt.Fprintln(os.Stderr,"musicops media-plan --inventory DRIVE_JSON --catalog SHEET_CSV | musicops plan --bundle FILE [--ledger FILE] | musicops record-live --bundle FILE --source URL --platform songkick|bandsintown --listing-url URL --confirmed-human-verification");os.Exit(2)}
 func must(err error){if err!=nil{fmt.Fprintln(os.Stderr,err);os.Exit(2)}}
 func ledgerPath(custom string)string{if custom!=""{return custom};v,err:=gigops.DefaultLedgerPath();must(err);return v}
 func load(bundlePath,customLedger string)(gigops.ReviewBundle,gigops.Ledger){
@@ -47,4 +48,16 @@ func record(args []string){
   must(gigops.RecordLive(&ledger,bundle,*source,*provider,*listing,*confirmed,time.Now()))
   must(gigops.SaveLedger(ledgerPath(*l),ledger))
   fmt.Println("Recorded previously verified public URL locally. No external site action performed.")
+}
+
+func mediaPlan(args []string) {
+  f:=flag.NewFlagSet("media-plan",flag.ExitOnError)
+  inventoryPath:=f.String("inventory","","JSON snapshot from authenticated Google Drive folder listing")
+  catalogPath:=f.String("catalog","","Existing MusicOps Media Assets tab exported to local CSV")
+  must(f.Parse(args))
+  if *inventoryPath==""||*catalogPath==""{must(fmt.Errorf("--inventory and --catalog required"))}
+  inventory,err:=os.Open(*inventoryPath);must(err);defer inventory.Close()
+  catalog,err:=os.Open(*catalogPath);must(err);defer catalog.Close()
+  result,err:=gigops.PlanMedia(inventory,catalog,"Balkazar");must(err)
+  enc:=json.NewEncoder(os.Stdout);enc.SetIndent("","  ");must(enc.Encode(result))
 }
