@@ -156,3 +156,25 @@ Microsoft's official Playwright MCP can also attach to an existing browser or pe
 ## Google sign-in blocked by Playwright Chromium (2026-10-24)
 
 The owner observed Google's **“Couldn't sign you in / This browser or app may not be secure”** within the previously Playwright-controlled Chromium browser. This is an OAuth browser-integrity check, not something to bypass. The launcher now uses a regular installed Chrome/Brave process and a **separate native profile**, without automation, remote debugging or cookie exports. From the phone-accessible Chrome Remote Desktop Xfce session, stop the previous terminal/browser session and use the Brave desktop shortcut immediately, or update the checked-out PR branch and run `npm run login:songkick` after fetching the new commit. If Google still refuses login, use Songkick's available supported direct credentials flow or contact support—do not add stealth flags, custom user agents or proxy tricks. Do not treat a login on a regular Chrome/Brave profile as an authenticated Playwright automation session.
+
+
+## Media intake — read-only deterministic preflight (Nov 9, 2026)
+
+The existing [MusicOps Media Assets tab](https://docs.google.com/spreadsheets/d/1BzP3pOfa2Zl2QPQMoOT2k8PSDklvZnopG3a-jSSraIE/edit#gid=115456632) is the **private catalog of record**. New Balkazar media goes into the existing [Drive Source Drop](https://drive.google.com/drive/folders/1c7PN6H0wdfJxBuKIvo1Z1Jj_637vvuTM) and existing Photos/Videos event folders. No raw media or private Sheets exports belong in the public GitHub repository.
+
+The `media-plan` subcommand is a **no-network, no-write gate**. Feed it two PRIVATE, LOCAL connector snapshots: (1) the authenticated Drive `list_folder` response for the specific Balkazar Source Drop, saved as JSON in a private directory, and (2) CSV containing the existing Media Assets tab, exported locally with its exact header row. It matches files by actual Drive ID and rejects duplicate/corrupt source inventories. Identical filenames are *only* comparison candidates; no automatic deletes or byte-identity claims. Every genuinely new photo/video stays blocked for rights/date/participant review.
+
+```sh
+cd tools/gigops
+go test ./...
+go run ./cmd/musicops media-plan \
+  --inventory "$HOME/.config/balkazar-musicops/private-source-drop.json" \
+  --catalog "$HOME/.config/balkazar-musicops/private-media-assets.csv"
+```
+
+This is an engineering integrity check, **not a complete automated Drive watch or uploader**. The already-scheduled Balkazar Growth Operator (existing Mon/Wed/Fri 19:00 Asia/Taipei) remains responsible for authenticated Drive/Sheets reads and any verified, owner-authorized *private* row writes. It can run `media-plan` locally when its host environment supports it, or apply the same ID-based logic directly in the connectors. It should not run a parallel scraper or copy the private catalog into GitHub Actions.
+
+Acceptance test: place a genuinely new permitted test asset in the source drop, verify exactly one new catalog entry after the agent's next successful run, verify a second run is a no-op, and verify zero publications/costs. GitHub CI executes only synthetic Go tests; GitHub CI does **not** have Drive credentials. Approval gates remain for public site merges, Metricool scheduling and publication, LINE/email, third-party event submissions, and artist/photographer rights. Never confuse a produced draft, a suggested time, or a linked URL with a live post.
+
+**December 3 listing state correction:** Songkick was already published with public concert URL `https://www.songkick.com/concerts/43502730-balkazar-at-xiangti-avenue-plaza` and linked from both live website languages via merged PR #56 on Nov 6. Bandsintown was already published too. **Do not create a second Songkick or Bandsintown event.** Because the local Go ledger is private/on-device, it may still show `unknown` until synced/explicitly recorded; this is not evidence that a listing is missing. Before attempting any external submission, ALWAYS check live public backlinks and the private ClickUp campaign first. No unattended Tourbox publisher is authorized.
+
