@@ -39,4 +39,6 @@
   <url><loc>https://balkazar.org/zh/festivals/european-christmas-market/</loc><changefreq>yearly</changefreq><priority>0.65</priority></url>
   <url><loc>https://balkazar.org/venues/</loc><changefreq>yearly</changefreq><priority>0.75</priority></url>
   <url><loc>https://balkazar.org/zh/venues/</loc><changefreq>yearly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://balkazar.org/follow/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://balkazar.org/zh/follow/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 </urlset>
