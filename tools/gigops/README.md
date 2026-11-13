@@ -178,3 +178,22 @@ Acceptance test: place a genuinely new permitted test asset in the source drop, 
 
 **December 3 listing state correction:** Songkick was already published with public concert URL `https://www.songkick.com/concerts/43502730-balkazar-at-xiangti-avenue-plaza` and linked from both live website languages via merged PR #56 on Nov 6. Bandsintown was already published too. **Do not create a second Songkick or Bandsintown event.** Because the local Go ledger is private/on-device, it may still show `unknown` until synced/explicitly recorded; this is not evidence that a listing is missing. Before attempting any external submission, ALWAYS check live public backlinks and the private ClickUp campaign first. No unattended Tourbox publisher is authorized.
 
+
+
+## Conversational gig intake → read-only plan (Nov 14, 2026)
+
+**New first autonomous capability (draft PR only):** The AI/client may take Marko's natural-language gig announcement, extract **supported facts** into a `GigIntake` JSON object, call `musicops_preview_gig_intake` (local stdio MCP), and receive a deterministic list of blockers, selected candidate platforms, and a dependency-ordered campaign plan. The same code is usable in the local Go CLI:
+
+```sh
+cd tools/gigops
+go run ./cmd/gig-intake --file examples/dec3-gig.json
+# Or pipe exactly one structured, validated gig JSON via stdin.
+go test ./...
+cd mcp && go test ./...
+```
+
+The example is the confirmed Dec 3 **Balkazar guest appearance** (not a new organizer or ticketed event). The preview deliberately reports `"read_only": true` and `"public_writes": 0`; public event listings and social scheduling are candidates that still require a validated adapter and owner-scoped grant. A source URL supplied by chat is evidence to verify, **not** proof of live publication or ownership. The parser that converts natural language to structured gig data is the conversational assistant, **not** a claim that the Go CLI can understand speech itself.
+
+Keep a **persistent** `gig_id` when changing an event date or venue. For a brand-new gig, the planner refuses to mark the booking ready until the existing registry has been checked and an ID is assigned; this protects against duplicates and reschedules. For tentative/held gigs, public publication stays blocked; cancellation produces a retract/reconcile workflow instead of generating promotion. Guest appearances exclude independent KKTIX/ACCUPASS organizer pages. Only Balkazar is currently configured; extending to Fuzzy Wall/solo requires separate tenant sources and permissions.
+
+The plan is **not a scheduler, a website publisher, or a persistent execution database yet**. Next implementation increment: a durable per-gig job/authorization/receipt store that survives retries, checks authoritative links and integrates one existing supported publisher (Metricool MCP) under a revocable owner-defined policy. Do not create a paid service or bypass any platform's terms. For the broader acceptance criteria and progressive architecture see [CAMPAIGN_AUTOMATION.md](./CAMPAIGN_AUTOMATION.md).
