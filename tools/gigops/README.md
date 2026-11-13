@@ -197,3 +197,22 @@ The example is the confirmed Dec 3 **Balkazar guest appearance** (not a new orga
 Keep a **persistent** `gig_id` when changing an event date or venue. For a brand-new gig, the planner refuses to mark the booking ready until the existing registry has been checked and an ID is assigned; this protects against duplicates and reschedules. For tentative/held gigs, public publication stays blocked; cancellation produces a retract/reconcile workflow instead of generating promotion. Guest appearances exclude independent KKTIX/ACCUPASS organizer pages. Only Balkazar is currently configured; extending to Fuzzy Wall/solo requires separate tenant sources and permissions.
 
 The plan is **not a scheduler, a website publisher, or a persistent execution database yet**. Next implementation increment: a durable per-gig job/authorization/receipt store that survives retries, checks authoritative links and integrates one existing supported publisher (Metricool MCP) under a revocable owner-defined policy. Do not create a paid service or bypass any platform's terms. For the broader acceptance criteria and progressive architecture see [CAMPAIGN_AUTOMATION.md](./CAMPAIGN_AUTOMATION.md).
+
+
+## Persist and resume one gig's private campaign (Nov 14)
+
+The **read-only** `musicops_preview_gig_intake` MCP tool and default CLI preview do **not** change anything. An agent running on an *authorized local machine* can optionally persist the validated plan into a separate, user-private local JSON campaign store via the same Go CLI:
+
+```sh
+cd tools/gigops
+mkdir -p "$HOME/.config/balkazar-musicops"
+go run ./cmd/gig-intake --file examples/dec3-gig.json \
+  --store "$HOME/.config/balkazar-musicops/campaigns.json"
+# Repeat the same command: "change": "unchanged", no duplicate campaign.
+# Change the confirmed date for the SAME gig_id: revision increments,
+# previously live or scheduled external destinations become review-required.
+```
+
+**Safety properties:** existing `campaigns.json` is loaded, validated and locked against concurrent writes; modifications use atomic replace and mode 0600. The .lock file stays private; do not delete it during concurrent use. The store rejects malformed/oversized files, duplicate canonical gig URLs or exact same artist/venue/start using another ID, and any path inside the public repository. Cancellation retains an approval-gated withdrawal plan and cannot schedule a new promotion. There are tests for idempotent repeats, reschedules, cancellation, missing ID, duplicate gigs, fail-closed corruption, concurrent locks, and unsafe file locations.
+
+**Limitations:** this stores **internal planned jobs**, not autonomous execution status from third-party providers. The verified Songkick/Bandsintown URL ledger remains separate. This code never creates public events, posts, buys ads, sends DMs, loads private Google Drive media, or starts a live scheduler. ChatGPT does not yet expose a write-capable GigOps MCP connected to the user's local campaign store. Next capability is a trusted adapter that can read the job store, prepare one approved Metricool draft, and write back its verified provider receipt; no blanket publisher or user-secret access until explicit scoped authorization.
