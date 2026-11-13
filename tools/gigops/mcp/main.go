@@ -7,6 +7,7 @@ import (
  "fmt"
  "log"
  "os"
+ "time"
  gigops "balkazar.org/musicops"
  "github.com/modelcontextprotocol/go-sdk/mcp"
 )
@@ -33,9 +34,15 @@ func getPlan(_ context.Context,_ *mcp.CallToolRequest,input SourceInput)(*mcp.Ca
  for _,p:=range plans {if p.SourceURL==input.SourceURL{return nil,PlanOutput{Event:p},nil}}
  return nil,PlanOutput{},fmt.Errorf("source event not found in reviewed bundle")
 }
+type IntakeOutput struct { Campaign gigops.GigIntakePlan `json:"campaign"` }
+func previewGigIntake(_ context.Context,_ *mcp.CallToolRequest,input gigops.GigIntake)(*mcp.CallToolResult,IntakeOutput,error){
+ plan,err:=gigops.PlanGigIntake(input,time.Now());if err!=nil{return nil,IntakeOutput{},err}
+ return nil,IntakeOutput{Campaign:plan},nil
+}
 func main(){
  s:=mcp.NewServer(&mcp.Implementation{Name:"balkazar-musicops",Version:"0.1.0"},nil)
  mcp.AddTool(s,&mcp.Tool{Name:"musicops_list_gig_plans",Description:"Read-only local gig listing plans and blockers; never contacts or publishes on Songkick."},listPlans)
  mcp.AddTool(s,&mcp.Tool{Name:"musicops_get_gig_plan",Description:"Read-only plan for a single approved Balkazar event URL; no browser actions."},getPlan)
+ mcp.AddTool(s,&mcp.Tool{Name:"musicops_preview_gig_intake",Description:"Read-only gig intake. Produce candidate channels, blockers and a no-public-write campaign workflow from structured, confirmed gig facts. Does not create listings, schedule posts or contact accounts."},previewGigIntake)
  if err:=s.Run(context.Background(),&mcp.StdioTransport{});err!=nil{log.Fatal(err)}
 }
