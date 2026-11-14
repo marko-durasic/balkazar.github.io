@@ -8,7 +8,7 @@
 
 - `tools/giglist/` already produces per-gig bilingual event metadata from the website's `MusicEvent` JSON-LD and CI read-only `giglist-review` artifacts.
 - `tools/gigops/`: minimal dependency-free Go planner, source URL/fingerprint validator and **private local** idempotent listing ledger. It records public links only after you verify them, and NEVER submits to platforms.
-- `tools/gigops/mcp/`: official Go MCP SDK-based **stdio-only** plugin with THREE read-only tools: `musicops_list_gig_plans`, `musicops_get_gig_plan`, and `musicops_preview_gig_intake`. It cannot access arbitrary paths through tool inputs or browse on its own. Local MCP client must support running the server.
+- `tools/gigops/mcp/`: official Go MCP SDK-based **stdio-only** plugin with FOUR read-only tools: `musicops_list_gig_plans`, `musicops_get_gig_plan`, `musicops_preview_gig_intake`, and `musicops_preview_metricool_draft`. It cannot access arbitrary paths through tool inputs or browse on its own. Local MCP client must support running the server.
 - `tools/gigops/browser/`: The login launcher now opens a **regular system Chrome/Brave**, using an isolated native browser profile outside the public repo. Google may reject sign-in through Playwright-controlled Chromium; do not retry an automated OAuth login or try stealth/bypass. The launcher does not inspect pages, click, upload or publish.
 
 ## Easiest Linux SSH setup — ONE line to paste
