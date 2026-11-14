@@ -31,6 +31,10 @@ jobs:
           python-version: "3.11"
       - name: Offline gig listing exporter tests
         run: python -m unittest discover -s tools/giglist -p 'test_*.py'
+      - name: Test music-first approved creative baseline (offline, no media publishing)
+        run: |
+          python -m unittest discover -s tools/gigops/skills/music-first-live-promo -p 'test_*.py'
+          python tools/gigops/skills/music-first-live-promo/verify_music_first_reference.py --reference tools/gigops/skills/music-first-live-promo/v8_approved_reference.json
       - name: Prepare read-only gig review bundle
         run: python tools/giglist/review_bundle.py --out giglist-review/review-bundle.json
       - name: Set up Go
