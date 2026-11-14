@@ -1,5 +1,7 @@
 # MusicOps — local Songkick pilot (review-only)
 
+> **Production architecture (2026-11-14):** [Cloud-first deployment requirements](./CLOUD_FIRST_DEPLOYMENT.md). The owner's laptop is for development and testing **only**; no live scheduler, OAuth session, persistent queue, backup or campaign execution may depend on it being online. The local SSH/desktop commands below are optional historical pilot setup instructions, **not** our production deployment plan. Production needs an existing approved cloud runtime and a separately secured trusted executor; draft PR #53 is not deployed.
+
 [Engineering issue #41](https://github.com/marko-durasic/balkazar.github.io/issues/41) · [Event-listings ClickUp](https://app.clickup.com/t/z91464juf6) · [Draft PR #53](https://github.com/marko-durasic/balkazar.github.io/pull/53)
 
 **NOT a live Songkick publisher.** These components cannot create, edit, scrape, or publish Songkick events. They are an authenticated-browser bootstrap and a read-only, self-hostable coordination foundation. No AWS VM, external server, paid tool, or credentials are required to test them.
