@@ -43,6 +43,7 @@ type StoredCampaign struct {
     Revision uint64 `json:"revision"`
     UpdatedAt string `json:"updated_at"`
     Jobs map[string]CampaignJobRecord `json:"jobs"`
+    MetricoolObservations []MetricoolStoredObservation `json:"metricool_observations,omitempty"`
     History []CampaignRevision `json:"history,omitempty"`
 }
 type CampaignStore struct {
@@ -118,6 +119,8 @@ func(s *CampaignStore)ReconcileGig(g GigIntake,now time.Time)(CampaignWriteResul
         })
         if len(history)>40{history=history[len(history)-40:]}
     }
+    var observations []MetricoolStoredObservation
+    if exists {observations=append(observations,previous.MetricoolObservations...)}
     jobs:=jobRecords(p,revision)
     if exists&&previous.Gig.BookingStatus=="confirmed"&&g.BookingStatus=="confirmed"{
         for _,name:=range []string{"publish-event-listings","schedule-social-promotion"}{
@@ -129,7 +132,7 @@ func(s *CampaignStore)ReconcileGig(g GigIntake,now time.Time)(CampaignWriteResul
         }
     }
     record:=StoredCampaign{Gig:g,Fingerprint:hash,Revision:revision,
-        UpdatedAt:now.UTC().Format(time.RFC3339),Jobs:jobs,History:history}
+        UpdatedAt:now.UTC().Format(time.RFC3339),Jobs:jobs,MetricoolObservations:observations,History:history}
     s.Campaigns[g.GigID]=record
     change:="created"
     if exists{change="revised"}
@@ -170,6 +173,9 @@ func LoadCampaignStore(path string)(CampaignStore,error){
     if len(s.Campaigns)>1000{return CampaignStore{},errors.New("campaign store too large")}
     if s.Campaigns==nil{s.Campaigns=make(map[string]StoredCampaign)}
     for id,record:=range s.Campaigns{
+        if err:=validateStoredMetricoolObservations(record.MetricoolObservations);err!=nil{
+            return CampaignStore{},fmt.Errorf("invalid Metricool observations for %q: %w",id,err)
+        }
         if id!=record.Gig.GigID||!durableGigID.MatchString(id)||record.Revision==0||
             !storedFingerprintRE.MatchString(record.Fingerprint)||record.Fingerprint!=gigFingerprint(record.Gig){
             return CampaignStore{},fmt.Errorf("campaign store contains inconsistent gig %q",id)
