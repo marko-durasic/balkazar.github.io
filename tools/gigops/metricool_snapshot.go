@@ -59,6 +59,7 @@ type MetricoolReadbackPreview struct {
     Source string `json:"source"` // supplied-connector-snapshot, not attested proof
     BrandID string `json:"brand_id"`
     GigID string `json:"gig_id"`
+    EventURL string `json:"event_url"`
     MatchedPosts []MetricoolPostObservation `json:"matched_posts"`
     OtherPostCount int `json:"other_post_count"`
     Warnings []string `json:"warnings"`
@@ -92,7 +93,7 @@ func PreviewMetricoolSnapshot(reader io.Reader, gig GigIntake, brandID string) (
     if len(payload.Data)>500{return MetricoolReadbackPreview{},errors.New("Metricool snapshot exceeds 500 posts")}
     p:=MetricoolReadbackPreview{
         ReadOnly:true,PublicWrites:0,Source:"supplied-connector-snapshot",
-        BrandID:brandID,GigID:gig.GigID,
+        BrandID:brandID,GigID:gig.GigID,EventURL:gig.OfficialSourceURL,
         MatchedPosts:[]MetricoolPostObservation{},Warnings:[]string{},
     }
     seen:=map[string]bool{}
