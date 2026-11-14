@@ -165,7 +165,7 @@ func TestDraftRecognizesExistingAndConflictingPosts(t *testing.T){
  }
  result,err:=BuildMetricoolDraftIntent(s,c,g,trust,usage,&matching,draftNow())
  if err!=nil{t.Fatal(err)}
- if result.Status!="existing-draft"||result.ExistingUUID==""||result.CreatePostArguments!=nil{
+ if result.Status!="existing-planner-item"||result.ExistingUUID==""||result.CreatePostArguments!=nil{
   t.Fatalf("existing post not blocked from duplication: %+v",result)
  }
  matching.MatchedPosts[0].ContentSHA256=strings.Repeat("b",64)
@@ -200,5 +200,40 @@ func TestCancelledOrPastShowCannotPrepareDraft(t *testing.T){
  c.PublicationAt="2026-12-04T19:00:00+08:00"
  if _,err:=BuildMetricoolDraftIntent(s,c,g,trust,usage,nil,draftNow());err==nil{
   t.Fatal("pre-show campaign allowed after show")
+ }
+}
+
+
+func TestIncompleteBookingCannotGenerateDraftIntent(t *testing.T){
+ s,c,g,trust,usage:=draftTestSetup(t)
+ previous:=s.Campaigns[c.GigID]
+ previous.Gig.ConfirmationSource="" // Status alone does not establish a confirmed booking.
+ s.Campaigns[c.GigID]=previous
+ if _,err:=BuildMetricoolDraftIntent(s,c,g,trust,usage,nil,draftNow());err==nil{
+   t.Fatal("incomplete source confirmation passed the draft gate")
+ }
+ previous.Gig.ConfirmationSource="owner"
+ previous.Gig.Venue=""
+ s.Campaigns[c.GigID]=previous
+ if _,err:=BuildMetricoolDraftIntent(s,c,g,trust,usage,nil,draftNow());err==nil{
+   t.Fatal("missing venue passed the draft gate")
+ }
+}
+func TestQueuedMetricoolItemDoesNotBecomeDraftEvidence(t *testing.T){
+ s,c,g,trust,usage:=draftTestSetup(t)
+ networks,_:=canonicalNetworks(c.Networks)
+ preview:=MetricoolReadbackPreview{
+  ReadOnly:true,PublicWrites:0,BrandID:balkazarMetricoolBrandID,
+  GigID:c.GigID,EventURL:s.Campaigns[c.GigID].Gig.OfficialSourceURL,
+  MatchedPosts:[]MetricoolPostObservation{{
+   PostUUID:"already-queued-2026",State:"observed-queued",
+   Networks:networks,ContentSHA256:contentDigest(c.Text,c.Media,networks),
+   PublicationAt:c.PublicationAt,
+  }},
+ }
+ result,err:=BuildMetricoolDraftIntent(s,c,g,trust,usage,&preview,draftNow())
+ if err!=nil{t.Fatal(err)}
+ if result.Status!="existing-planner-item"||result.ExecutionAllowed||result.CreatePostArguments!=nil{
+   t.Fatalf("queued post must stop duplication without claiming draft: %+v",result)
  }
 }
