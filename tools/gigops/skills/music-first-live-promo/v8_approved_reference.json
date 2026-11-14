@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "artist": "Balkazar",
+  "reference_name": "V8 — music-first pokrivalice / singer visible",
+  "approved_on": "2026-11-14",
+  "approval": {
+    "creative": "owner_approved",
+    "publication": "NOT_AUTHORIZED",
+    "scope": "Accept V8 as a creative quality reference; retain separate permission gates for post, channel, caption, and timing"
+  },
+  "video": {
+    "drive_id": "1EPomiH7bnvXZQvTLXBVCHZ_HpeW1s-Sq",
+    "drive_url": "https://drive.google.com/file/d/1EPomiH7bnvXZQvTLXBVCHZ_HpeW1s-Sq/view",
+    "name": "Balkazar_Dec03_2026_V8_APPROVED_CREATIVE_NOT_PUBLISHED.mp4",
+    "sha256": "4827b9f36792b07738fadaa0ca463c6693ebcb4174e782a0a92bb89b1bdbf433",
+    "bytes": 9389532,
+    "duration_seconds": 18.266667,
+    "width": 720,
+    "height": 1280,
+    "fps": 30,
+    "video_codec": "h264",
+    "audio_codec": "aac",
+    "publication_status": "private_unpublished"
+  },
+  "main_source": {
+    "drive_id": "1umGax4EWadvk1BnZkxL681_6kPeBkZaL",
+    "name": "Balkazar_Christmas_Market_43s_720x960_REDISCOVERED_SOURCE.mp4",
+    "sha256": "14568a1f85d3d417c02e6046493866a60ec7bd56a6292dddd74fa030f8bc63db",
+    "source_resolution": "720x960",
+    "source_original_recording_date": "unverified",
+    "audio_start_seconds": 25.24,
+    "audio_end_seconds": 43.50,
+    "audio_continuous": true,
+    "fade_only_at_boundaries": true,
+    "cold_open_video_start_seconds": 39.40,
+    "cold_open_video_end_seconds": 41.58
+  },
+  "protected_moments": [
+    {"start": 4.38, "end": 8.557, "reason": "Singer at microphone when vocal enters; no photo overlays"}
+  ],
+  "cutaways": [
+    {"key": "2022_band_audience", "start": 2.566, "end": 3.680, "story_role": "Band and audience before singing", "source_year": "2022", "drive_id": "1HaV6QKQ2fcmjPb2vxcguz-TGfttDfn6l", "sha256": "2d6f11c31e836c8aae6c42233f9f71c47b3779969c99d5babfcfd6a4bb71b531"},
+    {"key": "2022_drums", "start": 8.557, "end": 9.706, "story_role": "Rhythm-section cutaway after singing", "source_year": "2022", "drive_id": "1rlUoxUpVms-Df8kG0aqjC30fMbIkQHRD", "sha256": "b1fb6c553e2a518fb4d2e89b5151326cef35ff03c578c61097dc4da23f086b12"},
+    {"key": "2022_brass", "start": 10.855, "end": 12.005, "story_role": "Short brass detail in performance", "source_year": "2022", "drive_id": "1Cco6MxGNAs2tQLHI6XsoEp9L26_E8MgZ", "sha256": "4d23ea29b8a2c63a7c0e80ed6c7c1c49ff6d00fe45f01fa8cb647d9d34f6d634"},
+    {"key": "2025_crowd", "start": 13.514, "end": 14.675, "story_role": "Authentic previous-year crowd response before final payoff", "source_year": "2025", "drive_id": "17_5JMIk3OAVH8TJhh-l_ZRdh55B_QdKq", "sha256": "9f21992a3f5f02122d70f648007a100998b06521ab8ce2db73423487297538a6"}
+  ],
+  "editable_artifacts": {
+    "script_drive_id": "15KW4HgNe_TgHc4N7mijamcTiSGZ0qWEv",
+    "manifest_drive_id": "1SUECtvHaJLWGqrGyd1tQ4M3rl8ShhH7w",
+    "legacy_script_has_absolute_runtime_paths": true,
+    "note": "Keep original script verbatim for audit. For another runtime remap its /mnt/data input paths or adapt it to a CLI, verifying outputs against this locked reference."
+  },
+  "quality_notes": {
+    "subjective": "The bandleader likes this reference; this is not an objective universal minimum quality or a guaranteed attendance outcome",
+    "rights": "Historical photos show musicians across different years, not a synchronized multi-camera recording; artist's reuse permission previously recorded in private campaign records",
+    "platform": "No post, schedule, outreach, or ad spend without separate explicit scope",
+    "data_policy": "Real sources only; no invented crowd or fake performance; do not identify or profile audience members"
+  }
+}
