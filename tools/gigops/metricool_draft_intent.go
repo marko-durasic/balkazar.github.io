@@ -65,6 +65,10 @@ func preflightDraftData(c StoredCampaign, draft MetricoolDraftCandidate, now tim
  if c.Gig.BookingStatus!="confirmed" {
    return nil,time.Time{},"",errors.New("cannot draft for unconfirmed or cancelled gig")
  }
+ booking,bookingErr:=PlanGigIntake(c.Gig,now)
+ if bookingErr!=nil||!booking.BookingReady {
+   return nil,time.Time{},"",errors.New("gig is not ready: resolve canonical booking and validation blockers before drafting")
+ }
  if c.Revision!=draft.SourceRevision||c.Gig.GigID!=draft.GigID||draft.SourceRevision==0{
    return nil,time.Time{},"",errors.New("stale source revision or incorrect gig ID")
  }
@@ -134,7 +138,7 @@ func BuildMetricoolDraftIntent(store CampaignStore,draft MetricoolDraftCandidate
    if old.ContentSHA256==creativeSHA &&
       old.PublicationAt==when.Format(time.RFC3339) &&
       sameStringList(old.Networks,networks) {
-     result.Status="existing-draft"
+     result.Status="existing-planner-item"
      result.ExistingUUID=old.PostUUID
      result.Blocker="Existing planner UUID in private history; verify directly with Metricool before reusing or changing it"
      return result,nil
@@ -150,7 +154,7 @@ func BuildMetricoolDraftIntent(store CampaignStore,draft MetricoolDraftCandidate
      if post.ContentSHA256==creativeSHA &&
         post.PublicationAt==when.Format(time.RFC3339) &&
         sameStringList(post.Networks,networks) {
-       result.Status="existing-draft"
+       result.Status="existing-planner-item"
        result.ExistingUUID=post.PostUUID
        result.Blocker="Existing UUID observed in caller-supplied planner snapshot; verify live rather than create again"
        return result,nil
