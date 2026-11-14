@@ -7,6 +7,12 @@ description: Use when editing promotional videos for a live band's upcoming gig,
 
 **Principle:** The performance is the film. Lock an authentic continuous musical passage first. Every photo adds a purposeful visual idea, not just a change.
 
+## Approved creative reference — 2026-11-14
+- Balkazar V8 is the **bandleader-approved creative quality reference**. This approval does **not** authorize publication.
+- Read sibling [QUALITY_STANDARD.md](QUALITY_STANDARD.md) before building a new show promo; use [v8_approved_reference.json](v8_approved_reference.json) for the exact approved file SHA-256, provenance, audio source window and visual-protection/cutaway timing.
+- Use `python -m unittest discover -s . -p 'test_*.py'` for the five known failure-mode regressions and `python verify_music_first_reference.py --reference v8_approved_reference.json` for metadata validation. With the exact video/source media available, pass `--video` and `--source` to verify the approved MP4 and audio against originals. These gates check integrity, **not** aesthetic equivalence.
+- Maintain a new change log/test for meaningful editor feedback; do not overwrite the golden reference with future experiments.
+
 ## Inputs / trust
 - Use an actual confirmed gig record and rights-cleared source audio, photos, and footage. Record provenance/event year. Do not imply old images show the current lineup or that different years are simultaneous camera angles.
 - NT$0, local/private by default. Preserve originals and previous cuts. Require Marko's explicit approval of exact video, copy, channels, and timing before publishing. Do not contact others automatically.
