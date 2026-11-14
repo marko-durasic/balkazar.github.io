@@ -297,6 +297,16 @@ func SaveCampaignStore(path string, s CampaignStore) error {
 // ApplyGigIntakeFile holds an exclusive local lock, reconciles and atomically
 // saves. No network, third-party publication, API key or other account write.
 func ApplyGigIntakeFile(path string, g GigIntake, now time.Time) (CampaignWriteResult, error) {
+	return applyGigIntakeFile(path, g, now, nil)
+}
+
+// ApplyGigIntakeIfRevision enforces optimistic concurrency under the SAME
+// exclusive campaign file lock. Stale message replays may never undo a newer
+// reschedule or cancellation, even if two agents are competing.
+func ApplyGigIntakeIfRevision(path string, g GigIntake, expectedRevision uint64, now time.Time) (CampaignWriteResult, error) {
+	return applyGigIntakeFile(path, g, now, &expectedRevision)
+}
+func applyGigIntakeFile(path string, g GigIntake, now time.Time, expected *uint64) (CampaignWriteResult, error) {
 	if err := checkCampaignFilePath(path); err != nil {
 		return CampaignWriteResult{}, err
 	}
@@ -319,6 +329,15 @@ func ApplyGigIntakeFile(path string, g GigIntake, now time.Time) (CampaignWriteR
 	store, err := LoadCampaignStore(path)
 	if err != nil {
 		return CampaignWriteResult{}, err
+	}
+	if expected != nil {
+		if existing, found := store.Campaigns[g.GigID]; found {
+			if existing.Revision != *expected && existing.Fingerprint != gigFingerprint(g) {
+				return CampaignWriteResult{}, fmt.Errorf("stale intake revision: expected %d, current %d; re-read confirmed gig before updating", *expected, existing.Revision)
+			}
+		} else if *expected != 0 {
+			return CampaignWriteResult{}, errors.New("intake expects a previously existing gig but none was found")
+		}
 	}
 	r, err := store.ReconcileGig(g, now)
 	if err != nil {
