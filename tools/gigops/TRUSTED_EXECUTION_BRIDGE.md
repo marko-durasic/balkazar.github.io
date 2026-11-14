@@ -1,6 +1,8 @@
 # MusicOps — Trusted Private-Draft Execution Bridge
 
 **Status: implemented and tested in the existing draft PR #53 (2026-11-14); not deployed or enabled.**
+
+> **Cloud deployment decision:** Production must be independent of the owner's laptop. See [CLOUD_FIRST_DEPLOYMENT.md](./CLOUD_FIRST_DEPLOYMENT.md). The bridge was developed and tested using a temporary laptop checkout, but that device is neither a deployment host nor a credential vault. Reuse approved cloud capacity; agent-accessible cloud accounts cannot own the signing key or trusted OAuth secrets.
 Tracking: https://github.com/marko-durasic/balkazar.github.io/issues/41
 
 ## Goal
