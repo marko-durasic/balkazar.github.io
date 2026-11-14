@@ -275,3 +275,16 @@ go run ./cmd/musicops-ops metricool-readback --store "$STATE" \
 **Regression gates:** `go test ./...` in `tools/gigops` tests valid and forged signatures, expiry/revocation, cross-gig/channel/asset mismatch, changed source revisions, missing Instagram media, no post-launch publication, exact duplicate UUID detection, conflicting same-slot posts and max-draft/in-flight usage. Local CLI can only print a candidate payload; **human or agent must not copy it into a live provider write tool without a separately authorized, trusted connector runner.**
 
 **Next engineering slice after this:** (1) securely issue/revoke owner-approved grants in a minimal authenticated approval surface, (2) build a bounded trusted runner around the **existing** Metricool plugin that fetches current planner state and identities immediately before a call, (3) atomic intent reservation, draft-only call, provider UUID readback and reconciliation, (4) acceptance test with a genuinely new gig and rights-cleared asset; do not touch the existing Nov 24 crowd-photo draft. Leave PR #53 unmerged and keep spend zero until end-to-end readiness.
+
+
+### Read-only MCP preflight from a future connected client
+
+The local stdio MCP now also advertises `musicops_preview_metricool_draft`. Its input is the same structured `MetricoolDraftCandidate` accepted by the CLI; it cannot read arbitrary paths from tool arguments or trigger a provider action. The **operator**, not the model, must configure its private environment:
+
+- `MUSICOPS_CAMPAIGN_STORE` — trusted private campaigns.json;
+- `MUSICOPS_DRAFT_SIGNED_GRANT` — owner-signed private draft-only grant JSON;
+- `MUSICOPS_OWNER_PINNED_PUBKEY` — pinned Ed25519 owner public key, base64 raw string;
+- `MUSICOPS_DRAFT_REVOCATIONS` — local JSON array of revoked grant IDs (empty array allowed if none);
+- `MUSICOPS_DRAFT_USAGE` — protected JSON with grant ID, used post UUIDs and in-flight intent keys.
+
+The assistant cannot issue or revoke owner grants. No signing key is installed, no grant is issued by this implementation, and the stdio MCP is **not** already connected to ChatGPT. A valid preflight still returns `execution_allowed=false`. Only a separate trusted runner can later call Metricool after fresh provider readback and atomic intent reservation. Keep these policy/state files outside the public GitHub repo and permissioned to the trusted operator.
