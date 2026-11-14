@@ -156,6 +156,9 @@ func (s awsSSM) fetch(ctx context.Context, version int) (string, error) {
 type receipt struct {
 	Mode          string `json:"mode"`
 	SSMParameter  string `json:"ssm_parameter"`
+	S3Bucket      string `json:"s3_bucket,omitempty"`
+	S3Key         string `json:"s3_key,omitempty"`
+	S3Version     string `json:"s3_version,omitempty"`
 	Version       int    `json:"version,omitempty"`
 	EncodedBytes  int    `json:"encoded_bytes"`
 	BackupSHA256  string `json:"backup_sha256"`
@@ -168,11 +171,14 @@ type receipt struct {
 }
 
 func run() error {
-	mode := flag.String("mode", "preview", "preview, upload-standard, restore-version")
+	mode := flag.String("mode", "preview", "preview, upload-standard, restore-version, s3-preview, s3-upload, s3-restore-version")
 	dir := flag.String("state-dir", "", "Absolute private MusicOps cloud state directory")
 	version := flag.Int("version", 0, "Specific version of the remote backup for restore-version")
 	target := flag.String("restore-dir", "", "Fresh empty path for checked restore; never overwrite production")
 	confirm := flag.Bool("allow-standard-securestring", false, "Explicitly permit one standard-tier encrypted backup write/read")
+	s3Bucket := flag.String("s3-bucket", "", "Exact existing deterministic DuReef CAO state bucket")
+	s3Version := flag.String("s3-version", "", "Exact S3 object version to restore")
+	allowS3 := flag.Bool("allow-existing-s3", false, "Explicitly permit a single write/read under fixed private versioned S3 backup prefix")
 	flag.Parse()
 	if *dir == "" {
 		return errors.New("--state-dir required")
@@ -189,6 +195,53 @@ func run() error {
 		}
 		out = receipt{Mode: "OFFHOST_BACKUP_PREVIEW_ONLY", EncodedBytes: p.EncodedBytes,
 			BackupSHA256: p.SnapshotSHA256, Campaigns: p.Campaigns, QueueItems: p.QueueItems}
+	case "s3-preview":
+		_, p, err := gigops.PrepareCloudObjectBackup(*dir, time.Now())
+		if err != nil {
+			return err
+		}
+		out = receipt{Mode: "EXISTING_VERSIONED_S3_BACKUP_PREVIEW_ONLY", EncodedBytes: p.EncodedBytes, BackupSHA256: p.SnapshotSHA256, Campaigns: p.Campaigns, QueueItems: p.QueueItems}
+	case "s3-upload":
+		if !*allowS3 || *s3Bucket == "" {
+			return errors.New("explicit --allow-existing-s3 and --s3-bucket required")
+		}
+		encoded, p, err := gigops.PrepareCloudObjectBackup(*dir, time.Now())
+		if err != nil {
+			return err
+		}
+		s3 := awsS3{cli: aws, bucket: *s3Bucket}
+		v, err := s3.upload(ctx, encoded)
+		if err != nil {
+			return err
+		}
+		readback, err := s3.fetch(ctx, v)
+		if err != nil {
+			return fmt.Errorf("S3 object version may have been created but cannot be verified; do not retry: %w", err)
+		}
+		if readback != encoded {
+			return errors.New("S3 version readback content mismatch; stop")
+		}
+		out = receipt{Mode: "EXISTING_S3_VERSIONED_SNAPSHOT_VERIFIED", S3Bucket: *s3Bucket, S3Key: fixedS3BackupKey, S3Version: v,
+			EncodedBytes: p.EncodedBytes, BackupSHA256: p.SnapshotSHA256, Campaigns: p.Campaigns, QueueItems: p.QueueItems, CloudWrites: 1}
+	case "s3-restore-version":
+		if !*allowS3 || *s3Bucket == "" || *s3Version == "" {
+			return errors.New("explicit existing S3 bucket, version and authorization required")
+		}
+		if *target == "" || strings.TrimSpace(*target) == strings.TrimSpace(*dir) {
+			return errors.New("restore must target separate new directory")
+		}
+		s3 := awsS3{cli: aws, bucket: *s3Bucket}
+		encoded, err := s3.fetch(ctx, *s3Version)
+		if err != nil {
+			return err
+		}
+		p, err := gigops.RestoreCloudObjectBackup(encoded, *target, time.Now())
+		if err != nil {
+			return err
+		}
+		out = receipt{Mode: "RESTORED_FROM_VERSIONED_S3_INTO_NEW_DIRECTORY", S3Bucket: *s3Bucket,
+			S3Key: fixedS3BackupKey, S3Version: *s3Version, EncodedBytes: p.EncodedBytes, BackupSHA256: p.SnapshotSHA256,
+			RestoredTo: *target, Campaigns: p.Campaigns, QueueItems: p.QueueItems}
 	case "upload-standard":
 		if !*confirm {
 			return errors.New("refusing AWS write without explicit --allow-standard-securestring")

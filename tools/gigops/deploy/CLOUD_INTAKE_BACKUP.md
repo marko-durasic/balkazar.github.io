@@ -13,7 +13,7 @@ The existing ChatGPT-authenticated Remote Desktop Commander can submit a strict,
 5. The output includes the gig ID, revision, change, private queue generation and blockers. `public_writes=0`, `provider_calls=0` and `executed_jobs=0`. A stored record is not a live listing or scheduled post.
 6. **Human does not need to run shell commands**: the assistant can invoke the existing authorized cloud connector after receiving a confirmed gig. The connector itself is the current authentication boundary. It is not yet a dedicated narrow ChatGPT custom plugin; future direct remote MCP requires separate authorized deployment.
 
-## Compact backup/restore
+## Legacy compact SSM backup (disabled; NOT recommended for growing gig history)
 
 `cmd/musicops-cloud-backup` and `cloud_backup.go` construct a private, checksum-verified gzip+base64 bundle of exactly `campaigns.json`, `queue.json`, and `heartbeat.json`. Backups reject stale heartbeats, inconsistent campaign/queue revisions, unknown JSON fields, corrupt inputs and data exceeding the **Standard Parameter Store 4-KB cap**. An actual current-state preview was approximately 3.1 KB.
 
@@ -21,12 +21,12 @@ The existing ChatGPT-authenticated Remote Desktop Commander can submit a strict,
 - `--mode=upload-standard --state-dir ... --allow-standard-securestring` is an explicit **external** write through AWS CLI to one fixed dedicated SSM parameter in `us-east-1`, Type=`SecureString`, Tier=`Standard`, with a new numbered version each time and a readback of the exact version. It uses a short-lived protected CLI-input file, not a command-line value. The code never silently switches to Advanced/higher-throughput.
 - `--mode=restore-version --version=N --restore-dir /ABS/NEW/DIR --allow-standard-securestring` decrypts a specific SSM version and validates it into a **new private directory**, never overwriting production state. A restored directory can run the no-network worker. Downloading an SSM parameter requires existing permissions.
 - There is **no automatic backup timer enabled**. The existing AWS IAM role denied `ssm:PutParameter` for the dedicated backup path. Changes to IAM and any KMS/SSM billing permission must be separately reviewed before enabling. AWS Standard parameters and standard throughput are ordinarily free, but KMS requests may be chargeable beyond the account-wide free tier. The role currently cannot inspect high-throughput settings, so do **not** assume total zero cost without an independent billing check.
-- The user-account role also cannot list S3 buckets, so don't improvise an unknown S3 target, reuse a credential-backup namespace, create a paid advanced parameter, or escalate IAM from the agent.
+- The cloud role cannot enumerate S3 buckets. A versioned DuReef CAO bucket is defined in existing infrastructure-as-code, but its current state, permission scope, costs and availability must be verified before use. Do not escalate permissions from the agent.
 - Restore simulations passed offline with checksum, corruption, stale/inconsistent source, independent target directory and next-run recovery. **This is not a real off-host disaster recovery test yet**.
 
 ## Required next infrastructure gate
 
-Read-only audit the current role and backing-store billing, then obtain a **minimal approved policy** for the *single* dedicated MusicOps SSM parameter to read/write Standard SecureString and use the existing AWS-managed SSM KMS key for Encrypt/Decrypt. Do not create new KMS keys or paid tiers. Limit backup to at most daily, fail closed above 4 KB, and verify a specific-version off-host restore before calling it production-ready.
+**Superseded by the versioned S3 approach below.** Do not seek additional IAM access or turn on a scheduled backup for the 4-KB SSM parameter. Inspect the existing DuReef versioned CAO bucket and least-privilege object-prefix permissions instead; approve any incremental S3 storage/request costs before an actual upload.
 
 The current dry-run worker stays network-isolated and without social/OAuth/LINE write permissions. The owner signing authority and a real Metricool executor remain separate security projects. Do not activate either as a side effect of the cloud intake.
 
@@ -36,3 +36,18 @@ The current dry-run worker stays network-isolated and without social/OAuth/LINE 
 - Backup tests cover prepare, checksum/tamper rejection, stale/inconsistent state, Standard size cap, replay/recovery, and refusal to overwrite existing directories.
 - Mock AWS tests assert SecureString + Standard only, version-pinned readback, no Advanced tier and no automatic network calls during preview.
 - PR remains reviewable and unmerged; deployed binaries are pinned to passing commits before any change to production.
+
+
+## 2026-11-14 superseding backup decision — versioned private S3
+
+**S3 is now the preferred future backup storage. The preceding SSM instructions describe a disabled prototype, not the next deployment action.** A synthetic capacity test with the real queue schema produced **3,901 encoded bytes at two gigs** and exceeded SSM Standard's 4-KB limit by three gigs. The new versioned object-backup variant prepared, verified, restored, and resumed six synthetic gigs without exceeding its 256-KB explicit cap.
+
+DuReef's existing CDK `infra/lib/state-stack.ts` defines a private, versioned, S3-managed AES256-encrypted CAO backup bucket with public-access blocking, SSL enforcement, noncurrent-version 90-day retention, and no auto-delete. Existing `infra/lib/worker-stack.ts` describes narrowly scoped object permissions for a different role. **These source files do not establish that the current MusicOps interactive cloud role has access.** On November 14 it received `AccessDenied` for `s3:GetBucketVersioning`. Do not copy credentials or bypass IAM.
+
+The new `cloud_backup.go` code supports `PrepareCloudObjectBackup`, `DecodeCloudObjectBackup`, and `RestoreCloudObjectBackup` (no network calls), alongside the existing legacy SSM functions. The `cmd/musicops-cloud-backup/s3.go` adapter is restricted to an existing deterministic DuReef CAO bucket in the authenticated account and one object key: `musicops/dryrun/cloud-state.json`. Before uploading, it checks bucket versioning; the put explicitly requests `AES256` and requires a stable S3 `VersionId`. Readback requests that exact version and confirms encryption and matching bytes. It does not create a bucket, key, new infrastructure, delete objects, or publish anything.
+
+Future operator modes are `--mode=s3-preview` (read-only), `--mode=s3-upload --s3-bucket <existing-bucket> --allow-existing-s3` (one explicit write), and `--mode=s3-restore-version --s3-bucket <existing-bucket> --s3-version <exact-id> --restore-dir <fresh-path> --allow-existing-s3`. The upload/restore paths must remain blocked until least-privilege IAM, readback, lifecycle and real incremental request/storage costs have been reviewed and approved.
+
+**Current status:** locally compiled and unit-tested with an in-memory/mock AWS CLI only. No S3 object upload or off-host restore is verified. No recurring backup timer, new paid service or IAM modification is authorized. Reusing an existing S3 bucket may still incur a small incremental storage/request cost; do not describe it as guaranteed free. Keep OAuth/signing credentials, photos, audio and personal chats out of this backup.
+
+**Next engineering gate:** review the existing S3 bucket owner/versioning and account cost data via a read-only authorized role, then obtain only explicitly approved object-prefix permissions if justified. Make one versioned backup, read back the same version, restore into a separate private directory, and compare queue/campaign state. Enable at most daily backups only after this succeeds.

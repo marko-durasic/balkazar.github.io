@@ -19,6 +19,7 @@ import (
 )
 
 const maxCloudBackupBytes = 4000
+const maxCloudObjectBackupBytes = 256 << 10
 const maxCloudBackupUnpacked = 2 << 20
 const cloudBackupSchemaVersion = 1
 
@@ -81,6 +82,19 @@ func validateCloudBackupDirectory(dir string, now time.Time) (int, int, error) {
 }
 
 func PrepareCloudBackup(dir string, now time.Time) (string, CloudBackupReport, error) {
+	return prepareCloudBackupLimited(dir, now, maxCloudBackupBytes)
+}
+
+// PrepareCloudObjectBackup targets versioned private object storage, without
+// Parameter Store's 4-KB limit. No network call is performed here.
+func PrepareCloudObjectBackup(dir string, now time.Time) (string, CloudBackupReport, error) {
+	encoded, report, err := prepareCloudBackupLimited(dir, now, maxCloudObjectBackupBytes)
+	if err == nil {
+		report.Mode = "PREPARED_VERSIONED_OBJECT_BACKUP_NOT_UPLOADED"
+	}
+	return encoded, report, err
+}
+func prepareCloudBackupLimited(dir string, now time.Time, maxBytes int) (string, CloudBackupReport, error) {
 	campaigns, items, err := validateCloudBackupDirectory(dir, now)
 	if err != nil {
 		return "", CloudBackupReport{}, err
@@ -133,8 +147,8 @@ func PrepareCloudBackup(dir string, now time.Time) (string, CloudBackupReport, e
 	if err != nil {
 		return "", CloudBackupReport{}, err
 	}
-	if len(serialized) > maxCloudBackupBytes {
-		return "", CloudBackupReport{}, fmt.Errorf("compressed backup %d bytes exceeds Standard Parameter Store limit %d; never upgrade to paid Advanced automatically", len(serialized), maxCloudBackupBytes)
+	if len(serialized) > maxBytes {
+		return "", CloudBackupReport{}, fmt.Errorf("compressed backup %d bytes exceeds explicit backend size cap %d; no automatic tier upgrade", len(serialized), maxBytes)
 	}
 	return string(serialized), CloudBackupReport{
 		SchemaVersion: cloudBackupSchemaVersion, CreatedAt: snap.CreatedAt, EncodedBytes: len(serialized),
@@ -144,8 +158,14 @@ func PrepareCloudBackup(dir string, now time.Time) (string, CloudBackupReport, e
 }
 
 func DecodeCloudBackup(encoded string) (CloudBackupContents, error) {
-	if len(encoded) > maxCloudBackupBytes || len(encoded) == 0 {
-		return CloudBackupContents{}, errors.New("backup exceeds Standard Parameter Store limit")
+	return decodeCloudBackupLimited(encoded, maxCloudBackupBytes)
+}
+func DecodeCloudObjectBackup(encoded string) (CloudBackupContents, error) {
+	return decodeCloudBackupLimited(encoded, maxCloudObjectBackupBytes)
+}
+func decodeCloudBackupLimited(encoded string, maxBytes int) (CloudBackupContents, error) {
+	if len(encoded) > maxBytes || len(encoded) == 0 {
+		return CloudBackupContents{}, errors.New("backup exceeds configured backend size cap")
 	}
 	var env CloudBackupEnvelope
 	dec := json.NewDecoder(bytes.NewBufferString(encoded))
@@ -206,7 +226,13 @@ func DecodeCloudBackup(encoded string) (CloudBackupContents, error) {
 // production. It validates all 3 files and dry-run queue consistency before
 // reporting restorable. No provider call, public network, or credentials.
 func RestoreCloudBackup(encoded, target string, now time.Time) (CloudBackupReport, error) {
-	data, err := DecodeCloudBackup(encoded)
+	return restoreCloudBackupLimited(encoded, target, now, maxCloudBackupBytes)
+}
+func RestoreCloudObjectBackup(encoded, target string, now time.Time) (CloudBackupReport, error) {
+	return restoreCloudBackupLimited(encoded, target, now, maxCloudObjectBackupBytes)
+}
+func restoreCloudBackupLimited(encoded, target string, now time.Time, maxBytes int) (CloudBackupReport, error) {
+	data, err := decodeCloudBackupLimited(encoded, maxBytes)
 	if err != nil {
 		return CloudBackupReport{}, err
 	}

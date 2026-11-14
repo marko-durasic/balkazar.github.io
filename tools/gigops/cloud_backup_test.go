@@ -2,6 +2,7 @@ package gigops
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -140,5 +141,44 @@ func TestCloudBackupDoesNotRestoreSecretsOrTouchExternalProvider(t *testing.T) {
 	}
 	if report.ProviderCalls != 0 || report.ExecutedJobs != 0 || report.PublicWrites != 0 {
 		t.Fatalf("restore unexpectedly executed work %+v", report)
+	}
+}
+
+func TestObjectBackupOutgrowsSSMButRestoresSixGigs(t *testing.T) {
+	dir := tempCloudDir(t)
+	now := storeTime()
+	for i := 0; i < 6; i++ {
+		gig := sampleGig()
+		gig.GigID = fmt.Sprintf("balkazar-backup-scale-%02d", i+1)
+		gig.Title = fmt.Sprintf("Scale test %d", i+1)
+		start := time.Date(2026, 12, 3+i, 20, 0, 0, 0, time.FixedZone("Taipei", 8*3600))
+		gig.Start = start.Format(time.RFC3339)
+		gig.End = start.Add(90 * time.Minute).Format(time.RFC3339)
+		gig.OfficialSourceURL = fmt.Sprintf("https://balkazar.org/events/synthetic-backup-%02d/", i+1)
+		if _, err := ApplyCloudGigIntake(dir, gig, now); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if _, _, err := PrepareCloudBackup(dir, now); err == nil {
+		t.Fatal("single Standard SSM backup should exceed 4KB at 6 gigs")
+	}
+	blob, report, err := PrepareCloudObjectBackup(dir, now)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(blob) <= 4000 || len(blob) > maxCloudObjectBackupBytes || report.Campaigns != 6 || report.QueueItems != 60 {
+		t.Fatalf("object backup size/cap incorrect: %+v %d", report, len(blob))
+	}
+	target := filepath.Join(t.TempDir(), "restored-six-gigs")
+	restored, err := RestoreCloudObjectBackup(blob, target, now)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if restored.Campaigns != 6 || restored.QueueItems != 60 {
+		t.Fatal("scalable object snapshot lost gigs")
+	}
+	next, err := RunCloudDryRun(target, now.Add(time.Minute))
+	if err != nil || next.QueueChanged || next.ProviderCalls != 0 || next.PublicWrites != 0 {
+		t.Fatalf("object restore failed safe resume %+v, %v", next, err)
 	}
 }
