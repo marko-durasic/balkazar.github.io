@@ -30,6 +30,10 @@ type CampaignJobRecord struct {
     SourceRevision uint64 `json:"source_revision"`
     DependsOn []string `json:"depends_on,omitempty"`
     Next string `json:"next"`
+    Attempts uint32 `json:"attempts,omitempty"`
+    ArtifactSHA256 string `json:"artifact_sha256,omitempty"`
+    StartedAt string `json:"started_at,omitempty"`
+    FinishedAt string `json:"finished_at,omitempty"`
 }
 type CampaignRevision struct {
     Number uint64 `json:"number"`
@@ -44,6 +48,7 @@ type StoredCampaign struct {
     UpdatedAt string `json:"updated_at"`
     Jobs map[string]CampaignJobRecord `json:"jobs"`
     MetricoolObservations []MetricoolStoredObservation `json:"metricool_observations,omitempty"`
+    JobHistory []PrivateJobTransitionEvent `json:"job_history,omitempty"`
     History []CampaignRevision `json:"history,omitempty"`
 }
 type CampaignStore struct {
@@ -120,7 +125,11 @@ func(s *CampaignStore)ReconcileGig(g GigIntake,now time.Time)(CampaignWriteResul
         if len(history)>40{history=history[len(history)-40:]}
     }
     var observations []MetricoolStoredObservation
-    if exists {observations=append(observations,previous.MetricoolObservations...)}
+    var jobHistory []PrivateJobTransitionEvent
+    if exists {
+        observations=append(observations,previous.MetricoolObservations...)
+        jobHistory=append(jobHistory,previous.JobHistory...)
+    }
     jobs:=jobRecords(p,revision)
     if exists&&previous.Gig.BookingStatus=="confirmed"&&g.BookingStatus=="confirmed"{
         for _,name:=range []string{"publish-event-listings","schedule-social-promotion"}{
@@ -132,7 +141,7 @@ func(s *CampaignStore)ReconcileGig(g GigIntake,now time.Time)(CampaignWriteResul
         }
     }
     record:=StoredCampaign{Gig:g,Fingerprint:hash,Revision:revision,
-        UpdatedAt:now.UTC().Format(time.RFC3339),Jobs:jobs,MetricoolObservations:observations,History:history}
+        UpdatedAt:now.UTC().Format(time.RFC3339),Jobs:jobs,MetricoolObservations:observations,JobHistory:jobHistory,History:history}
     s.Campaigns[g.GigID]=record
     change:="created"
     if exists{change="revised"}
@@ -173,6 +182,9 @@ func LoadCampaignStore(path string)(CampaignStore,error){
     if len(s.Campaigns)>1000{return CampaignStore{},errors.New("campaign store too large")}
     if s.Campaigns==nil{s.Campaigns=make(map[string]StoredCampaign)}
     for id,record:=range s.Campaigns{
+        if err:=validatePrivateJobHistory(record);err!=nil{
+            return CampaignStore{},fmt.Errorf("invalid job history for %q: %w",id,err)
+        }
         if err:=validateStoredMetricoolObservations(record.MetricoolObservations);err!=nil{
             return CampaignStore{},fmt.Errorf("invalid Metricool observations for %q: %w",id,err)
         }
