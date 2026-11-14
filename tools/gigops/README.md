@@ -216,3 +216,45 @@ go run ./cmd/gig-intake --file examples/dec3-gig.json \
 **Safety properties:** existing `campaigns.json` is loaded, validated and locked against concurrent writes; modifications use atomic replace and mode 0600. The .lock file stays private; do not delete it during concurrent use. The store rejects malformed/oversized files, duplicate canonical gig URLs or exact same artist/venue/start using another ID, and any path inside the public repository. Cancellation retains an approval-gated withdrawal plan and cannot schedule a new promotion. There are tests for idempotent repeats, reschedules, cancellation, missing ID, duplicate gigs, fail-closed corruption, concurrent locks, and unsafe file locations.
 
 **Limitations:** this stores **internal planned jobs**, not autonomous execution status from third-party providers. The verified Songkick/Bandsintown URL ledger remains separate. This code never creates public events, posts, buys ads, sends DMs, loads private Google Drive media, or starts a live scheduler. ChatGPT does not yet expose a write-capable GigOps MCP connected to the user's local campaign store. Next capability is a trusted adapter that can read the job store, prepare one approved Metricool draft, and write back its verified provider receipt; no blanket publisher or user-secret access until explicit scoped authorization.
+
+
+## Private job transitions + Metricool readback (2026-11-14)
+
+**Current implementation:** the private campaign store now supports revision-gated internal job state changes and Metricool **read-only scheduling observations**. Neither capability publishes anything. This builds on [CAMPAIGN_AUTOMATION.md](./CAMPAIGN_AUTOMATION.md) without a second scheduler or new account.
+
+- Private draft jobs can advance `ready → in-progress → private-complete` only after their upstream private dependencies complete. The final state requires an artifact SHA256. A hash is a local claim, **not** evidence that something was publicly posted.
+- Network jobs (`schedule-social-promotion`, `publish-event-listings`) cannot be advanced by the private CLI. They remain approval/reconciliation-gated until a separately authorized publisher and provider readback exist.
+- Physical tasks (cameras, sound, banner, fan photos) stay human-only.
+- Metricool snapshots: `draft=true` is an **observed draft**. A non-draft post whose network statuses are all `PENDING` is **observed queued**, never published. Numeric post `id` may change on editing; stable `uuid` is the identity. Match the exact canonical event link in text, not a fuzzy date/venue. Absence from one scheduler range is **not** proof a post was deleted.
+
+**Private test flow (for the agent/runner, not a manual burden for Marko):**
+
+```sh
+cd tools/gigops
+STATE="$HOME/.config/balkazar-musicops/campaigns.json"
+
+# One stable gig: repeated intake does not duplicate it.
+go run ./cmd/gig-intake --file examples/dec3-gig.json --store "$STATE"
+
+# Inspect status.
+go run ./cmd/musicops-ops status --store "$STATE" --gig-id balkazar-european-winter-2026
+
+# Start a PRIVATE task only. Completion requires real local artifact SHA256.
+go run ./cmd/musicops-ops private-job --store "$STATE" \
+  --gig-id balkazar-european-winter-2026 --job-id reconcile-gig-identity \
+  --revision 1 --action start
+
+# An authorized connector runner exports RAW {"data":[...]} JSON from
+# Metricool getScheduledPosts for brand 7273414 to a PRIVATE local path.
+# Preview-only by default:
+go run ./cmd/musicops-ops metricool-readback --store "$STATE" \
+  --gig-id balkazar-european-winter-2026 \
+  --snapshot /ABSOLUTE/PRIVATE/PATH/metricool-posts.json
+
+# Add --record only to persist non-sensitive UUID, ID, schedule, state,
+# networks and hash locally; never the caption/media, and never public writes.
+```
+
+**Authorization boundary:** The installed Metricool plugin can read Brand Settings and Scheduled Posts in the connected account. The Go CLI currently consumes an exported snapshot; it has no direct OAuth tokens or remote write endpoint and does not claim a submitted JSON file is cryptographically attested. No social scheduling, live post, marketing message, purchase, account login, or API secret is authorized by these private-state commands. The next step is a revocable per-channel approval grant plus a trusted Metricool **draft creation/readback** adapter; subsequently permissioned scheduling only after end-to-end proof.
+
+**Validation:** run `go test ./...`, `go vet ./...`, and `go test -race ./...` inside `tools/gigops`, with GitHub Actions on PR #53. Regressions cover stable UUID after changing post IDs, duplicate creative detection, non-public queued/draft inference, safe cancellations, changed gig revisions, private audit state, read-only publisher boundaries, and disk recovery.
