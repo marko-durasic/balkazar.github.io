@@ -51,3 +51,69 @@ Future operator modes are `--mode=s3-preview` (read-only), `--mode=s3-upload --s
 **Current status:** locally compiled and unit-tested with an in-memory/mock AWS CLI only. No S3 object upload or off-host restore is verified. No recurring backup timer, new paid service or IAM modification is authorized. Reusing an existing S3 bucket may still incur a small incremental storage/request cost; do not describe it as guaranteed free. Keep OAuth/signing credentials, photos, audio and personal chats out of this backup.
 
 **Next engineering gate:** review the existing S3 bucket owner/versioning and account cost data via a read-only authorized role, then obtain only explicitly approved object-prefix permissions if justified. Make one versioned backup, read back the same version, restore into a separate private directory, and compare queue/campaign state. Enable at most daily backups only after this succeeds.
+
+## 2026-11-15 — Live S3 backup permissions and cost audit (READ ONLY)
+
+**Tools:** Existing DuReef cloud device via Desktop Commander, AWS CLI with its EC2 role, CDK source, AWS public S3 pricing/docs. Do not use the AWS Core plugin (unreliable connection; owner prohibited it).
+
+**Verified live:** The cloud account matches DuReef; its instance role is `InteractiveTargetRole`. `HeadBucket` returned 403, and `GetBucketVersioning`, encryption, public access block, lifecycle, bucket location, policy status and prefix listing all returned `AccessDenied`. `cloudformation:ListStacks` is also denied. **A 403 does not establish that the bucket is missing or misconfigured.** Current live bucket ownership, settings, inventory and invoice cannot be verified by this identity.
+
+**Verified from CDK source only (not proof of deployment):** `infra/lib/state-stack.ts` declares one private CAO backup bucket with versioning, SSE-S3 AES256, full public-access block, enforced HTTPS, 90-day noncurrent expiry and resource RETAIN. `infra/lib/worker-stack.ts` grants a *different worker role* bucket versioning and read/write over the CAO bucket's objects; it does not explicitly list `s3:GetObjectVersion` in that grant. Crucially `infra/lib/interactive-target-stack.ts` describes this host's role as "interactive workstation - SSM baseline only; no autonomous worker authority", with an explicit deny on SSM parameter reads. Do **not** broaden the interactive role with general S3 writes to sidestep its intended boundary.
+
+**Fixed unrelated reliability regression:** The five-minute MusicOps timer was set to `StartLimitBurst=3` per 20 minutes, causing repeated `start-limit-hit` failures. Updated source and deployed unit to `StartLimitBurst=8`, preserving a bounded 20-minute rate limit; systemd reload, reset-failed, service run and heartbeat all succeeded. GitHub PR #53 commit records the matching source fix.
+
+### Incremental cost model (estimates, NOT the account's bill)
+
+For S3 Standard in US East, model **US$0.023 per GB-month**, **$0.005 per 1,000 PUT**, **$0.0004 per 1,000 GET**. Assumptions: daily snapshot to one stable versioned object key, daily exact-version readback, 30 PUT and 30 GET per month, 90 noncurrent retained versions plus the current one, no replication/KMS/paid analytics. The existing object encoder caps a snapshot at **256 KiB**. Model output:
+
+| Per-day encoded snapshot | Storage of ~91 versions | Est. storage + 30 PUT + 30 GET per month |
+| --- | ---: | ---: |
+| 3.1 KiB (current) | ~0.27 MiB | **~US$0.00017** |
+| 50 KiB | ~4.44 MiB | **~US$0.00026** |
+| 256 KiB cap | ~22.75 MiB | **~US$0.00067** |
+
+These are very small but **not free**, and require actual lifecycle policy to match CDK. They exclude unrelated bucket usage, CloudWatch/logging, taxes, data-transfer exceptions and any spending required to keep compute online. Bucket invoices/credits cannot be read with the current role.
+
+**Major cost caveat:** IMDSv2 verified this live host is a `t4g.large` **on-demand** instance in `us-east-1`. Approximate Linux list price **$0.0672 per hour / $49.06 per 730-hour month**, excluding EBS/IPv4. That instance already has other DuReef workloads, so this is *not necessarily MusicOps marginal cost*. But keeping an otherwise disposable interactive workstation alive solely for MusicOps would be a bad tradeoff. Prefer an existing continuously scheduled worker/control plane once verified.
+
+Sources: https://aws.amazon.com/s3/pricing/ ; https://aws.amazon.com/ec2/pricing/on-demand/ ; https://cloud.cloudquell.com/aws/ec2/t4g.large/us-east-1/ .
+
+### Least-privilege proposal — NOT AUTHORIZED OR DEPLOYED
+
+**Audit first:** An already authorized independent admin/worker role should read the actual bucket versioning (`s3:GetBucketVersioning`), encryption (`s3:GetEncryptionConfiguration`), public block (`s3:GetBucketPublicAccessBlock`), lifecycle (`s3:GetLifecycleConfiguration`), policy status (`s3:GetBucketPolicyStatus`), location (`s3:GetBucketLocation`), Requester Pays setting (`s3:GetBucketRequestPayment`), and current billing. Optionally allow `s3:ListBucket` / `s3:ListBucketVersions` with `s3:prefix` limited to `musicops/dryrun/*`. Do not assign persistent S3 audit authority to the generic interactive role purely for convenience.
+
+**Later, only with explicit owner approval:** A separate, approved backup executor with a verified bucket may need the following narrowly scoped actions. This is illustrative IAM only; placeholders require actual bucket/account verification and a reviewed CDK change. Never apply an unreviewed policy to production.
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CheckMusicOpsBackupBucketVersioning",
+      "Effect": "Allow",
+      "Action": "s3:GetBucketVersioning",
+      "Resource": "arn:aws:s3:::<VERIFIED_EXISTING_CAO_BUCKET>"
+    },
+    {
+      "Sid": "WriteOnlyMusicOpsAES256Snapshot",
+      "Effect": "Allow",
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::<VERIFIED_EXISTING_CAO_BUCKET>/musicops/dryrun/cloud-state.json",
+      "Condition": {
+        "StringEquals": {"s3:x-amz-server-side-encryption": "AES256"},
+        "Bool": {"aws:SecureTransport": "true"}
+      }
+    },
+    {
+      "Sid": "ReadOnlyExactSnapshotVersions",
+      "Effect": "Allow",
+      "Action": "s3:GetObjectVersion",
+      "Resource": "arn:aws:s3:::<VERIFIED_EXISTING_CAO_BUCKET>/musicops/dryrun/cloud-state.json"
+    }
+  ]
+}
+```
+
+No `s3:DeleteObject`, `s3:*`, generic bucket mutation, admin privileges or paid KMS key. Exact-version GET needs `s3:GetObjectVersion`, per AWS docs: https://docs.aws.amazon.com/AmazonS3/latest/userguide/using-with-s3-policy-actions.html . Reconcile with any pre-existing WorkerStack IAM grant; don't layer overly broad duplicate permissions. No owner signing or OAuth secrets in MusicOps state backups.
+
+**One next action:** Through a reliable, owner-authorized *read-only* AWS admin/worker path (NOT AWS Core), verify actual existing bucket settings, worker identity, lifecycle and cost. Only then present owner with exact scope and spending impact for approval. If approved, perform one exact-version PUT → GET/readback → separate restore under the 256KiB guard, then consider at most daily backup. Until that succeeds, **off-host backups remain unverified**. The interactive worker stays private dry-run only, no external marketing writes.
