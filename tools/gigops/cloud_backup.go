@@ -15,6 +15,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"syscall"
 	"time"
 )
 
@@ -94,7 +95,56 @@ func PrepareCloudObjectBackup(dir string, now time.Time) (string, CloudBackupRep
 	}
 	return encoded, report, err
 }
+
+// prepareCloudBackupLimited takes both production locks in the same order as
+// the cloud worker. Without these locks, the earlier consistency check could
+// race a gig revision or timer queue rewrite between reading the 3 files,
+// producing a checksum-valid but inconsistent disaster-recovery snapshot.
 func prepareCloudBackupLimited(dir string, now time.Time, maxBytes int) (string, CloudBackupReport, error) {
+	return withCloudSnapshotLocks(dir, func() (string, CloudBackupReport, error) {
+		return prepareCloudBackupLimitedUnlocked(dir, now, maxBytes)
+	})
+}
+
+// withCloudSnapshotLocks takes a bounded, fail-fast snapshot lock. Lock order:
+// cloud worker first, then campaign store. Intake holds only campaign store
+// and releases it before queuing, so there is no lock-order inversion.
+// A lock contention is NOT a reason to create a partial off-host backup.
+func withCloudSnapshotLocks(dir string, fn func() (string, CloudBackupReport, error)) (string, CloudBackupReport, error) {
+	if err := validCloudStateDir(dir); err != nil {
+		return "", CloudBackupReport{}, err
+	}
+	if st, err := os.Lstat(dir); err != nil || !st.IsDir() {
+		return "", CloudBackupReport{}, errors.New("snapshot directory does not exist")
+	}
+	// Both are existing production lock paths, never a new independent lock.
+	locks := []string{".cloud-worker.lock", "campaigns.json.lock"}
+	held := make([]*os.File, 0, len(locks))
+	defer func() {
+		for i := len(held) - 1; i >= 0; i-- {
+			_ = syscall.Flock(int(held[i].Fd()), syscall.LOCK_UN)
+			_ = held[i].Close()
+		}
+	}()
+	for _, name := range locks {
+		path := filepath.Join(dir, name)
+		if err := privatePath(path); err != nil {
+			return "", CloudBackupReport{}, fmt.Errorf("unsafe backup lock %s: %w", name, err)
+		}
+		file, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE, 0600)
+		if err != nil {
+			return "", CloudBackupReport{}, err
+		}
+		if err := syscall.Flock(int(file.Fd()), syscall.LOCK_EX|syscall.LOCK_NB); err != nil {
+			_ = file.Close()
+			return "", CloudBackupReport{}, fmt.Errorf("backup lock %s busy; skip snapshot and retry later: %w", name, err)
+		}
+		held = append(held, file)
+	}
+	return fn()
+}
+
+func prepareCloudBackupLimitedUnlocked(dir string, now time.Time, maxBytes int) (string, CloudBackupReport, error) {
 	campaigns, items, err := validateCloudBackupDirectory(dir, now)
 	if err != nil {
 		return "", CloudBackupReport{}, err
