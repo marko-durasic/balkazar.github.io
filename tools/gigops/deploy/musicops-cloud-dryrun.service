@@ -2,7 +2,9 @@
 Description=Balkazar MusicOps cloud queue dry-run (NO publishing/network)
 Documentation=https://github.com/marko-durasic/balkazar.github.io/pull/53
 StartLimitIntervalSec=20min
-StartLimitBurst=3
+# Five-minute timer makes >=4 normal starts/20min. Allow those plus
+# bounded on-failure retries; keep the 20-minute rate limit in force.
+StartLimitBurst=8
 
 [Service]
 Type=oneshot
