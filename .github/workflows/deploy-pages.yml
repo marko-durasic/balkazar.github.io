@@ -38,6 +38,9 @@ jobs:
       - name: Check responsive pages and interactions
         run: python qa/check_responsive.py
 
+      - name: Check booking message handoff and privacy
+        run: python qa/check_booking.py
+
       - name: Upload responsive screenshots on failure
         if: failure()
         uses: actions/upload-artifact@v4

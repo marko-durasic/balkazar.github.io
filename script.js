@@ -132,22 +132,26 @@ document.querySelectorAll(".booking-form").forEach((form) => {
   confirmPanel.className = "booking-confirm";
   confirmPanel.hidden = true;
   confirmPanel.innerHTML = isChinese
-    ? `<p class="eyebrow">內容已備妥</p>
+    ? `<p class="eyebrow">尚未送出</p>
        <h3>選擇送出方式</h3>
-       <p class="confirm-note">選擇 Email、Gmail，或直接複製內容。</p>
+       <p class="confirm-note">請在 Email 或 LINE 中完成送出。使用 LINE 時，先複製下方內容，再貼到聊天室。</p>
+       <label class="message-label">詢價內容<textarea data-role="message" rows="12" readonly></textarea></label>
        <div class="tool-row">
          <a class="btn" data-role="mailto">開啟郵件軟體 <span>→</span></a>
          <a class="tool-button" data-role="gmail" target="_blank" rel="noopener">用 Gmail 開啟 ↗</a>
          <button class="tool-button" data-role="copy" type="button">複製內容</button>
+         <a class="tool-button" data-role="line" href="https://line.me/R/ti/p/@489cncyj" target="_blank" rel="noopener noreferrer">開啟 LINE ↗</a>
        </div>
        <button class="text-link confirm-back" data-role="back" type="button">← 返回修改</button>`
-    : `<p class="eyebrow">Ready to send</p>
+    : `<p class="eyebrow">Not sent yet</p>
        <h3>Choose how to send it</h3>
-       <p class="confirm-note">Choose email, Gmail, or copy the message.</p>
+       <p class="confirm-note">Finish sending in your email app or LINE. For LINE, copy the message below and paste it into the chat.</p>
+       <label class="message-label">Your inquiry<textarea data-role="message" rows="12" readonly></textarea></label>
        <div class="tool-row">
          <a class="btn" data-role="mailto">Open email app <span>→</span></a>
          <a class="tool-button" data-role="gmail" target="_blank" rel="noopener">Open in Gmail ↗</a>
          <button class="tool-button" data-role="copy" type="button">Copy message</button>
+         <a class="tool-button" data-role="line" href="https://line.me/R/ti/p/@489cncyj" target="_blank" rel="noopener noreferrer">Open LINE ↗</a>
        </div>
        <button class="text-link confirm-back" data-role="back" type="button">← Edit details</button>`;
   form.insertAdjacentElement("afterend", confirmPanel);
@@ -155,12 +159,14 @@ document.querySelectorAll(".booking-form").forEach((form) => {
   const mailtoLink = confirmPanel.querySelector('[data-role="mailto"]');
   const gmailLink = confirmPanel.querySelector('[data-role="gmail"]');
   const copyButton = confirmPanel.querySelector('[data-role="copy"]');
+  const messageField = confirmPanel.querySelector('[data-role="message"]');
   const backButton = confirmPanel.querySelector('[data-role="back"]');
   const copyButtonLabel = copyButton.textContent;
 
   backButton.addEventListener("click", () => {
     confirmPanel.hidden = true;
     form.hidden = false;
+    form.querySelector('input[name="name"]').focus();
   });
 
   form.addEventListener("submit", (event) => {
@@ -171,7 +177,7 @@ document.querySelectorAll(".booking-form").forEach((form) => {
       : `Balkazar booking inquiry | ${data.get("date") || "date TBD"} | ${data.get("venue") || "venue TBD"}`;
     const tracking = new URLSearchParams(window.location.search);
     const campaign = ["utm_source", "utm_medium", "utm_campaign", "utm_content"]
-      .filter((key) => tracking.get(key))
+      .filter((key) => /^[a-zA-Z0-9_-]{1,80}$/.test(tracking.get(key) || ""))
       .map((key) => `${key}: ${tracking.get(key)}`)
       .join("\n");
     const body = isChinese
@@ -182,11 +188,14 @@ document.querySelectorAll(".booking-form").forEach((form) => {
     mailtoLink.href = `mailto:ddjura87@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(trackedBody)}`;
     gmailLink.href = `https://mail.google.com/mail/?view=cm&fs=1&to=ddjura87@gmail.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(trackedBody)}`;
     const fullText = `${subject}\n\n${trackedBody}`;
+    messageField.value = fullText;
     copyButton.onclick = async () => {
       try {
         await navigator.clipboard.writeText(fullText);
         copyButton.textContent = isChinese ? "已複製" : "Copied";
       } catch {
+        messageField.focus();
+        messageField.select();
         copyButton.textContent = isChinese ? "請手動選取複製" : "Select the text manually";
       }
       setTimeout(() => { copyButton.textContent = copyButtonLabel; }, 1800);
@@ -196,6 +205,9 @@ document.querySelectorAll(".booking-form").forEach((form) => {
     confirmPanel.hidden = false;
     confirmPanel.scrollIntoView({ behavior: "smooth", block: "start" });
   });
+  // Keep the form hidden without JS so personal details cannot become a GET URL.
+  // Direct email and LINE links remain usable if this script fails to initialize.
+  form.hidden = false;
 });
 
 const masonryImages = Array.from(document.querySelectorAll(".photo-masonry img"));
