@@ -1,46 +1,40 @@
-/* Bilingual evergreen follow hub; only verified public destinations. */
-.follow-wrap { max-width: var(--max); margin: 0 auto; padding-inline: 1.25rem; }
-.follow-hero { background: var(--ink); color: var(--white); padding: clamp(9rem,16vw,12rem) 0 clamp(4rem,8vw,6rem); }
-.follow-hero h1 { max-width: 16ch; font-size: clamp(3.7rem,8vw,7rem); overflow-wrap: break-word; }
-.follow-hero .lede { max-width: 45rem; line-height: 1.7; }
-.follow-actions { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; margin-top: 2rem; }
-.follow-outline { border: 1px solid rgba(255,250,240,.65); border-radius: 999px; color: var(--white); padding: .85rem 1.25rem; font-weight: 700; }
-.follow-outline:hover { border-color: var(--yellow); color: var(--yellow); }
-.follow-text-link { border-bottom: 1px solid currentColor; color: var(--white); font-weight: 700; margin: .3rem 0; text-underline-offset: .2rem; }
-.follow-text-link:hover { color: var(--yellow); }
-.follow-section { padding: clamp(3.5rem,8vw,6rem) 0; }
-.follow-section h2,.follow-last h2 { max-width: none; font-size: clamp(2.6rem,6vw,5rem); }
-.follow-intro { color: var(--muted); font-size: 1.08rem; margin: 1rem 0 2rem; }
-.follow-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 1rem; }
-.follow-card { display: block; background: var(--white); border: 1px solid var(--line); border-top: 5px solid var(--burgundy,#632f2a); min-width: 0; padding: clamp(1.2rem,2.5vw,2rem); transition: transform .15s,border-color .15s; }
-.follow-card:hover,.follow-card:focus-visible { transform: translateY(-3px); border-color: var(--orange); }
-.follow-card-index { color: var(--muted); font-size: .72rem; font-weight: 800; }
-.follow-card h3 { display: flex; justify-content: space-between; align-items: baseline; gap: .5rem; font-size: clamp(1.25rem,2vw,1.8rem); margin: 1.25rem 0 .75rem; overflow-wrap: anywhere; }
-.follow-card h3 span { color: var(--orange); }
-.follow-card p { color: var(--muted); line-height: 1.65; margin: 0; }
-.follow-last { background: var(--yellow); padding: clamp(3rem,7vw,5rem) 0; }
-.follow-last-inner { display: flex; justify-content: space-between; align-items: center; gap: 2rem; }
-.follow-last-inner p:not(.eyebrow) { max-width: 44ch; margin: 1rem 0 0; }
-.follow-last .btn { flex-shrink: 0; }
-.follow-booking { background: var(--paper-deep); padding: 1.6rem 1.25rem; text-align: center; }
-.follow-booking p { margin: 0; }
-.follow-booking a { font-weight: 800; text-decoration: underline; text-underline-offset: .2rem; }
-[lang="zh-Hant-TW"] .follow-hero h1,[lang="zh-Hant-TW"] .follow-section h2,[lang="zh-Hant-TW"] .follow-last h2 { font-family: "Noto Sans TC",sans-serif; font-weight: 900; text-transform: none; letter-spacing: -.04em; line-height: 1.18; }
-@media(max-width:880px) {
-  /* Shared compact-nav CSS hides every non-booking link. On a fan page, keep the gig list and language switcher, not booking. */
-  .nav.compact-nav .links a.follow-nav-shows,
-  .nav.compact-nav .links a.language { display: inline-flex; }
-  .nav.compact-nav .links a.nav-cta { display: none; }
-  .follow-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
-  .follow-last-inner { flex-direction: column; align-items: start; }
-  .follow-hero { padding-top: 7rem; }
+/* Balkazar /follow: one compact, mobile-first link hub; not a full marketing landing page. */
+.follow-hub-body { background: var(--paper); min-height: 100svh; color: var(--ink); }
+.follow-hub { width: min(100%, 510px); margin: 0 auto; padding: 1.15rem 1.1rem 2.5rem; }
+.hub-topline { display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+.hub-topline a { font-size:.86rem; font-weight:700; padding:.4rem .25rem; }
+.hub-home { color:var(--muted); }
+.hub-language { border:1px solid var(--line); border-radius:999px; min-width:52px; text-align:center; }
+.hub-header { text-align:center; padding:.75rem 0 1.45rem; }
+.hub-avatar { width:100px; height:100px; object-fit:contain; margin:0 auto .45rem; }
+.hub-header h1 { font-size:clamp(2.8rem,10vw,3.65rem); line-height:1; letter-spacing:.055em; max-width:none; }
+.hub-header p { color:#635850; font-size:.88rem; font-weight:600; margin:.5rem auto 0; }
+.hub-links { margin:0; padding:0; list-style:none; display:grid; gap:.58rem; }
+.hub-links li { margin:0; min-width:0; }
+.hub-link { display:flex; align-items:center; justify-content:space-between; gap:1rem; width:100%; min-height:54px; padding:.75rem 1.1rem; background:var(--white); border:1px solid rgba(23,17,13,.22); border-radius:7px; color:var(--ink); font-size:1rem; font-weight:800; text-align:left; line-height:1.3; transition:border-color .15s,background .15s,transform .15s; }
+.hub-link-featured { background:var(--yellow); border-color:#ba9c2d; }
+.hub-link:hover { border-color:var(--burgundy,#632f2a); background:#fff2d4; transform:translateY(-1px); }
+.hub-link-featured:hover { background:#ffe17b; }
+.hub-link-arrow { flex:0 0 auto; opacity:.6; font-size:1.15rem; font-weight:600; }
+.hub-music-links { display:flex; justify-content:center; flex-wrap:wrap; align-items:center; gap:.65rem; margin:1.35rem 0 .95rem; font-size:.87rem; font-weight:700; }
+.hub-music-links a { text-decoration:underline; text-underline-offset:3px; }
+.hub-music-links span { color:var(--muted); }
+.hub-footer { display:flex; justify-content:center; align-items:center; flex-wrap:wrap; gap:.7rem; padding:1rem 0 0; margin:0; border-top:1px solid var(--line); color:#635850; font-size:.85rem; }
+.hub-footer a { text-decoration:underline; text-underline-offset:3px; }
+.hub-qr { display:none; }
+@media (min-width:900px) {
+  .follow-hub { padding-top:1.7rem; }
+  .hub-qr { display:flex; align-items:center; justify-content:center; gap:1rem; margin:1.5rem auto 0; color:#635850; font-size:.82rem; }
+  .hub-qr img { width:92px; height:92px; background:#fff; padding:5px; border:1px solid var(--line); }
+  .hub-qr p { margin:0; line-height:1.5; }
+  .hub-qr span { font-weight:700; }
 }
-@media(max-width:560px) { .follow-grid { grid-template-columns: 1fr; } .follow-hero h1 { font-size: clamp(3.2rem,14vw,4.5rem); } .follow-actions { margin-top: 1.5rem; } .follow-actions a,.follow-last .btn { width: 100%; justify-content: center; text-align: center; } }
-
-/* QR only helps visitors transferring links from a computer to a phone; hide it on mobile. */
-.follow-qr-desktop { display:flex; align-items:center; gap:1.4rem; max-width:47rem; margin-top:2.5rem; padding:1.25rem 1.5rem; border:1px solid var(--line); background:var(--paper-deep); }
-.follow-qr-desktop img { flex:0 0 auto; width:132px; height:132px; background:#fff; padding:7px; }
-.follow-qr-desktop strong { display:block; font-size:1.15rem; }
-.follow-qr-desktop p { margin:.5rem 0 .55rem; color:var(--muted); line-height:1.5; }
-.follow-qr-desktop a { color:var(--burgundy,#632f2a); font-weight:700; text-decoration:underline; text-underline-offset:.2rem; }
-@media (max-width:880px) { .follow-qr-desktop { display:none; } }
+@media (max-width:380px) {
+  .follow-hub { padding-inline:.85rem; }
+  .hub-avatar { width:88px; height:88px; }
+  .hub-link { min-height:52px; padding-inline:.9rem; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .hub-link { transition:none; }
+  .hub-link:hover { transform:none; }
+}
