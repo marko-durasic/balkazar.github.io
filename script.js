@@ -179,8 +179,8 @@ document.querySelectorAll(".booking-form").forEach((form) => {
       : `Name: ${data.get("name")}\nEmail: ${data.get("email")}\nDate: ${data.get("date") || "TBD"}\nCity / venue: ${data.get("venue") || "TBD"}\nEvent type: ${data.get("type")}\n\nBudget and details:\n${data.get("details") || "Not provided yet"}`;
     const trackedBody = campaign ? `${body}\n\nCampaign:\n${campaign}` : body;
 
-    mailtoLink.href = `mailto:ddjura87@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(trackedBody)}`;
-    gmailLink.href = `https://mail.google.com/mail/?view=cm&fs=1&to=ddjura87@gmail.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(trackedBody)}`;
+    mailtoLink.href = `mailto:booking@balkazar.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(trackedBody)}`;
+    gmailLink.href = `https://mail.google.com/mail/?view=cm&fs=1&to=booking@balkazar.org&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(trackedBody)}`;
     const fullText = `${subject}\n\n${trackedBody}`;
     copyButton.onclick = async () => {
       try {

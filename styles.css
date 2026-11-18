@@ -293,3 +293,25 @@ footer > div a { font-size: .78rem; font-weight: 700; }
   .proof-strip { gap: .65rem 1.1rem; }
   .proof-strip span { font-size: .7rem; }
 }
+
+/* Current band identity. Keep the full collage uncropped at every size. */
+.logo, .nav.compact-nav .logo { display: inline-flex; align-items: center; gap: .5rem; flex-shrink: 0; }
+.logo span { margin-left: -.5rem; }
+.logo .brand-avatar { width: 48px; height: 48px; object-fit: contain; flex-shrink: 0; }
+footer .logo { flex-wrap: wrap; }
+@media (max-width: 880px) { footer .logo { justify-content: center; } }
+.booking-contact { overflow-wrap: anywhere; }
+.booking-contact a, .epk-contact a { text-decoration: underline; text-underline-offset: .2em; }
+.direct-links a { overflow-wrap: anywhere; }
+.epk-brand { width: min(30vw, 320px); height: auto; float: right; margin: 0 0 2rem 2.5rem; }
+.epk-hero::after { content: ""; display: table; clear: both; }
+.epk-contact { margin-top: 1.5rem; overflow-wrap: anywhere; }
+.download-card.logo-download img { height: auto; aspect-ratio: 1; object-fit: contain; }
+.follow-brand { width: 144px; height: auto; margin-bottom: 2rem; }
+.band-brand { width: 240px; height: auto; margin-bottom: 2rem; }
+@media (max-width: 600px) {
+  .epk-brand { width: 180px; float: none; margin: 0 0 2rem; }
+  .nav.compact-nav .logo .brand-avatar { width: 32px; height: 32px; }
+  .nav.compact-nav .logo { gap: .25rem; }
+  .nav.compact-nav .logo span { margin-left: -.25rem; }
+}

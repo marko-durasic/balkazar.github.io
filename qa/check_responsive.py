@@ -15,10 +15,11 @@ from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "qa-artifacts"
-VIEWPORTS = (320, 390, 768, 1280)
+VIEWPORTS = (320, 390, 768, 1024, 1280)
 EVENT = "events/2026-12-03-european-christmas-market/index.html"
 IMPORTANT = {"index.html", "zh/index.html", EVENT, "zh/" + EVENT,
-             "events/index.html", "zh/events/index.html"}
+             "events/index.html", "zh/events/index.html", "epk/index.html", "zh/epk/index.html",
+             "band/index.html", "zh/band/index.html", "follow/index.html", "zh/follow/index.html", "zh/weiya/index.html"}
 
 class QuietHandler(SimpleHTTPRequestHandler):
     def log_message(self, *_):
@@ -45,6 +46,20 @@ def evaluate_layout(page):
           let r = el.getBoundingClientRect();
           return r.width && (r.left < -2 || r.right > width + 2);
         }).slice(0, 3).map(el => el.tagName.toLowerCase() + '.' + (el.className || ''));
+      const nav = document.querySelector(".nav");
+      const navIssues = [];
+      if (nav) {
+        const box = nav.getBoundingClientRect();
+        const logo = nav.querySelector(".logo");
+        const logoBox = logo && logo.getBoundingClientRect();
+        if (logoBox && (logoBox.top < box.top - 1 || logoBox.bottom > box.bottom + 1)) navIssues.push("logo exceeds header height");
+        for (const el of nav.querySelectorAll(".links a, .nav-toggle")) {
+          const r = el.getBoundingClientRect();
+          if (!r.width || !r.height) continue;
+          if (r.right > width + 1 || r.left < 0) navIssues.push("nav item outside viewport");
+          if (logoBox && r.left < logoBox.right && r.right > logoBox.left && r.top < logoBox.bottom && r.bottom > logoBox.top) navIssues.push("nav item overlaps logo");
+        }
+      }
       let title = null;
       const market = document.querySelector(".event-title-zh__market");
       const date = document.querySelector(".event-title-zh__date");
@@ -59,7 +74,7 @@ def evaluate_layout(page):
         title = {market:shape(market), date:shape(date), maxRight:heading.getBoundingClientRect().right};
       }
       return {width, scrollWidth: root.scrollWidth, headingFont: heading && getComputedStyle(heading).fontSize,
-              headingText: heading && heading.innerText, visibleBroken, badOverflows, title};
+              headingText: heading && heading.innerText, visibleBroken, badOverflows, title, navIssues};
     }""")
 
 def main():
@@ -91,6 +106,8 @@ def main():
                         page.evaluate("() => document.fonts.ready")
                         page.wait_for_timeout(100)
                         data = evaluate_layout(page)
+                        for issue in data["navIssues"]:
+                            errors.append(f"{file} @{viewport}: {issue}")
                         checks += 1
                         if data["scrollWidth"] > viewport + 1:
                             errors.append(f"{file} @{viewport}: horizontal document overflow {data['scrollWidth']}px"
@@ -102,10 +119,10 @@ def main():
                                 box = data["title"][part]
                                 if box["rectCount"] != 1 or box["right"] > viewport + 1:
                                     errors.append(f"{file} @{viewport}: Traditional Chinese {part} wraps/overflows {box}")
-                        if file in IMPORTANT and viewport in (320, 390):
+                        if file in IMPORTANT:
                             lang = "zh" if file.startswith("zh/") else "en"
-                            short = "home" if file in ("index.html", "zh/index.html") else (
-                                "christmas" if "2026-12-03" in file else "events")
+                            route_name = file.removeprefix("zh/").removesuffix("index.html").strip("/")
+                            short = route_name.replace("/", "-") or "home"
                             page.screenshot(path=str(OUT / f"{lang}-{short}-{viewport}.png"),full_page=False)
                         if viewport == 390 and file in ("index.html", "zh/index.html", EVENT, "zh/" + EVENT):
                             toggle = page.locator("button.nav-toggle")
@@ -183,7 +200,7 @@ def main():
         print("\n".join("- " + msg for msg in errors))
         print(f"FAIL: {len(errors)} responsive issues; screenshots in qa-artifacts")
         return 1
-    print("PASS: widths 320, 390, 768, 1280; no horizontal overflow, broken visible media or CJK heading line breaks")
+    print("PASS: widths 320, 390, 768, 1024, 1280; no horizontal overflow, broken visible media or CJK heading line breaks")
     print("PASS: mobile navigation toggle for EN/ZH home + event pages")
     return 0
 
