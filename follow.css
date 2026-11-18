@@ -200,11 +200,74 @@
   .hub-qr p { margin:0; line-height:1.5; }
   .hub-qr span { color:var(--hub-cream); font-weight:750; }
 }
+/* Compact, no-scroll phone layout. Fits primary + secondary links into
+   the initial browser content viewport (including mobile browser chrome).
+   Keep the dark folk-poster design; don't shrink links below 44px. */
+@media (max-width: 760px) {
+  .follow-hub {
+    padding: 9px 14px max(13px, env(safe-area-inset-bottom));
+  }
+  .hub-topline a { line-height: 1.2; padding: .25rem .2rem; font-size: .76rem; }
+  .hub-topline .hub-language { min-height: 29px; }
+  .hub-header {
+    display: grid;
+    grid-template-columns: 76px minmax(0, 1fr);
+    grid-template-rows: auto auto auto;
+    column-gap: 13px;
+    align-items: center;
+    text-align: left;
+    padding: 7px 0 15px;
+  }
+  .hub-portrait {
+    grid-column: 1; grid-row: 1 / span 3;
+    width: 70px; height: 70px;
+    margin: 0 0 0 3px;
+  }
+  .hub-overline {
+    grid-column: 2; grid-row: 1;
+    font-size: .52rem; letter-spacing: .1em;
+    line-height: 1.35; margin: 0;
+  }
+  .hub-header h1 {
+    grid-column: 2; grid-row: 2;
+    font-size: clamp(2.45rem, 11.1vw, 3.1rem);
+    letter-spacing: .035em;
+    line-height: .94;
+    white-space: nowrap;
+  }
+  .hub-tagline {
+    grid-column: 2; grid-row: 3;
+    font-size: .68rem; line-height: 1.4;
+    margin: 0;
+  }
+  .hub-links { gap: 6px; }
+  .hub-link { min-height: 48px; padding: 7px 12px; font-size: .95rem; }
+  .hub-link-no { min-width: 1.05rem; font-size: 1.02rem; }
+  .hub-music-links {
+    margin: 12px 0 0; gap: .5rem;
+    font-size: .79rem; line-height: 1.25;
+  }
+  .hub-footer {
+    margin: 11px 0 0; padding: 10px 0 0;
+    gap: .55rem; font-size: .79rem; line-height: 1.25;
+  }
+}
+@media (max-width: 760px) and (max-height: 610px) {
+  .hub-header { padding: 4px 0 10px; grid-template-columns: 68px minmax(0, 1fr); column-gap: 9px; }
+  .hub-portrait { width: 61px; height: 61px; }
+  .hub-header h1 { font-size: clamp(2.15rem, 10.8vw, 2.85rem); }
+  .hub-link { min-height: 44px; padding-top: 5px; padding-bottom: 5px; }
+  .hub-links { gap: 5px; }
+  .hub-music-links { margin-top: 9px; }
+  .hub-footer { margin-top: 8px; padding-top: 8px; }
+}
+
 @media (max-width: 380px) {
-  .follow-hub { padding-left: 14px; padding-right: 14px; }
-  .hub-portrait { width: 99px; height: 99px; }
-  .hub-header { padding-top: 9px; padding-bottom: 17px; }
-  .hub-link { min-height: 55px; padding: 9px 11px; gap: .76rem; }
+  .follow-hub { padding-left: 12px; padding-right: 12px; }
+  .hub-portrait { width: 62px; height: 62px; }
+  .hub-header { grid-template-columns: 68px minmax(0, 1fr); column-gap: 8px; padding-top: 4px; padding-bottom: 10px; }
+  .hub-header h1 { font-size: clamp(2.05rem, 10.8vw, 2.65rem); }
+  .hub-link { min-height: 46px; padding: 6px 9px; gap: .62rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   .hub-link { transition: none; }
