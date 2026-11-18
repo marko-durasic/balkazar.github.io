@@ -263,10 +263,11 @@
 }
 
 @media (max-width: 380px) {
-  .follow-hub { padding-left: 14px; padding-right: 14px; }
-  .hub-portrait { width: 99px; height: 99px; }
-  .hub-header { padding-top: 9px; padding-bottom: 17px; }
-  .hub-link { min-height: 55px; padding: 9px 11px; gap: .76rem; }
+  .follow-hub { padding-left: 12px; padding-right: 12px; }
+  .hub-portrait { width: 62px; height: 62px; }
+  .hub-header { grid-template-columns: 68px minmax(0, 1fr); column-gap: 8px; padding-top: 4px; padding-bottom: 10px; }
+  .hub-header h1 { font-size: clamp(2.05rem, 10.8vw, 2.65rem); }
+  .hub-link { min-height: 46px; padding: 6px 9px; gap: .62rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   .hub-link { transition: none; }
