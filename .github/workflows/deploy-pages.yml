@@ -38,8 +38,8 @@ jobs:
       - name: Check responsive pages and interactions
         run: python qa/check_responsive.py
 
-      - name: Upload responsive screenshots on failure
-        if: failure()
+      - name: Upload responsive screenshots for review
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: balkazar-responsive-qa
