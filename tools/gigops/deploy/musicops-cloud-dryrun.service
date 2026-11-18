@@ -1,0 +1,27 @@
+[Unit]
+Description=Balkazar MusicOps cloud queue dry-run (NO publishing/network)
+Documentation=https://github.com/marko-durasic/balkazar.github.io/pull/53
+StartLimitIntervalSec=20min
+# Five-minute timer makes >=4 normal starts/20min. Allow those plus
+# bounded on-failure retries; keep the 20-minute rate limit in force.
+StartLimitBurst=8
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/balkazar-musicops-cloud-worker --mode=run --state-dir=%h/.local/state/balkazar-musicops
+WorkingDirectory=%h
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=%h/.local/state/balkazar-musicops
+RestrictAddressFamilies=AF_UNIX
+MemoryMax=96M
+CPUQuota=15%
+TasksMax=24
+TimeoutStartSec=45s
+Restart=on-failure
+RestartSec=90s
+StandardOutput=journal
+StandardError=journal

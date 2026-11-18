@@ -2,3 +2,10 @@
 assets/images/candidates-review/
 qa-artifacts/
 __pycache__/
+
+# Browser login state, node dependencies and MusicOps local-only state
+**/node_modules/
+**/.auth/
+tools/gigops/browser/.profiles/
+tools/gigops/private/
+**/ledger.json
