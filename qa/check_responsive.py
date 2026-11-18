@@ -119,10 +119,10 @@ def main():
                                 box = data["title"][part]
                                 if box["rectCount"] != 1 or box["right"] > viewport + 1:
                                     errors.append(f"{file} @{viewport}: Traditional Chinese {part} wraps/overflows {box}")
-                        if file in IMPORTANT and viewport in (320, 390):
+                        if file in IMPORTANT:
                             lang = "zh" if file.startswith("zh/") else "en"
-                            short = "home" if file in ("index.html", "zh/index.html") else (
-                                "christmas" if "2026-12-03" in file else "events")
+                            route_name = file.removeprefix("zh/").removesuffix("index.html").strip("/")
+                            short = route_name.replace("/", "-") or "home"
                             page.screenshot(path=str(OUT / f"{lang}-{short}-{viewport}.png"),full_page=False)
                         if viewport == 390 and file in ("index.html", "zh/index.html", EVENT, "zh/" + EVENT):
                             toggle = page.locator("button.nav-toggle")
