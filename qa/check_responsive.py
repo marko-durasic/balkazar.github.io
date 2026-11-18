@@ -190,6 +190,45 @@ def main():
                                             if not bounds or bounds["height"] < 44:
                                                 errors.append(f"{file} @390: {provider} tap target too small")
                         page.close()
+                # Mobile QR scans land in browser chrome, not a fullscreen webview.
+                # Keep *all* hub links visible without a single swipe in short phone viewports.
+                for file in ("follow/index.html", "zh/follow/index.html"):
+                    route = file[:-10]
+                    for width, height in ((320, 568), (390, 650)):
+                        page = browser.new_page(viewport={"width": width, "height": height},
+                                                device_scale_factor=1)
+                        try:
+                            response = page.goto(
+                                f"http://127.0.0.1:{service.server_port}/{quote(route)}",
+                                wait_until="domcontentloaded", timeout=20000)
+                            if not response or response.status != 200:
+                                errors.append(f"{file} @{width}x{height}: HTTP {response.status if response else 'unknown'}")
+                                continue
+                            page.evaluate("() => document.fonts.ready")
+                            measurements = page.evaluate("""() => {
+                              const footer = document.querySelector(".hub-footer");
+                              const links = [...document.querySelectorAll(".hub-link")];
+                              const music = document.querySelector(".hub-music-links");
+                              const qr = document.querySelector(".hub-qr");
+                              return {
+                                footerBottom: footer?.getBoundingClientRect().bottom,
+                                musicBottom: music?.getBoundingClientRect().bottom,
+                                viewport: innerHeight,
+                                scrollHeight: document.documentElement.scrollHeight,
+                                linkHeights: links.map(a => a.getBoundingClientRect().height),
+                                qrHidden: qr && getComputedStyle(qr).display === "none"
+                              };
+                            }""")
+                            if not measurements["footerBottom"] or measurements["footerBottom"] > height - 4:
+                                errors.append(f"{file} @{width}x{height}: footer is below initial viewport {measurements}")
+                            if measurements["scrollHeight"] > height + 2:
+                                errors.append(f"{file} @{width}x{height}: page still scrolls {measurements}")
+                            if len(measurements["linkHeights"]) != 6 or min(measurements["linkHeights"], default=0) < 44:
+                                errors.append(f"{file} @{width}x{height}: link tap targets too small {measurements}")
+                            if not measurements["qrHidden"]:
+                                errors.append(f"{file} @{width}x{height}: desktop QR visible on mobile")
+                        finally:
+                            page.close()
             finally:
                 browser.close()
     finally:
