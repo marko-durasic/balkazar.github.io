@@ -190,11 +190,12 @@ def main():
                                             if not bounds or bounds["height"] < 44:
                                                 errors.append(f"{file} @390: {provider} tap target too small")
                         page.close()
-                # Mobile QR scans land in browser chrome, not a fullscreen webview.
-                # Keep *all* hub links visible without a single swipe in short phone viewports.
+                # Scan-to-phone user acceptance: page fills the *visible* browser
+                # viewport (not device pixels), with no scrolling or tiny controls.
                 for file in ("follow/index.html", "zh/follow/index.html"):
                     route = file[:-10]
-                    for width, height in ((320, 568), (390, 650)):
+                    for width, height in ((320, 568), (390, 650), (390, 750),
+                                          (390, 850), (411, 740)):
                         page = browser.new_page(viewport={"width": width, "height": height},
                                                 device_scale_factor=1)
                         try:
@@ -207,11 +208,13 @@ def main():
                             page.evaluate("() => document.fonts.ready")
                             measurements = page.evaluate("""() => {
                               const footer = document.querySelector(".hub-footer");
+                              const header = document.querySelector(".hub-header");
                               const links = [...document.querySelectorAll(".hub-link")];
                               const music = document.querySelector(".hub-music-links");
                               const qr = document.querySelector(".hub-qr");
                               return {
                                 footerBottom: footer?.getBoundingClientRect().bottom,
+                                headerHeight: header?.getBoundingClientRect().height,
                                 musicBottom: music?.getBoundingClientRect().bottom,
                                 viewport: innerHeight,
                                 scrollHeight: document.documentElement.scrollHeight,
@@ -220,13 +223,26 @@ def main():
                               };
                             }""")
                             if not measurements["footerBottom"] or measurements["footerBottom"] > height - 4:
-                                errors.append(f"{file} @{width}x{height}: footer is below initial viewport {measurements}")
+                                errors.append(f"{file} @{width}x{height}: footer below first viewport {measurements}")
                             if measurements["scrollHeight"] > height + 2:
-                                errors.append(f"{file} @{width}x{height}: page still scrolls {measurements}")
-                            if len(measurements["linkHeights"]) != 6 or min(measurements["linkHeights"], default=0) < 44:
+                                errors.append(f"{file} @{width}x{height}: page scrolls {measurements}")
+                            heights = measurements["linkHeights"]
+                            if len(heights) != 6 or min(heights, default=0) < 44:
                                 errors.append(f"{file} @{width}x{height}: link tap targets too small {measurements}")
                             if not measurements["qrHidden"]:
                                 errors.append(f"{file} @{width}x{height}: desktop QR visible on mobile")
+                            # Regression: don't fix short screens by making tall screens tiny.
+                            if height >= 740:
+                                if min(heights, default=0) < 66:
+                                    errors.append(f"{file} @{width}x{height}: tall-screen buttons not expanded {measurements}")
+                                if height - measurements["footerBottom"] > 55:
+                                    errors.append(f"{file} @{width}x{height}: wasting bottom screen space {measurements}")
+                                if measurements["headerHeight"] < 88:
+                                    errors.append(f"{file} @{width}x{height}: header too compressed {measurements}")
+                            if height in (650, 850):
+                                name = "zh" if file.startswith("zh/") else "en"
+                                page.screenshot(path=str(OUT / f"{name}-follow-firstscreen-{width}x{height}.png"),
+                                                full_page=False)
                         finally:
                             page.close()
             finally:
