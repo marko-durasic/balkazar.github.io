@@ -36,3 +36,11 @@
   .follow-hero { padding-top: 7rem; }
 }
 @media(max-width:560px) { .follow-grid { grid-template-columns: 1fr; } .follow-hero h1 { font-size: clamp(3.2rem,14vw,4.5rem); } .follow-actions { margin-top: 1.5rem; } .follow-actions a,.follow-last .btn { width: 100%; justify-content: center; text-align: center; } }
+
+/* QR only helps visitors transferring links from a computer to a phone; hide it on mobile. */
+.follow-qr-desktop { display:flex; align-items:center; gap:1.4rem; max-width:47rem; margin-top:2.5rem; padding:1.25rem 1.5rem; border:1px solid var(--line); background:var(--paper-deep); }
+.follow-qr-desktop img { flex:0 0 auto; width:132px; height:132px; background:#fff; padding:7px; }
+.follow-qr-desktop strong { display:block; font-size:1.15rem; }
+.follow-qr-desktop p { margin:.5rem 0 .55rem; color:var(--muted); line-height:1.5; }
+.follow-qr-desktop a { color:var(--burgundy,#632f2a); font-weight:700; text-decoration:underline; text-underline-offset:.2rem; }
+@media (max-width:880px) { .follow-qr-desktop { display:none; } }
