@@ -112,6 +112,6 @@
 @media (max-width: 560px) { .founder-journey-grid { grid-template-columns: 1fr; } .founder-journey-card { min-height: 0; } }
 
 .founder-inline-photo { margin: 2rem 0 2.5rem; }
-.founder-inline-photo img { display: block; width: 100%; height: auto; max-height: 330px; object-fit: cover; border-radius: 2px; }
+.founder-inline-photo img { display: block; width: 100%; height: clamp(195px, 26vw, 330px); object-fit: cover; object-position: center; border-radius: 2px; }
 .founder-inline-photo figcaption { color: var(--muted); font-size: .86rem; line-height: 1.6; padding: .55rem 0 0; }
 .founder-inline-photo figcaption a { text-decoration: underline; text-decoration-color: var(--orange); }
