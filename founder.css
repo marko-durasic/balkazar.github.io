@@ -115,3 +115,34 @@
 .founder-inline-photo img { display: block; width: 100%; height: clamp(195px, 26vw, 330px); object-fit: cover; object-position: center; border-radius: 2px; }
 .founder-inline-photo figcaption { color: var(--muted); font-size: .86rem; line-height: 1.6; padding: .55rem 0 0; }
 .founder-inline-photo figcaption a { text-decoration: underline; text-decoration-color: var(--orange); }
+
+/* Readable biography, tighter mobile layout and uncropped authentic photographs. */
+.founder-prose { min-width: 0; }
+.founder-prose h2 { font-family: "DM Sans", system-ui, sans-serif; font-size: clamp(1.9rem, 3vw, 2.8rem); font-weight: 800; letter-spacing: -.035em; line-height: 1.2; text-transform: none; margin: 2rem 0 .85rem; overflow-wrap: anywhere; }
+.founder-prose p { font-size: 1.02rem; line-height: 1.74; margin-bottom: 1.15rem; }
+.founder-prose a { color: #84411b; text-decoration: underline; text-decoration-color: #ce935d; text-underline-offset: .17em; }
+.founder-prose a:hover,.founder-prose a:focus-visible { color: #bf591f; }
+.founder-visual { max-width: 100%; }
+.founder-visual img { display: block; width: 100%; height: clamp(330px, 38vw, 470px); aspect-ratio: auto; object-fit: cover; object-position: center 34%; }
+.founder-inline-photo { margin: 1.4rem 0 2rem; }
+.founder-inline-photo img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: contain; border-radius: 3px; }
+.founder-inline-photo figcaption { color: #594638; font-size: .89rem; line-height: 1.55; padding: .7rem 0 0; }
+.founder-journey-card { min-height: 0; }
+.founder-video-card a { color: var(--white); text-underline-offset: .18em; }
+[lang="zh-Hant-TW"] .founder-prose h2 { font-family: "Noto Sans TC", system-ui, sans-serif; font-weight: 900; line-height: 1.32; letter-spacing: -.025em; }
+@media(max-width:880px) {
+  .founder-content { padding-top: 1.75rem; padding-bottom: 3.5rem; }
+  .founder-lead { display: flex; flex-direction: column; align-items: stretch; gap: 1.3rem; }
+  .founder-visual { order: -1; position: static; width: 100%; max-width: 500px; margin: 0; }
+  .founder-visual img { height: clamp(235px, 64vw, 340px); object-position: center 32%; }
+  .founder-prose { width: 100%; }
+}
+@media(max-width:560px) {
+  .founder-prose h2 { font-size: 1.83rem; margin: 1.55rem 0 .7rem; }
+  .founder-prose p { font-size: 1rem; line-height: 1.68; }
+  .founder-lead .founder-prose > p:first-of-type { font-size: 1.1rem; line-height: 1.66; }
+  .founder-media { padding-block: 3.5rem; }
+  .founder-journey-inner { padding-block: 3.25rem; }
+  .founder-journey h2 { font-size: 2.45rem; }
+  .founder-journey-card { padding: 1rem 1.1rem; gap: .4rem; }
+}

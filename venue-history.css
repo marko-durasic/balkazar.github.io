@@ -32,3 +32,6 @@
 [lang="zh-Hant-TW"] .venue-entry h3,[lang="zh-Hant-TW"] .venue-season h3{font-family:"Noto Sans TC",sans-serif;font-weight:800;line-height:1.5}
 @media(max-width:750px){.venue-list{grid-template-columns:minmax(0,1fr)}.venue-season{grid-template-columns:1fr}.venue-hero h1{font-size:clamp(3rem,12vw,5rem)}}
 @media(max-width:420px){.venue-entry{padding:1.15rem}.venue-chips a{font-size:.76rem}.venue-sources a{width:100%}.venue-season article{padding:1.25rem}}
+
+/* Authentic Cijin Sunset Bar New Year’s Eve photograph. */
+.venue-cijin-photo{margin:1.2rem 0 0;max-width:760px}.venue-cijin-photo img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover}.venue-cijin-photo figcaption{font-size:.85rem;line-height:1.55;color:var(--muted);margin-top:.5rem}
