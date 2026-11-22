@@ -315,3 +315,43 @@ footer .logo { flex-wrap: wrap; }
   .nav.compact-nav .logo { gap: .25rem; }
   .nav.compact-nav .logo span { margin-left: -.25rem; }
 }
+
+
+/* Music first: quick listening without interrupting booking or auto-playing audio. */
+.listen-preview { background: var(--ink); color: var(--white); }
+.listen-preview-inner { max-width: var(--max); margin-inline: auto; padding: clamp(1.8rem,4vw,3rem) 1.25rem; display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: clamp(1.2rem,3vw,3rem); align-items: center; }
+.listen-copy h2 { font-family: "DM Sans", sans-serif; color: var(--white); font-size: clamp(2rem,3.7vw,3.3rem); line-height: 1.08; max-width: 18ch; margin: .5rem 0 .9rem; text-transform: none; }
+.listen-copy p { line-height: 1.65; margin: 0 0 .65rem; max-width: 55ch; }
+.listen-copy .listen-note { font-size: .83rem; color: rgba(255,250,240,.65); }
+.listen-copy a,.soundcloud-source a { text-decoration: underline; text-underline-offset: .2em; color: var(--yellow); }
+.listen-widget { min-width: 0; border-radius: 5px; overflow: hidden; background: #ece9e5; min-height: 166px; }
+.listen-widget iframe { display: block; width: 100%; height: 166px; border: 0; }
+.soundcloud-source { font-size: .9rem; line-height: 1.5; }
+.soundcloud-source a { color: var(--orange); }
+.collab-show { padding-block: clamp(2rem,5vw,4rem); background: #ede5dc; }
+.collab-show-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 1rem 2rem; }
+.collab-show h2 { font-size: clamp(2.3rem,4.3vw,4rem); line-height: 1.08; margin: .4rem 0 0; max-width: none; }
+.collab-show-head > p { line-height: 1.75; max-width: 66ch; }
+.collab-video { margin: 1.5rem auto 0; max-width: 860px; }
+.collab-video-frame { aspect-ratio: 16/9; width: 100%; background: #12100e; overflow: hidden; }
+.collab-video-frame iframe { width: 100%; height: 100%; display: block; border: 0; }
+.collab-video figcaption { margin-top: .65rem; font-size: .88rem; color: #4b4036; line-height: 1.55; }
+.collab-video figcaption a { color: #944a1b; text-decoration: underline; text-underline-offset: .2em; }
+[lang="zh-Hant-TW"] .listen-copy h2,[lang="zh-Hant-TW"] .collab-show h2 { font-family: "Noto Sans TC",sans-serif; font-weight: 900; letter-spacing: -.035em; line-height: 1.25; }
+@media(max-width:760px) {
+ .listen-preview-inner,.collab-show-head { grid-template-columns: minmax(0,1fr); }
+ .listen-copy h2 { font-size: clamp(2rem,8vw,2.65rem); }
+ .listen-preview-inner { padding-block: 1.7rem; }
+ .collab-show { padding-block: 2.25rem; }
+ .collab-show h2 { font-size: clamp(2rem,8vw,3rem); }
+}
+@media(prefers-reduced-motion:reduce){.listen-preview * { scroll-behavior:auto; }}
+
+/* Always show an authentic visual even when a third-party concert-video iframe loads slowly. */
+.collab-video-poster { display: block; position: relative; width: 100%; max-width: 640px; margin: 0 auto; background: #111; color: var(--white); overflow: hidden; }
+.collab-video-poster img { display: block; width: 100%; height: auto; aspect-ratio: 4/3; object-fit: cover; }
+.collab-play { display: inline-flex; align-items: center; gap: .5rem; position: absolute; bottom: .85rem; left: .85rem; right: .85rem; max-width: max-content; background: #18120eef; color: #fff; font-weight: 800; font-size: .9rem; padding: .7rem 1rem; }
+.collab-video-poster:hover .collab-play,.collab-video-poster:focus-visible .collab-play { background: var(--orange); color: var(--ink); }
+.collab-inline { margin: 1.15rem auto 0; max-width: 640px; }
+.collab-inline summary { cursor: pointer; color: #8a3f11; font-weight: 800; text-decoration: underline; text-underline-offset: .18em; padding: .4rem 0; }
+.collab-inline .collab-video-frame { margin-top: .85rem; }
