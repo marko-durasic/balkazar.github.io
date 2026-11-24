@@ -205,13 +205,32 @@ def main():
                                             if not bounds or bounds["height"] < 44:
                                                 errors.append(f"{file} @390: {provider} tap target too small")
                         page.close()
-                # Explicit choice outranks regional defaults; keep UTM and deep links.
+                # Browser preference outranks location; explicit choice outranks both.
                 from urllib.parse import urlsplit, parse_qs
                 origin = f"http://127.0.0.1:{service.server_port}"
-                for zone, default in (("Asia/Taipei", "/zh/"), ("Europe/Belgrade", "/")):
-                    context = browser.new_context(timezone_id=zone, locale="en-US",
+                for zone, locale, default in (
+                    ("Asia/Taipei", "en-US", "/"),
+                    ("Asia/Taipei", "zh-TW", "/zh/"),
+                    ("Europe/Belgrade", "zh-TW", "/zh/"),
+                    ("Europe/Belgrade", "en-US", "/"),
+                    ("Europe/Belgrade", "zh-CN", "/zh/"),
+                    ("Asia/Taipei", "ja-JP", "/"),
+                    ("Asia/Taipei", None, "/zh/"),
+                    ("Europe/Belgrade", None, "/"),
+                ):
+                    context = browser.new_context(timezone_id=zone, locale=locale or "en-US",
                                                   viewport={"width": 390, "height": 850})
                     try:
+                        if locale is None:
+                            context.add_init_script("""
+                                Object.defineProperty(navigator, 'languages', {get: () => []});
+                                Object.defineProperty(navigator, 'language', {get: () => ''});
+                            """)
+                        elif locale == "en-US":
+                            # Secondary Chinese must not override primary English.
+                            context.add_init_script("""
+                                Object.defineProperty(navigator, 'languages', {get: () => ['en-US', 'zh-TW']});
+                            """)
                         page = context.new_page()
                         def navigate(path):
                             try:
@@ -222,10 +241,10 @@ def main():
                         navigate("/?utm_source=ig#watch")
                         page.wait_for_url(lambda u: urlsplit(u).path == default, timeout=10000)
                         if parse_qs(urlsplit(page.url).query).get("utm_source") != ["ig"] or urlsplit(page.url).fragment != "watch":
-                            errors.append(f"{zone}: automatic language selection dropped tracking or fragment")
+                            errors.append(f"{zone}/{locale}: automatic language selection dropped tracking or fragment")
                         switch = page.locator(".header-language")
                         if not switch.is_visible():
-                            errors.append(f"{zone}: language switch is not visible with closed menu")
+                            errors.append(f"{zone}/{locale}: language switch is not visible with closed menu")
                         else:
                             switch.click()
                             selected = "/" if default == "/zh/" else "/zh/"
@@ -236,7 +255,7 @@ def main():
                             page.wait_for_url(lambda u: urlsplit(u).path == selected, timeout=10000)
                             navigate("/events/")
                             if urlsplit(page.url).path != "/events/":
-                                errors.append(f"{zone}: explicit event URL was redirected")
+                                errors.append(f"{zone}/{locale}: explicit event URL was redirected")
                     finally:
                         context.close()
                 # Scan-to-phone user acceptance: page fills the *visible* browser
