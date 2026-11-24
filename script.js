@@ -18,12 +18,13 @@ function setupSiteLanguage(win, doc, navInfo) {
   const alternate = doc.querySelector(other === "zh"
     ? 'link[rel="alternate"][hreflang^="zh"]'
     : 'link[rel="alternate"][hreflang="en"]');
-  const languageLinkSelector = '[data-language-select], a.band-lang, a.hub-language, a.language';
+  const languageLinkSelector = '[data-language-select], a.band-lang, a.founder-lang, a.hub-language, a.language';
   const header = doc.querySelector(".nav-inner");
   let link = header?.querySelector(languageLinkSelector);
   // Compact pages may have no existing switch. Use their actual hreflang
   // counterpart; the Chinese-only corporate page links to the English home.
-  const target = alternate?.href || (current.pathname === "/zh/weiya/" ? "/?lang=en" : null);
+  const target = alternate ? new URL(alternate.href).pathname
+    : (current.pathname === "/zh/weiya/" ? "/?lang=en" : null);
   if (header && (link || target)) {
     if (!link) {
       link = doc.createElement("a");
