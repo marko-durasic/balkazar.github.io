@@ -53,12 +53,27 @@ def evaluate_layout(page):
         const logo = nav.querySelector(".logo");
         const logoBox = logo && logo.getBoundingClientRect();
         if (logoBox && (logoBox.top < box.top - 1 || logoBox.bottom > box.bottom + 1)) navIssues.push("logo exceeds header height");
-        for (const el of nav.querySelectorAll(".links a, .nav-toggle")) {
+        for (const el of nav.querySelectorAll(".links a, .nav-toggle, .header-language")) {
           const r = el.getBoundingClientRect();
           if (!r.width || !r.height) continue;
           if (r.right > width + 1 || r.left < 0) navIssues.push("nav item outside viewport");
           if (logoBox && r.left < logoBox.right && r.right > logoBox.left && r.top < logoBox.bottom && r.bottom > logoBox.top) navIssues.push("nav item overlaps logo");
         }
+      }
+      const language = nav?.querySelector(".header-language");
+      const alternate = document.querySelector('link[rel="alternate"][hreflang="' +
+        (document.documentElement.lang.startsWith("zh") ? "en" : "zh-Hant-TW") + '"]');
+      if (nav && (alternate || location.pathname === "/zh/weiya/")) {
+        const r = language?.getBoundingClientRect();
+        if (!r || r.width < 44 || r.height < 44 || getComputedStyle(language).visibility !== "visible")
+          navIssues.push("language switch missing or too small");
+        if (language?.closest(".links")) navIssues.push("language switch is hidden inside the menu");
+        if (r && r.width && language && (r.left < 0 || r.right > width + 1))
+          navIssues.push("language switch outside viewport");
+        const toggle = nav.querySelector(".nav-toggle");
+        const t = toggle?.getBoundingClientRect();
+        if (r && t?.width && t.height && r.right > t.left + 1)
+          navIssues.push("language switch overlaps hamburger");
       }
       let title = null;
       const market = document.querySelector(".event-title-zh__market");
@@ -190,6 +205,59 @@ def main():
                                             if not bounds or bounds["height"] < 44:
                                                 errors.append(f"{file} @390: {provider} tap target too small")
                         page.close()
+                # Browser preference outranks location; explicit choice outranks both.
+                from urllib.parse import urlsplit, parse_qs
+                origin = f"http://127.0.0.1:{service.server_port}"
+                for zone, locale, default in (
+                    ("Asia/Taipei", "en-US", "/"),
+                    ("Asia/Taipei", "zh-TW", "/zh/"),
+                    ("Europe/Belgrade", "zh-TW", "/zh/"),
+                    ("Europe/Belgrade", "en-US", "/"),
+                    ("Europe/Belgrade", "zh-CN", "/zh/"),
+                    ("Asia/Taipei", "ja-JP", "/"),
+                    ("Asia/Taipei", None, "/zh/"),
+                    ("Europe/Belgrade", None, "/"),
+                ):
+                    context = browser.new_context(timezone_id=zone, locale=locale or "en-US",
+                                                  viewport={"width": 390, "height": 850})
+                    try:
+                        if locale is None:
+                            context.add_init_script("""
+                                Object.defineProperty(navigator, 'languages', {get: () => []});
+                                Object.defineProperty(navigator, 'language', {get: () => ''});
+                            """)
+                        elif locale == "en-US":
+                            # Secondary Chinese must not override primary English.
+                            context.add_init_script("""
+                                Object.defineProperty(navigator, 'languages', {get: () => ['en-US', 'zh-TW']});
+                            """)
+                        page = context.new_page()
+                        def navigate(path):
+                            try:
+                                page.goto(origin + path, wait_until="domcontentloaded", timeout=20000)
+                            except Exception as error:
+                                if "ERR_ABORTED" not in str(error):
+                                    raise
+                        navigate("/?utm_source=ig#watch")
+                        page.wait_for_url(lambda u: urlsplit(u).path == default, timeout=10000)
+                        if parse_qs(urlsplit(page.url).query).get("utm_source") != ["ig"] or urlsplit(page.url).fragment != "watch":
+                            errors.append(f"{zone}/{locale}: automatic language selection dropped tracking or fragment")
+                        switch = page.locator(".header-language")
+                        if not switch.is_visible():
+                            errors.append(f"{zone}/{locale}: language switch is not visible with closed menu")
+                        else:
+                            switch.click()
+                            selected = "/" if default == "/zh/" else "/zh/"
+                            page.wait_for_url(lambda u: urlsplit(u).path == selected, timeout=10000)
+                            page.wait_for_function("(value) => localStorage.getItem('balkazar-language') === value",
+                                                   arg="en" if selected == "/" else "zh")
+                            navigate("/")
+                            page.wait_for_url(lambda u: urlsplit(u).path == selected, timeout=10000)
+                            navigate("/events/")
+                            if urlsplit(page.url).path != "/events/":
+                                errors.append(f"{zone}/{locale}: explicit event URL was redirected")
+                    finally:
+                        context.close()
                 # Scan-to-phone user acceptance: page fills the *visible* browser
                 # viewport (not device pixels), with no scrolling or tiny controls.
                 for file in ("follow/index.html", "zh/follow/index.html"):

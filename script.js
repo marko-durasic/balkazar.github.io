@@ -1,23 +1,99 @@
-const siteLanguage = document.body.dataset.siteLanguage;
-const languageLinks = document.querySelectorAll("[data-language-select]");
-
-languageLinks.forEach((link) => {
-  link.addEventListener("click", () => {
-    localStorage.setItem("balkazar-language", link.dataset.languageSelect);
+// A visitor's explicit language choice wins. The neutral homepage is the
+// only automatically localized URL; direct translated/deep links stay intact.
+function setupSiteLanguage(win, doc, navInfo) {
+  const current = new URL(win.location.href);
+  const currentLanguage = doc.documentElement.lang.toLowerCase().startsWith("zh") ? "zh" : "en";
+  const valid = (value) => value === "en" || value === "zh";
+  const key = "balkazar-language";
+  const read = () => {
+    try { return win.localStorage.getItem(key); } catch { return null; }
+  };
+  const save = (value) => {
+    try { win.localStorage.setItem(key, value); return true; } catch { return false; }
+  };
+  const explicit = current.searchParams.get("lang");
+  const isWeb = current.protocol === "https:" || current.protocol === "http:";
+  const isNeutralHome = current.pathname === "/" || current.pathname === "/index.html";
+  const other = currentLanguage === "zh" ? "en" : "zh";
+  const alternate = doc.querySelector(other === "zh"
+    ? 'link[rel="alternate"][hreflang^="zh"]'
+    : 'link[rel="alternate"][hreflang="en"]');
+  const languageLinkSelector = '[data-language-select], a.band-lang, a.founder-lang, a.hub-language, a.language';
+  const header = doc.querySelector(".nav-inner");
+  let link = header?.querySelector(languageLinkSelector);
+  // Compact pages may have no existing switch. Use their actual hreflang
+  // counterpart; the Chinese-only corporate page links to the English home.
+  const target = alternate ? new URL(alternate.href).pathname
+    : (current.pathname === "/zh/weiya/" ? "/?lang=en" : null);
+  if (header && (link || target)) {
+    if (!link) {
+      link = doc.createElement("a");
+      link.href = target;
+      link.textContent = other === "zh" ? "中文" : "EN";
+    }
+    link.classList.add("header-language");
+    link.dataset.languageSelect = other;
+    link.lang = other === "zh" ? "zh-Hant" : "en";
+    link.setAttribute("aria-label", other === "zh" ? "切換成繁體中文" : "Switch to English");
+    const toggle = header.querySelector(".nav-toggle");
+    if (toggle) header.insertBefore(link, toggle);
+    else header.appendChild(link);
+  }
+  doc.querySelectorAll(languageLinkSelector).forEach((item) => {
+    const language = item.dataset.languageSelect || other;
+    item.dataset.languageSelect = language;
+    if (isWeb) {
+      const destination = new URL(item.href, current);
+      // Keep campaign attribution and make modified clicks/new tabs work,
+      // even when browser storage is blocked.
+      current.searchParams.forEach((value, name) => {
+        if (name !== "lang" && !destination.searchParams.has(name)) {
+          destination.searchParams.set(name, value);
+        }
+      });
+      destination.searchParams.set("lang", language);
+      // Only copy the fragment on the homepages, where sections match.
+      if (doc.body.dataset.siteLanguage && !destination.hash) destination.hash = current.hash;
+      item.href = destination.href;
+    }
+    item.addEventListener("click", () => save(language));
   });
-});
-
-if (siteLanguage && window.location.protocol !== "file:") {
-  const savedLanguage = localStorage.getItem("balkazar-language");
-  const prefersTraditionalChinese = navigator.languages?.some(
-    (language) => /^zh-(TW|Hant)/i.test(language)
-  );
-  if (siteLanguage === "en" && (savedLanguage === "zh" || (!savedLanguage && prefersTraditionalChinese))) {
-    window.location.replace("zh/");
-  } else if (siteLanguage === "zh" && savedLanguage === "en") {
-    window.location.replace("../");
+  if (!isWeb) return;
+  if (valid(explicit) && explicit === currentLanguage) {
+    // Keep the explicit marker if storage is unavailable, so reloading
+    // English in Taiwan cannot force a return to Chinese.
+    if (save(explicit)) {
+      current.searchParams.delete("lang");
+      try { win.history.replaceState(null, "", current.href); } catch { /* optional cleanup */ }
+    }
+    return;
+  }
+  if (!isNeutralHome) return;
+  const saved = read();
+  const preferred = (navInfo.languages || []).find(
+    (language) => typeof language === "string" && language.trim()
+  ) || navInfo.language;
+  let defaultLanguage = "en";
+  // The visitor's primary browser language reflects preference better
+  // than geography. All Chinese locales use our Traditional Chinese site.
+  if (typeof preferred === "string" && preferred.trim()) {
+    defaultLanguage = /^zh(?:-|$)/i.test(preferred.trim()) ? "zh" : "en";
+  } else {
+    // Only use the Taiwan device time zone when language is unavailable.
+    try {
+      if (Intl.DateTimeFormat().resolvedOptions().timeZone === "Asia/Taipei") {
+        defaultLanguage = "zh";
+      }
+    } catch { /* English remains the safe default. */ }
+  }
+  const desired = valid(explicit) ? explicit : valid(saved) ? saved : defaultLanguage;
+  if (desired === "zh") {
+    current.pathname = "/zh/";
+    win.location.replace(current.href);
   }
 }
+
+setupSiteLanguage(window, document, navigator);
 
 const year = document.getElementById("year");
 if (year) year.textContent = new Date().getFullYear();

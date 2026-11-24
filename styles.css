@@ -355,3 +355,55 @@ footer .logo { flex-wrap: wrap; }
 .collab-inline { margin: 1.15rem auto 0; max-width: 640px; }
 .collab-inline summary { cursor: pointer; color: #8a3f11; font-weight: 800; text-decoration: underline; text-underline-offset: .18em; padding: .4rem 0; }
 .collab-inline .collab-video-frame { margin-top: .85rem; }
+
+/* The language switch stays outside both the collapsed menu and compact links. */
+.nav-inner > .header-language {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  min-width: 44px;
+  min-height: 44px;
+  padding: .3rem .55rem;
+  border: 1px solid rgba(255,250,240,.42);
+  border-radius: .35rem;
+  color: var(--white);
+  font-size: .85rem;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+.nav-inner > .header-language:hover { border-color: var(--yellow); color: var(--yellow); }
+.nav-inner > .nav-toggle { flex-shrink: 0; min-width: 44px; min-height: 44px; }
+@media (min-width: 881px) {
+  .nav-inner > .header-language { order: 2; margin-left: .65rem; }
+  .nav-inner > .links { margin-left: auto; gap: clamp(.45rem, 1.2vw, 1.5rem); }
+}
+@media (max-width: 880px) {
+  .nav-inner > .header-language { margin-left: auto; margin-right: .35rem; }
+  .nav-inner > .header-language:last-child { margin-right: 0; margin-left: .35rem; }
+}
+@media (max-width: 440px) {
+  .nav .nav-inner { padding-inline: .7rem; }
+  .nav .logo { font-size: 1.6rem; gap: .3rem; }
+  .nav .logo span { margin-left: -.3rem; }
+  .nav .logo .brand-avatar { width: 36px; height: 36px; }
+  .nav.compact-nav .links, .nav-inner:has(> .header-language:last-child) .links { gap: .25rem; }
+  .nav.compact-nav .links .nav-cta, .nav-inner:has(> .header-language:last-child) .links .nav-cta {
+    font-size: .72rem; padding: .45rem .5rem; white-space: nowrap;
+  }
+  .nav-inner:has(> .header-language:last-child):not(:has(> .nav-toggle)) .links a:not(.nav-cta) { display: none; }
+}
+
+/* Compact biography headers also carry a booking CTA. Keep all three
+   controls within the narrowest supported viewport without shrinking the
+   language tap target or hiding the booking action. */
+@media (max-width: 360px) {
+  .nav.compact-nav .nav-inner { padding-inline: .5rem; gap: .25rem; }
+  .nav.compact-nav .logo { font-size: 1.35rem; gap: .25rem; }
+  .nav.compact-nav .logo span { margin-left: -.25rem; }
+  .nav.compact-nav .logo .brand-avatar { width: 28px; height: 28px; }
+  .nav.compact-nav .links { min-width: 0; }
+  .nav.compact-nav .links .nav-cta { white-space: normal; text-align: center; min-width: 0; }
+  .nav.compact-nav .nav-inner > .header-language { margin-left: 0; }
+}
