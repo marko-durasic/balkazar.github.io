@@ -69,14 +69,23 @@ function setupSiteLanguage(win, doc, navInfo) {
     return;
   }
   if (!isNeutralHome) return;
-  let zone;
-  try { zone = Intl.DateTimeFormat().resolvedOptions().timeZone; } catch { /* locale fallback */ }
-  const localChinese = (navInfo.languages || [navInfo.language]).some(
-    (language) => /^zh(?:-Hant)?-TW$|^zh-Hant$/i.test(language || "")
-  );
-  const defaultLanguage = zone && zone !== "UTC" ? (zone === "Asia/Taipei" ? "zh" : "en")
-    : (localChinese ? "zh" : "en");
   const saved = read();
+  const preferred = (navInfo.languages || []).find(
+    (language) => typeof language === "string" && language.trim()
+  ) || navInfo.language;
+  let defaultLanguage = "en";
+  // The visitor's primary browser language reflects preference better
+  // than geography. All Chinese locales use our Traditional Chinese site.
+  if (typeof preferred === "string" && preferred.trim()) {
+    defaultLanguage = /^zh(?:-|$)/i.test(preferred.trim()) ? "zh" : "en";
+  } else {
+    // Only use the Taiwan device time zone when language is unavailable.
+    try {
+      if (Intl.DateTimeFormat().resolvedOptions().timeZone === "Asia/Taipei") {
+        defaultLanguage = "zh";
+      }
+    } catch { /* English remains the safe default. */ }
+  }
   const desired = valid(explicit) ? explicit : valid(saved) ? saved : defaultLanguage;
   if (desired === "zh") {
     current.pathname = "/zh/";
