@@ -53,3 +53,10 @@
   connection?.addEventListener("change", updateFilm);
   updateFilm();
 })();
+
+const featuredShow = document.querySelector(".show-feature");
+if (Date.now() >= Date.parse(featuredShow.dataset.endsAt)) {
+  document.getElementById("next-show-heading").textContent =
+    document.documentElement.lang.startsWith("zh") ? "最近的演出" : "Recent show";
+  featuredShow.querySelector(".show-calendar").remove();
+}

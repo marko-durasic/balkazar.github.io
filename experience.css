@@ -89,3 +89,19 @@
   padding: .4rem 0; text-decoration: underline; text-underline-offset: .25em; min-height: 44px;
 }
 .show-actions .share-feedback { font-size: .9rem; overflow-wrap: anywhere; }
+html { scroll-padding-top: calc(5rem + env(safe-area-inset-top)); }
+.nav { padding-top: env(safe-area-inset-top); }
+.nav .nav-inner {
+  padding-left: max(1rem, env(safe-area-inset-left));
+  padding-right: max(1rem, env(safe-area-inset-right));
+}
+#film-toggle { top: calc(5.5rem + env(safe-area-inset-top)); }
+.direct-links button { align-self: flex-start; }
+@media (max-width: 880px) {
+  .nav .links { top: calc(4.5rem + env(safe-area-inset-top)); }
+  .nav.open .links {
+    padding-inline: max(1.25rem, env(safe-area-inset-left)) max(1.25rem, env(safe-area-inset-right));
+    max-height: calc(100dvh - 4.5rem - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  }
+  .show-dock { max-width: calc(100vw - 2rem - env(safe-area-inset-left) - env(safe-area-inset-right)); }
+}
