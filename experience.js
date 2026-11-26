@@ -1,4 +1,4 @@
-// The private review build supplies local file paths. Empty paths serve the photograph.
+// Load only the film matching the viewport and the visitor’s motion and data preferences.
 (() => {
   const film = document.getElementById("hero-film");
   const toggle = document.getElementById("film-toggle");

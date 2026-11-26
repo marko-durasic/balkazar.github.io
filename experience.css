@@ -125,3 +125,20 @@ html { scroll-padding-top: calc(5rem + env(safe-area-inset-top)); }
   .live-title { padding-bottom: calc(var(--film-bottom) + 3.1rem); }
   #film-toggle { top: auto; bottom: var(--film-bottom); }
 }
+
+.listen-preview { background: #e8dfce; color: var(--ink); }
+.listen-preview-inner { padding-block: clamp(2.75rem, 6vw, 6rem); }
+.listen-copy { border-left: 3px solid #793b2e; padding-left: clamp(1rem, 2vw, 2rem); }
+.listen-copy .eyebrow { color: #713426; }
+.listen-copy #listen-heading {
+  color: var(--ink);
+  font: italic 500 clamp(2.9rem, 6vw, 5.5rem)/1.03 Georgia, serif;
+  letter-spacing: -.055em;
+}
+.listen-copy a, #experience .intro-copy a {
+  color: #713426;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+#niska-banja { scroll-margin-top: calc(5rem + env(safe-area-inset-top)); }
