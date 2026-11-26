@@ -313,3 +313,8 @@
   .hub-link { transition: none; }
   .hub-link:hover, .hub-link:focus-visible, .hub-link:active { transform: none; }
 }
+
+@media (max-width: 760px) {
+  .hub-header { container-type: inline-size; }
+  .hub-header h1 { font-size: clamp(2rem, 10.6cqw, 2.8rem); }
+}

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Balkazar | Balkan Folk &amp; World Music Band in Taiwan</title>
   <meta name="description" content="Balkazar is a Taipei-based Balkan folk and world-music band. Traditional Eastern European songs, brass, electric guitar, ska and rock. Festivals and cultural events across Taiwan.">
   <link rel="canonical" href="https://balkazar.org/">
@@ -40,11 +40,15 @@
       "https://www.facebook.com/Balkazarband/",
       "https://www.youtube.com/channel/UCVjIs4RvBlSH6NbnDAoqJTQ",
       "https://streetvoice.com/Balkazar/",
-      "https://soundcloud.com/user-424179644"
+      "https://soundcloud.com/user-424179644",
+      "https://www.songkick.com/artists/10419156-balkazar",
+      "https://www.threads.com/@balkazarband",
+      "https://www.bandsintown.com/a/15495651-balkazar"
     ]
   }
   </script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","url":"https://balkazar.org/","name":"Balkazar","alternateName":"Balkazar Band"}</script>
+  <link rel="stylesheet" href="/experience.css">
 </head>
 <body data-site-language="en">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -56,67 +60,53 @@
         <span></span><span></span><span></span>
       </button>
       <div class="links" id="nav-links">
-        <a href="#experience">Our music</a>
-        <a href="#festivals">Festivals</a>
+        <a href="#shows">Shows</a>
         <a href="#watch">Watch</a>
-        <a href="#formats">Book us</a>
-        <a href="band/">Band</a>
-        <a href="events/">Events</a>
-        <a href="gallery/">Photos</a>
+        <a href="follow/">Follow</a>
         <a href="epk/">EPK</a>
-        <a class="nav-cta" href="#inquiry">Check a date</a>
+        <a class="nav-cta" href="#inquiry">Book us</a>
       </div>
     </div>
   </nav>
 
-  <header class="hero" id="top">
-    <img class="hero-image" src="assets/images/balkazar-cijin-sunset-bar-nye.jpg" alt="Balkazar performing at a New Year’s Eve beach show at Cijin Sunset Bar, Kaohsiung">
-    <div class="hero-shade"></div>
-    <div class="hero-content">
-      <p class="eyebrow">Taipei · Available across Taiwan</p>
-      <h1>Balkan music.<br><em>Live and loud.</em></h1>
-      <p class="lede">We're Balkazar, a Taipei-based band playing Balkan folk songs with electric guitars, saxophone, trombone, ska and rock. We make our own arrangements, write some of our own songs, and leave room to improvise.</p>
-      <div class="cta-row">
-        <a class="btn" href="#inquiry">Bring Balkazar to your event <span>→</span></a>
-        <a class="text-link" href="#watch">Watch us live <span>↘</span></a>
-      </div>
-      <div class="proof-strip" aria-label="Selected experience">
-        <span>Urban Nomad / Freakout</span>
-        <span>Tiger Mountain Ramble</span>
-        <span>Taiwan Ska Fest</span>
-        <span>Shilin Chrysanthemum Show</span>
-        <span>Daniel Pearl World Music Day</span>
-        <span>Taipei Veggie Fest</span>
-        <span>Celebration Canada</span>
-        <span>European Christmas Market</span>
-        <span>Fête de la Musique</span>
-        <span>Slavic Bazaar</span>
-        <span>Clubs & culture nights</span>
-        <span>Private & company events</span>
-        <span>Balkan music workshops</span>
-      </div>
+  <header class="live-hero" id="top">
+    <picture>
+      <source media="(max-aspect-ratio: 1/1)" srcset="/assets/images/balkazar-hero-portrait.webp">
+      <img class="live-poster" src="/assets/images/balkazar-hero-stage.webp" alt="Balkazar playing live with trombone at the front of the stage" fetchpriority="high">
+    </picture>
+    <video id="hero-film" data-desktop="/assets/video/balkazar-live-landscape-v4.mp4" data-mobile="/assets/video/balkazar-live-portrait-v3.mp4" muted playsinline loop preload="none" aria-hidden="true" hidden></video>
+    <div class="live-title">
+      <h1 lang="en">Balkazar</h1>
+      <p>Balkan folk, live from Taipei.</p>
     </div>
+    <button id="film-toggle" type="button" hidden>Pause video</button>
   </header>
 
   <main id="main">
-    <section class="marquee" aria-label="Balkazar sound">
-      <div>Balkan folk · Eastern Europe · Romani traditions · Ska · Brass · Rock · Odd rhythms · Balkan folk · Eastern Europe · Romani traditions · Ska · Brass · Rock · Odd rhythms ·</div>
-    </section>
-
-    <section class="formats-wrap">
-      <div class="section intro">
-        <div><p class="eyebrow">Next show · Dec 3 · 8–9:30 pm</p><h2>European Christmas Market, Taipei.</h2></div>
-        <div class="intro-copy"><p>Thursday night at the Christmas market. Come for the music, bring a friend, and dance with us.</p><a class="btn" href="events/2026-12-03-european-christmas-market/">Event details <span>→</span></a><p><a href="follow/" style="font-weight:700;text-decoration:underline;text-underline-offset:.2rem">Follow Balkazar for more shows ↗</a></p></div>
-      </div>
+    <section class="next-show" id="shows" aria-labelledby="next-show-heading">
+      <div class="show-heading"><h2 id="next-show-heading">Next show</h2><a href="events/">All shows ↗︎</a></div>
+      <article class="show-feature" data-ends-at="2026-12-03T21:30:00+08:00">
+        <a href="events/2026-12-03-european-christmas-market/" class="show-picture" aria-label="European Christmas Market event details"><img src="/assets/images/gallery/g-christmas-market-horns.jpg" alt="The horn section at a previous European Christmas Market" loading="lazy"></a>
+        <div class="show-info">
+          <time datetime="2026-12-03T20:00:00+08:00">Thu, 3 Dec 2026</time>
+          <h3>European Christmas Market</h3>
+          <p>Xinyi Xiangti Avenue Plaza, Taipei<br>8:00–9:30 pm · Free entry</p>
+          <div class="share-tools show-actions" data-share-target="show-details"><a class="show-primary" id="show-details" href="events/2026-12-03-european-christmas-market/">Show details →</a><a class="show-calendar" href="/assets/events/balkazar-european-christmas-market-2026-12-03.ics">Add to calendar</a>
+            <button hidden type="button" data-share="native">Share</button>
+            <button type="button" data-share="copy">Copy show link</button>
+            <span class="share-feedback" role="status"></span>
+          </div>
+        </div>
+      </article>
     </section>
 
     <section class="listen-preview" id="listen" aria-labelledby="listen-heading">
       <div class="listen-preview-inner">
         <div class="listen-copy">
-          <p class="eyebrow">Listen to us</p>
-          <h2 id="listen-heading">How do we sound?</h2>
-          <p>Here's a live <em>Bella Ciao</em> recording from Red Room Rendezvous, Taipei, 2021. Press play, or <a href="https://soundcloud.com/user-424179644/bella-ciao-live-cover" target="_blank" rel="noopener noreferrer">open it on SoundCloud ↗</a>.</p>
-          <p class="listen-note">One track for now. More live videos are further down the page.</p>
+          <p class="eyebrow">Live at Red Room</p>
+          <h2 id="listen-heading" lang="it">Bella Ciao</h2>
+          <p>We recorded this at Red Room Rendezvous in Taipei in 2021.</p>
+          <a href="https://soundcloud.com/user-424179644/bella-ciao-live-cover" target="_blank" rel="noopener noreferrer">Listen on SoundCloud ↗︎</a>
         </div>
         <div class="listen-widget">
           <iframe loading="lazy" title="Listen to Balkazar playing Bella Ciao live at Red Room in 2021 on SoundCloud" width="100%" height="166" scrolling="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A%2F%2Fsoundcloud.com%2Fuser-424179644%2Fbella-ciao-live-cover&amp;color=%23ff5a1f&amp;auto_play=false&amp;hide_related=true&amp;show_comments=false&amp;show_user=true&amp;show_reposts=false&amp;show_artwork=true&amp;visual=false"></iframe>
@@ -130,7 +120,7 @@
         <h2>Balkan songs, our way.</h2>
       </div>
       <div class="intro-copy">
-        <p>Our five-piece lineup has vocals, electric guitar, drums, bass, trombone and saxophone. We start with Balkan folk songs, then change things up: electric guitar, horns, a bit of ska or rock, and room to improvise.</p>
+        <p>Most of what we play comes from Balkan folk traditions, including <a href="#niska-banja" lang="sr-Latn">Niška Banja</a>. We write some tunes of our own, and our set also includes songs from Egypt, Italy, Spain and France, as well as songs in Mandarin. We arrange them for the five of us. Live, we leave room to stretch a solo or stay with a groove when the crowd is dancing.</p>
       </div>
     </section>
 
@@ -159,7 +149,7 @@
             <span class="play" aria-hidden="true">▶</span>
             <div><small>Dance-floor clip</small><strong>Balkazar in Taipei</strong></div>
           </a>
-          <a class="image-link" href="https://www.youtube.com/watch?v=O7L8l8PwB4k" target="_blank" rel="noopener">
+          <a class="image-link" id="niska-banja" href="https://www.youtube.com/watch?v=O7L8l8PwB4k" target="_blank" rel="noopener">
             <img src="assets/images/balkazar-niska-banja-live-still.jpg" alt="" loading="lazy">
             <span class="play" aria-hidden="true">▶</span>
             <div><small>Live song</small><strong>Niška Banja</strong></div>
@@ -167,9 +157,9 @@
         </div>
       </div>
       <div class="media-links">
-        <a href="https://www.youtube.com/channel/UCVjIs4RvBlSH6NbnDAoqJTQ" target="_blank" rel="noopener">More videos on YouTube ↗</a>
-        <a href="https://streetvoice.com/Balkazar/" target="_blank" rel="noopener">Listen on StreetVoice ↗</a>
-        <a href="https://soundcloud.com/user-424179644" target="_blank" rel="noopener">Listen on SoundCloud ↗</a>
+        <a href="https://www.youtube.com/channel/UCVjIs4RvBlSH6NbnDAoqJTQ" target="_blank" rel="noopener">More videos on YouTube ↗︎</a>
+        <a href="https://streetvoice.com/Balkazar/" target="_blank" rel="noopener">Listen on StreetVoice ↗︎</a>
+        <a href="https://soundcloud.com/user-424179644" target="_blank" rel="noopener">Listen on SoundCloud ↗︎</a>
       </div>
     </section>
 
@@ -216,7 +206,7 @@
         <p class="eyebrow">About Balkazar</p>
         <h2>The band.</h2>
         <p>Balkazar started in Taipei, playing songs from Serbia and the wider Balkans. Over time we've made our own arrangements, added original songs and found our own sound along the way.</p>
-        <p><a href="band/" style="display:inline-block;font-weight:700;border-bottom:2px solid var(--orange);padding-bottom:.15rem">About the band ↗</a></p>
+        <p><a href="band/" style="display:inline-block;font-weight:700;border-bottom:2px solid var(--orange);padding-bottom:.15rem">About the band ↗︎</a></p>
         <div class="press-note">
           <span>Past shows &amp; press</span>
           <p>We've played Urban Nomad, Tiger Mountain Ramble, Taiwan Ska Fest, the Shilin Residence Chrysanthemum Show, Daniel Pearl World Music Day, Taipei Veggie Fest and Celebration Canada, among other events in Taiwan. The <a href="https://www.taipeitimes.com/News/feat/archives/2021/04/23/2003756195" target="_blank" rel="noopener">Taipei Times</a> once called Balkazar a “Balkan reggae-ska outfit.”</p>
@@ -229,18 +219,33 @@
       <p class="eyebrow">Selected live stages</p>
       <h2 id="festivals-heading">Festivals &amp; cultural events.</h2>
       <p class="festival-intro">We've played music festivals and cultural events around Taiwan. Here are some of those shows, with photos, videos and links to the original listings.</p>
+      <details class="stage-history"><summary>Stages and occasions</summary><div class="stage-list" aria-label="Selected experience">
+        <span>Urban Nomad / Freakout</span>
+        <span>Tiger Mountain Ramble</span>
+        <span>Taiwan Ska Fest</span>
+        <span>Shilin Chrysanthemum Show</span>
+        <span>Daniel Pearl World Music Day</span>
+        <span>Taipei Veggie Fest</span>
+        <span>Celebration Canada</span>
+        <span>European Christmas Market</span>
+        <span>Fête de la Musique</span>
+        <span>Slavic Bazaar</span>
+        <span>Clubs & culture nights</span>
+        <span>Private & company events</span>
+        <span>Balkan music workshops</span>
+      </div></details>
       <div class="festival-grid">
-<article><span>2017 · 2019 · 2020</span><h3><a href="festivals/urban-nomad/">Urban Nomad / Freakout →</a></h3><p>Three festival editions in Taipei. <a href="https://urbannomad.kktix.cc/events/urbannomad-wawetw" target="_blank" rel="noopener noreferrer">2019 organizer lineup ↗</a></p></article>
-<article><span>2018</span><h3><a href="festivals/taiwan-ska-fest/">Taiwan Ska Fest →</a></h3><p>Our Taiwan Ska Fest show at PIPE Live House, with Skaraoke also on the lineup. <a href="https://pipelivemusic.com/2018/08/06/taiwan-ska-fest-vol-2/" target="_blank" rel="noopener noreferrer">Official PIPE lineup ↗</a></p></article>
-<article><span>2018</span><h3><a href="festivals/daniel-pearl/">Daniel Pearl World Music Day →</a></h3><p>Main-stage show at Taipei Hakka Cultural Park. <a href="https://blow.streetvoice.com/41658/" target="_blank" rel="noopener noreferrer">Blow music press ↗</a></p></article>
-<article><span>2018</span><h3><a href="festivals/tiger-mountain/">Tiger Mountain Ramble →</a></h3><p>An outdoor music festival in Taipei's Tiger Mountain. <a href="https://wp.taronews.tw/2018/12/02/191487/" target="_blank" rel="noopener noreferrer">Festival press ↗</a></p></article>
-<article><span>2019</span><h3><a href="festivals/shilin-chrysanthemum/">Shilin Residence Chrysanthemum Show →</a></h3><p>A featured Balkan music concert at a city cultural event. <a href="https://www.gov.taipei/News_Content.aspx?n=F0DDAF49B89E9413&amp;s=1AC5BBFAC7E7CC01&amp;sms=72544237BBE4C5F6" target="_blank" rel="noopener noreferrer">City Government notice ↗</a></p></article>
-<article><span>2021 · 2023</span><h3><a href="festivals/taipei-veggie-fest/">Taipei Veggie Fest →</a></h3><p>Two editions, with news coverage and photographs from the festival. <a href="https://www.taiwannews.com.tw/news/4863840" target="_blank" rel="noopener noreferrer">Taiwan News + band photo ↗</a></p></article>
-<article><span>2019 · 2022 · 2026</span><h3><a href="festivals/celebration-canada/">Celebration Canada →</a></h3><p>Recurring live performances at Taipei's Canada Day celebrations. <a href="https://www.taipeitimes.com/News/feat/archives/2026/06/25/2003859692" target="_blank" rel="noopener noreferrer">Taipei Times 2026 ↗</a></p></article>
-<article><span>Returning</span><h3><a href="festivals/european-christmas-market/">European Christmas Market →</a></h3><p>Returning to Taipei's Christmas Market on December 3, 2026. <a href="https://balkazar.org/events/2026-12-03-european-christmas-market/" target="_blank" rel="noopener noreferrer">Upcoming show details ↗</a></p></article>
+<article><span>2017 · 2019 · 2020</span><h3><a href="festivals/urban-nomad/">Urban Nomad / Freakout →</a></h3><p>Three festival editions in Taipei. <a href="https://urbannomad.kktix.cc/events/urbannomad-wawetw" target="_blank" rel="noopener noreferrer">2019 organizer lineup ↗︎</a></p></article>
+<article><span>2018</span><h3><a href="festivals/taiwan-ska-fest/">Taiwan Ska Fest →</a></h3><p>Our Taiwan Ska Fest show at PIPE Live House, with Skaraoke also on the lineup. <a href="https://pipelivemusic.com/2018/08/06/taiwan-ska-fest-vol-2/" target="_blank" rel="noopener noreferrer">Official PIPE lineup ↗︎</a></p></article>
+<article><span>2018</span><h3><a href="festivals/daniel-pearl/">Daniel Pearl World Music Day →</a></h3><p>Main-stage show at Taipei Hakka Cultural Park. <a href="https://blow.streetvoice.com/41658/" target="_blank" rel="noopener noreferrer">Blow music press ↗︎</a></p></article>
+<article><span>2018</span><h3><a href="festivals/tiger-mountain/">Tiger Mountain Ramble →</a></h3><p>An outdoor music festival in Taipei's Tiger Mountain. <a href="https://wp.taronews.tw/2018/12/02/191487/" target="_blank" rel="noopener noreferrer">Festival press ↗︎</a></p></article>
+<article><span>2019</span><h3><a href="festivals/shilin-chrysanthemum/">Shilin Residence Chrysanthemum Show →</a></h3><p>A featured Balkan music concert at a city cultural event. <a href="https://www.gov.taipei/News_Content.aspx?n=F0DDAF49B89E9413&amp;s=1AC5BBFAC7E7CC01&amp;sms=72544237BBE4C5F6" target="_blank" rel="noopener noreferrer">City Government notice ↗︎</a></p></article>
+<article><span>2021 · 2023</span><h3><a href="festivals/taipei-veggie-fest/">Taipei Veggie Fest →</a></h3><p>Two editions, with news coverage and photographs from the festival. <a href="https://www.taiwannews.com.tw/news/4863840" target="_blank" rel="noopener noreferrer">Taiwan News + band photo ↗︎</a></p></article>
+<article><span>2019 · 2022 · 2026</span><h3><a href="festivals/celebration-canada/">Celebration Canada →</a></h3><p>Recurring live performances at Taipei's Canada Day celebrations. <a href="https://www.taipeitimes.com/News/feat/archives/2026/06/25/2003859692" target="_blank" rel="noopener noreferrer">Taipei Times 2026 ↗︎</a></p></article>
+<article><span>Returning</span><h3><a href="festivals/european-christmas-market/">European Christmas Market →</a></h3><p>Returning to Taipei's Christmas Market on December 3, 2026. <a href="https://balkazar.org/events/2026-12-03-european-christmas-market/" target="_blank" rel="noopener noreferrer">Upcoming show details ↗︎</a></p></article>
 </div>
       <p class="festival-next"><a href="festivals/">Festival history →</a> · <a href="venues/">Bars, clubs &amp; New Year’s Eve shows →</a> · <a href="collaborations/">Playing with Fermín Muguruza &amp; Skaraoke →</a></p>
-      <p class="festival-next"><strong>Next festival date:</strong> European Winter Festival / European Christmas Market — <a href="events/2026-12-03-european-christmas-market/">December 3, 2026, 8–9:30 pm ↗</a></p>
+      <p class="festival-next"><strong>Next festival date:</strong> European Winter Festival / European Christmas Market — <a href="events/2026-12-03-european-christmas-market/">December 3, 2026, 8–9:30 pm ↗︎</a></p>
     </section>
 
     <section class="section gallery" id="gallery">
@@ -264,13 +269,14 @@
         <div class="inquiry-copy">
           <p class="eyebrow">Bookings</p>
           <h2>Book Balkazar.</h2>
-          <p>Tell us the date, venue and what you're planning.</p>
+          <p>Email us or message us on LINE or Instagram with the date, venue and what you’re planning.</p>
           <div class="direct-links">
-            <a href="mailto:booking@balkazar.org">booking@balkazar.org</a>
-            <a href="https://line.me/R/ti/p/@489cncyj" target="_blank" rel="noopener noreferrer">Message Balkazar on LINE ↗</a>
-            <a href="https://www.instagram.com/balkazarband/" target="_blank" rel="noopener">@balkazarband</a>
+            <a id="booking-email" href="mailto:booking@balkazar.org">booking@balkazar.org</a>
+            <button type="button" data-copy="booking-email" data-copied-label="Copied">Copy email address</button>
+            <a href="https://line.me/R/ti/p/@489cncyj" target="_blank" rel="noopener noreferrer">Message Balkazar on LINE ↗︎</a>
+            <a href="https://www.instagram.com/balkazarband/" target="_blank" rel="noopener">Instagram ↗︎</a>
           </div>
-          <p class="trust-note"><a href="https://www.facebook.com/Balkazarband/reviews" target="_blank" rel="noopener">Facebook reviews ↗</a></p>
+          <p class="trust-note"><a href="https://www.facebook.com/Balkazarband/reviews" target="_blank" rel="noopener">Facebook reviews ↗︎</a></p>
         </div>
         <form class="booking-form" data-language="en">
           <div class="field-row">
@@ -299,6 +305,9 @@
     </section>
   </main>
 
+  <nav class="show-dock" aria-label="Quick navigation">
+    <a href="#shows">Shows</a><a href="#watch">Watch</a><a href="follow/">Follow</a><a href="#inquiry">Booking</a>
+  </nav>
   <footer>
     <a class="logo" href="#top"><img class="brand-avatar" src="/assets/images/balkazar-logo-current-128.webp" width="48" height="48" alt="">Balkazar<span>.</span></a>
     <p class="booking-contact"><a href="mailto:booking@balkazar.org">booking@balkazar.org</a></p>
@@ -317,5 +326,6 @@
     <small>© <span id="year"></span> Balkazar</small>
   </footer>
   <script src="script.js"></script>
+  <script src="/experience.js"></script>
 </body>
 </html>
