@@ -113,3 +113,10 @@ html { scroll-padding-top: calc(5rem + env(safe-area-inset-top)); }
 }
 .live-hero > picture { position: absolute; inset: 0; z-index: -2; }
 .live-poster { z-index: auto; }
+@media (max-width: 720px) {
+  .live-hero {
+    --film-bottom: max(.5rem, env(safe-area-inset-bottom), calc(4.75rem - 10svh + env(safe-area-inset-bottom)));
+  }
+  .live-title { padding-bottom: calc(var(--film-bottom) + 3.1rem); }
+  #film-toggle { top: auto; bottom: var(--film-bottom); }
+}
