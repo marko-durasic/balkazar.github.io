@@ -133,12 +133,12 @@ document.querySelectorAll("[data-copy]").forEach((button) => {
 });
 
 // Use the canonical URL: tracking parameters and anchors do not belong in shared links.
-const shareUrl = document.querySelector('link[rel="canonical"]')?.href
+const canonicalShareUrl = document.querySelector('link[rel="canonical"]')?.href
   || window.location.href.split("#")[0].split("?")[0];
-const shareTitle = document.querySelector('meta[property="og:title"]')?.content || document.title;
+const canonicalShareTitle = document.querySelector('meta[property="og:title"]')?.content || document.title;
 const shareIsChinese = document.documentElement.lang.toLowerCase().startsWith("zh");
 
-async function copyEventLink() {
+async function copyEventLink(shareUrl) {
   if (navigator.clipboard?.writeText) {
     try {
       await navigator.clipboard.writeText(shareUrl);
@@ -161,16 +161,20 @@ async function copyEventLink() {
 }
 
 document.querySelectorAll(".share-tools").forEach((tools) => {
+  const target = document.getElementById(tools.dataset.shareTarget);
+  const shareUrl = target ? new URL(target.getAttribute("href"), canonicalShareUrl).href : canonicalShareUrl;
+  const shareTitle = target ? target.closest("article").querySelector("h3").textContent : canonicalShareTitle;
   const status = tools.querySelector(".share-feedback");
   const copy = tools.querySelector('[data-share="copy"]');
   const native = tools.querySelector('[data-share="native"]');
   const message = (success) => {
+    if (!success && target) { status.textContent = shareUrl; return; }
     status.textContent = success
       ? (shareIsChinese ? "連結已複製，可以貼到訊息或 Instagram 限動。" : "Link copied. Paste it into a message or Instagram Story.")
       : (shareIsChinese ? "無法自動複製，請從瀏覽器網址列複製連結。" : "Couldn't copy automatically. Please copy the URL from your browser.");
   };
 
-  copy?.addEventListener("click", async () => message(await copyEventLink()));
+  copy?.addEventListener("click", async () => message(await copyEventLink(shareUrl)));
 
   if (native && typeof navigator.share === "function") {
     native.hidden = false;
@@ -179,7 +183,7 @@ document.querySelectorAll(".share-tools").forEach((tools) => {
         await navigator.share({ title: shareTitle, url: shareUrl });
         status.textContent = "";
       } catch (error) {
-        if (error.name !== "AbortError") message(await copyEventLink());
+        if (error.name !== "AbortError") message(await copyEventLink(shareUrl));
       }
     });
   }
