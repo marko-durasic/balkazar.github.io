@@ -146,3 +146,9 @@
   .founder-journey h2 { font-size: 2.45rem; }
   .founder-journey-card { padding: 1rem 1.1rem; gap: .4rem; }
 }
+
+/* Small documentary image alongside the relevant paragraph, not a featured video. */
+.founder-archive-note { display: grid; grid-template-columns: minmax(0, 7rem) minmax(0, 1fr); align-items: center; gap: .8rem; max-width: 420px; margin: .65rem 0 1.45rem; scroll-margin-top: 6rem; }
+.founder-archive-note img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: contain; border-radius: 3px; }
+.founder-archive-note figcaption { color: #594638; font-size: .86rem; line-height: 1.55; overflow-wrap: anywhere; }
+.founder-archive-note figcaption a { display: inline-block; }
