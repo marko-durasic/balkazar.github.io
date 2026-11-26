@@ -115,7 +115,12 @@ html { scroll-padding-top: calc(5rem + env(safe-area-inset-top)); }
 .live-poster { z-index: auto; }
 @media (max-width: 720px) {
   .live-hero {
-    --film-bottom: max(.5rem, env(safe-area-inset-bottom), calc(4.75rem - 10svh + env(safe-area-inset-bottom)));
+    --film-bottom: max(.5rem, env(safe-area-inset-bottom), calc(4.75rem - 10vh + env(safe-area-inset-bottom)));
+  }
+  @supports (height: 1svh) {
+    .live-hero {
+      --film-bottom: max(.5rem, env(safe-area-inset-bottom), calc(4.75rem - 10svh + env(safe-area-inset-bottom)));
+    }
   }
   .live-title { padding-bottom: calc(var(--film-bottom) + 3.1rem); }
   #film-toggle { top: auto; bottom: var(--film-bottom); }
