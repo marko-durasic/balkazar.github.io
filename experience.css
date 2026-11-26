@@ -105,3 +105,11 @@ html { scroll-padding-top: calc(5rem + env(safe-area-inset-top)); }
   }
   .show-dock { max-width: calc(100vw - 2rem - env(safe-area-inset-left) - env(safe-area-inset-right)); }
 }
+#experience .eyebrow, .formats .eyebrow, .story .eyebrow, .press-note span,
+#festivals .eyebrow, #gallery .eyebrow, .inquiry-copy .eyebrow { color: #753015; }
+.format-grid article > span { color: #474136; }
+@media (max-width: 380px) {
+  .live-title h1 { font-size: 16vw; }
+}
+.live-hero > picture { position: absolute; inset: 0; z-index: -2; }
+.live-poster { z-index: auto; }
